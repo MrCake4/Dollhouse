@@ -7,7 +7,6 @@ Spiele wie Limbo oder Inside zeigen eindrucksvoll, wie auch mit eher simpler Gra
 
 # Bitte beachten
 
-// TODO: Übersetzen
 - Keep the project lean, don't add "work files" that won't get used (ie: artist conceptual files, unoptimized test assets, etc -- Use a secondary local "test bed" project for that experimentation)
 
 - Never check in broken code. That means keep a console panel open and keep the "errors" display turned on. If there are code errors that prevent the editor from Playing the project, don't check them in as this will just prevent everyone else from playing the project too!).
