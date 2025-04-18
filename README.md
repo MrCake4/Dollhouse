@@ -12,12 +12,3 @@ Spiele wie Limbo oder Inside zeigen eindrucksvoll, wie auch mit eher simpler Gra
 - Never check in broken code. That means keep a console panel open and keep the "errors" display turned on. If there are code errors that prevent the editor from Playing the project, don't check them in as this will just prevent everyone else from playing the project too!).
 
 - Check in working stuff often (don't wait days and days to check in a massive amount of work cuz that's when you risk having file conflicts with other coders/contributors who might be touching some of the same files)
-
-# Branch Structure
-
-main
-
-develop
-|----- feature/featureName1
-|----- feature/featureName2
-|----- ...
