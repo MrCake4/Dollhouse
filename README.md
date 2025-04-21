@@ -17,4 +17,4 @@ Spiele wie Limbo oder Inside zeigen eindrucksvoll, wie auch mit eher simpler Gra
 
 Q: Wieso gibt mir VS-Code keine Codevorschläge.
 
-A: Du musst die Unity und C#-Erweiterung in VS-Code installiert haben. Wenn es immernoch nicht funktioniert musst du außerdem die neueste ".NET SDK" Version herrunterladen von: https://dotnet.microsoft.com/en-us/download
+A: Du musst dir Unity und C#-Erweiterung in VS-Code installieren. Wenn es immernoch nicht funktioniert musst du außerdem die neueste ".NET SDK" Version herrunterladen von: https://dotnet.microsoft.com/en-us/download
