@@ -1,3 +1,4 @@
+//using System.Numerics;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -18,12 +19,23 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
-        Vector2 inputVector = new Vector2(0, 0);            //Start Vektor
+        UnityEngine.Vector2 inputVector = new UnityEngine.Vector2(0, 0);            //Start Vektor --> nur 2D, weil die Eingabetasten W-A-S-D auf Tastatur auch nur für 2D sind
 
+        
+        if(Input.GetKey(KeyCode.W)){                //TODO: ignorieren, wenn in 2D Movement wechselt
+            
+            inputVector.y = +1;
+            //Debug.Log("W" + inputVector);
+        }
         if(Input.GetKey(KeyCode.A)){                        // wenn Taste ... gedrückt wird --> 
             
             inputVector.x = -1;
             //Debug.Log("A" + inputVector);
+        }
+        if(Input.GetKey(KeyCode.S)){                //TODO: ignorieren, wenn in 2D Movement wechselt
+            
+            inputVector.y = -1;
+            //Debug.Log("S" + inputVector);
         }
         if(Input.GetKey(KeyCode.D)){
             
@@ -39,13 +51,19 @@ public class PlayerMovement : MonoBehaviour
 
         inputVector = inputVector.normalized;               // Normalisieren (eigentlich eher wichtig, wenn man zwei Vektoren addiert --> hier aber nur rechts oder links bisher --> also egal)
 
-        Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);             //keep input Vector separate fro the movement Vector
-        transform.position += (Vector3)moveDir * moveSpeed * Time.deltaTime;         // zu 3D Vektor casten für die Spielwelt
+        UnityEngine.Vector3 moveDir = new UnityEngine.Vector3(inputVector.x, 0, inputVector.y);             //keep input Vector separate fro the movement Vector
+        transform.position += (UnityEngine.Vector3)moveDir * moveSpeed * Time.deltaTime;         // zu 3D Vektor casten für die Spielwelt
         //damit speed vom Player nicht abhängig von der Frame Rate ist --> multiply by (delta) time   ==> weil das alleine ultra langsam ist --> *moveSpeed
 
 
+        // damit Spieler in richtige Richtung schaut beim laufen, gibt es versch. Möglichkeiten: transform.rotation (arbeitet mit Quarternions); transform.eulerAngles(); oder transform.LookAt(Vector3 worldPosition) (rotate to look at a given poin --> müste man halt erst vorm Spieler berechnen);
+        float rotateSpeed = 10f;
+        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed) ;          //forward vector --> basically  die Move Direction    
+        //Spieler dreht sich sonst zu schnell --> also SLERP (für rotation gut - sonst nur LERP) nutzen!!! --> Slerp interpoliert zwischen Punkt a & b ind Zeit t   
+
+
         // Debug.Log(Vector2.zero);
-        if (inputVector == Vector2.zero) {Debug.Log(" - ");} else {Debug.Log(inputVector);}         //nur fürs Debugging!!!
+        if (inputVector == UnityEngine.Vector2.zero) {Debug.Log(" - ");} else {Debug.Log(inputVector);}         //nur fürs Debugging!!!
 
     }
 }
