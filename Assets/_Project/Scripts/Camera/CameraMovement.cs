@@ -16,6 +16,8 @@ public class CameraMovement : MonoBehaviour
     [Header("Camera Settings")]
     [SerializeField] Vector3 cameraPosition;
     [SerializeField] Transform player;
+    [SerializeField] float floatAmplitude = 1f;
+    [SerializeField] float floatFrequency = 0.2f;
     private Vector3 playerPosition;
 
     [Header("Room to room behaviour")]
@@ -50,10 +52,10 @@ public class CameraMovement : MonoBehaviour
         
         // Camera stays at player position and adds it by the camera position
         // Step 1: Get the desired position based on the player and offset
-        Vector3 desiredCameraPos = playerPosition + cameraPosition;
+        Vector3 desiredCameraPos = playerPosition + cameraPosition + new Vector3(0, (float) Mathf.Sin(Time.time * floatAmplitude) * floatFrequency,0);
 
         // Step 2: Blend between the room's anchor and the desired position
-        float followStrength = 0.5f; // 0 = stick to room, 1 = stick to player
+        float followStrength = 1; // 0 = stick to room, 1 = stick to player
         Vector3 blendedTarget = Vector3.Lerp(currentRoom.cameraAnchorPoint.position, desiredCameraPos, followStrength);
 
         // Step 3: Clamp the blended position inside the room bounds
