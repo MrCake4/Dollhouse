@@ -69,6 +69,6 @@ public class CameraMovement : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, cameraPosition + targetCameraPos, Time.deltaTime * cameraSpeed);
 
 
-        // TODO: add transform.lookAt(Vector3) 
+        transform.LookAt(playerPosition, Vector3.up);
     }
 }
