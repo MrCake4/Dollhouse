@@ -4,9 +4,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {                                                               //mit [SerializeField] --> private + gleichzeitig für den Editor sichtbar
     [SerializeField] private float moveSpeed = 7f;              // in Unity-Einheit per second
+    [SerializeField] private float crouchSpeed = 3f;            // wie schnell beim crouchen
     [SerializeField] private float rotateSpeed = 10f;
     [SerializeField] private float jumpForce = 5f;              // Sprungstärke
     [SerializeField] private LayerMask groundLayer;             // Was zählt als "Boden"?
+
 
     private bool isGrounded;                                    // Ist Spieler gerade auf dem Boden? (jumping)
     private bool jumpInput;                                     // wird in Update gesetzt, in FixedUpdate benutzt (jumping)
@@ -43,20 +45,11 @@ public class PlayerMovement : MonoBehaviour
         moveDir = new Vector3(inputVector.x, 0, inputVector.y);     //keep input Vector separate from the movement Vector
 
         // JUMP INPUT
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {jumpInput = true;}
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isCrouching) {jumpInput = true;}                //Springen nur dann, wenn Spieler Boden berührt & NICHT crouched
         
         // CROUCH INPUT
-        if (Input.GetKeyDown(KeyCode.LeftControl))                  //crouch solange gedrückt ist
-        {
-            isCrouching = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
-        {
-            isCrouching = false;
-        }
+        isCrouching = Input.GetKey(KeyCode.LeftControl);                  //crouch solange gedrückt ist
         Debug.Log("Crouching: " + isCrouching);                     
-
-
 
         if (inputVector != Vector2.zero)
         {
@@ -67,7 +60,9 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         // Bewegung über Rigidbody
-        rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime);
+        //rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime);
+        float currentSpeed = isCrouching ? crouchSpeed : moveSpeed;
+        rb.MovePosition(rb.position + moveDir * currentSpeed * Time.fixedDeltaTime);
 
         // Rotation über Rigidbody
         if (moveDir != Vector3.zero)                                                                                //Damit Spieler in richtige Richtung schat beim laufen
