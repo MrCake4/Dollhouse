@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {                                                               //mit [SerializeField] --> private + gleichzeitig für den Editor sichtbar
-    [SerializeField] private float moveSpeed = 7f;              // in Unity-Einheit per second
-    [SerializeField] private float crouchSpeed = 3f;            // wie schnell beim crouchen
+    [SerializeField] private float moveSpeed = 5f;              // in Unity-Einheit per second
+    [SerializeField] private float crouchSpeed = 2f;            // wie schnell beim crouchen
     [SerializeField] private float rotateSpeed = 10f;
     [SerializeField] private float jumpForce = 5f;              // Sprungstärke
     [SerializeField] private LayerMask groundLayer;             // Was zählt als "Boden"?
