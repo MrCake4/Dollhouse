@@ -73,8 +73,14 @@ public class PlayerMovement : MonoBehaviour
     {
         // Bewegung über Rigidbody
         //rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime);
+        /*float currentSpeed = isCrouching ? crouchSpeed : moveSpeed;                               //MovePosition(), pusht stumpf durch Wände = kein Stop bei Kollision --> niedrige Hinderniss = Buggy :(
+        rb.MovePosition(rb.position + moveDir * currentSpeed * Time.fixedDeltaTime); */
+
         float currentSpeed = isCrouching ? crouchSpeed : moveSpeed;
-        rb.MovePosition(rb.position + moveDir * currentSpeed * Time.fixedDeltaTime);
+        Vector3 velocity = moveDir * currentSpeed;
+        velocity.y = rb.linearVelocity.y;                                                                           // y-Velocity behalten (damit Jump/Gravity noch funktioniert)
+        rb.linearVelocity = velocity;
+
 
         // Rotation über Rigidbody
         if (moveDir != Vector3.zero)                                                                                //Damit Spieler in richtige Richtung schat beim laufen
@@ -86,9 +92,9 @@ public class PlayerMovement : MonoBehaviour
         // JUMP
         if (jumpInput)
         {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z); // Y-Velocity zurücksetzen
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);                          // Y-Velocity zurücksetzen
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            jumpInput = false;                                                  // Zurücksetzen, damit nicht dauerhaft gesprungen wird
+            jumpInput = false;                                                                                      // Zurücksetzen, damit nicht dauerhaft gesprungen wird
         }
 
         // Bei Crouch Collider halbieren
