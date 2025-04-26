@@ -18,9 +18,21 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;                                       //rigid body reference
     private Vector3 moveDir;
 
+
+    //Bei Crouch den Collider halbieren
+    private CapsuleCollider capsuleCollider;
+    private float originalHeight;
+    private Vector3 originalCenter;
+
+
     void Start()                                                // Start is called once before the first execution of Update after the MonoBehaviour is created
     {
         rb = GetComponent<Rigidbody>();
+
+        // Bei Crouch Collider halbieren
+        capsuleCollider = GetComponent<CapsuleCollider>();
+        originalHeight = capsuleCollider.height;
+        originalCenter = capsuleCollider.center;
     }
 
     void Update()                                                   // Update is called once per frame
@@ -79,11 +91,27 @@ public class PlayerMovement : MonoBehaviour
             jumpInput = false;                                                  // Zurücksetzen, damit nicht dauerhaft gesprungen wird
         }
 
+        // Bei Crouch Collider halbieren
+        if (isCrouching)
+        {
+            capsuleCollider.height = originalHeight / 2f;
+            capsuleCollider.center = new Vector3(
+                originalCenter.x,
+                originalCenter.y / 2f,
+                originalCenter.z
+            );
+        }
+        else
+        {
+            capsuleCollider.height = originalHeight;
+            capsuleCollider.center = originalCenter;
+        }
+
     }
 
-    void OnDrawGizmos()
+    /* void OnDrawGizmos()  //tried to see something for debugging - didn´t work lol
     {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + Vector3.down * 2f);
-    }
+    } */    
 }
