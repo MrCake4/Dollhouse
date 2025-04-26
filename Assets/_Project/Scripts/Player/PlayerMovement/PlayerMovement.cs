@@ -2,68 +2,116 @@
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
-{
+{                                                               //mit [SerializeField] --> private + gleichzeitig für den Editor sichtbar
+    [SerializeField] private float moveSpeed = 5f;              // in Unity-Einheit per second
+    [SerializeField] private float crouchSpeed = 2f;            // wie schnell beim crouchen
+    [SerializeField] private float rotateSpeed = 10f;
+    [SerializeField] private float jumpForce = 5f;              // Sprungstärke
+    [SerializeField] private LayerMask groundLayer;             // Was zählt als "Boden"?
 
 
-    //public float moveSpeed = 7f;                      //public, damit man es im Editor sieht/ ändern kann (Inspector) --> kann man dann auch während runtime ändern  !!Nachteil: andere  Klassen haben Zugriff & können Variable verändern
-    [SerializeField] private float moveSpeed = 7f;      //Alternativ mit [SerializeField] --> jetzt  private + gleichzeitig für den Editor sichtbar
+    private bool isGrounded;                                    // Ist Spieler gerade auf dem Boden? (jumping)
+    private bool jumpInput;                                     // wird in Update gesetzt, in FixedUpdate benutzt (jumping)
+    private bool isCrouching;
+
+    
+    private Rigidbody rb;                                       //rigid body reference
+    private Vector3 moveDir;
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    //Bei Crouch den Collider halbieren
+    private CapsuleCollider capsuleCollider;
+    private float originalHeight;
+    private Vector3 originalCenter;
+
+
+    void Start()                                                // Start is called once before the first execution of Update after the MonoBehaviour is created
     {
-        
+        rb = GetComponent<Rigidbody>();
+
+        // Bei Crouch Collider halbieren
+        capsuleCollider = GetComponent<CapsuleCollider>();
+        originalHeight = capsuleCollider.height;
+        originalCenter = capsuleCollider.center;
     }
 
-    // Update is called once per frame
-    void Update()
+    void Update()                                                   // Update is called once per frame
     {
-
-        UnityEngine.Vector2 inputVector = new UnityEngine.Vector2(0, 0);            //Start Vektor --> nur 2D, weil die Eingabetasten W-A-S-D auf Tastatur auch nur für 2D sind
-
+        // Bodencheck
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f, groundLayer);
         
-        if(Input.GetKey(KeyCode.W)){                //TODO: ignorieren, wenn in 2D Movement wechselt
+        Debug.Log("isGrounded: " + isGrounded);
+
+
+        // INPUT  Keyboard
+        Vector2 inputVector = new Vector2(0, 0);                    //Start Vektor --> erstmal nur 2D, weil die Eingabetasten W-A-S-D auf Tastatur auch nur für 2D sind
+
+        if (Input.GetKey(KeyCode.W)) inputVector.y = +1;            //Debug.Log("W" + inputVector);     //TODO: ignorieren, wenn in 2D Movement wechselt
+        if (Input.GetKey(KeyCode.S)) inputVector.y = -1;            //TODO: ignorieren, wenn in 2D Movement wechselt
+        if (Input.GetKey(KeyCode.A)) inputVector.x = -1;
+        if (Input.GetKey(KeyCode.D)) inputVector.x = +1;
             
-            inputVector.y = +1;
-            //Debug.Log("W" + inputVector);
+                
+        //FIRST GET INPUT -- THEN ACTUALLY MOVE THE OBJECT
+        inputVector = inputVector.normalized;                       // Normalisieren, damit man diagonal nicht plötzlich schneller ist
+        moveDir = new Vector3(inputVector.x, 0, inputVector.y);     //keep input Vector separate from the movement Vector
+
+        // JUMP INPUT
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isCrouching) {jumpInput = true;}                //Springen nur dann, wenn Spieler Boden berührt & NICHT crouched
+        
+        // CROUCH INPUT
+        isCrouching = Input.GetKey(KeyCode.LeftControl);                  //crouch solange gedrückt ist
+        Debug.Log("Crouching: " + isCrouching);                     
+
+        if (inputVector != Vector2.zero)
+        {
+            Debug.Log("Input: " + inputVector);
         }
-        if(Input.GetKey(KeyCode.A)){                        // wenn Taste ... gedrückt wird --> 
-            
-            inputVector.x = -1;
-            //Debug.Log("A" + inputVector);
-        }
-        if(Input.GetKey(KeyCode.S)){                //TODO: ignorieren, wenn in 2D Movement wechselt
-            
-            inputVector.y = -1;
-            //Debug.Log("S" + inputVector);
-        }
-        if(Input.GetKey(KeyCode.D)){
-            
-            inputVector.x = +1;
-            //Debug.Log("D" + inputVector);
-        }
-        if(Input.GetKey(KeyCode.Space)){
-            Debug.Log("Space");
+    }
 
+    void FixedUpdate()
+    {
+        // Bewegung über Rigidbody
+        //rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime);
+        float currentSpeed = isCrouching ? crouchSpeed : moveSpeed;
+        rb.MovePosition(rb.position + moveDir * currentSpeed * Time.fixedDeltaTime);
+
+        // Rotation über Rigidbody
+        if (moveDir != Vector3.zero)                                                                                //Damit Spieler in richtige Richtung schat beim laufen
+        {
+            Vector3 direction = Vector3.Slerp(transform.forward, moveDir, rotateSpeed * Time.fixedDeltaTime);       //Spieler dreht sich sonst zu schnell --> also SLERP (für rotation gut - sonst LERP) nutzen!!! --> Slerp interpoliert zwischen Punkt a & b ind Zeit t 
+            rb.MoveRotation(Quaternion.LookRotation(direction));                                                    //Drehung über rigid Body anwenden    
         }
 
-    //FIRST GET INPUT -- THEN ACTUALLY MOVE THE OBJECT
+        // JUMP
+        if (jumpInput)
+        {
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z); // Y-Velocity zurücksetzen
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            jumpInput = false;                                                  // Zurücksetzen, damit nicht dauerhaft gesprungen wird
+        }
 
-        inputVector = inputVector.normalized;               // Normalisieren (eigentlich eher wichtig, wenn man zwei Vektoren addiert --> hier aber nur rechts oder links bisher --> also egal)
-
-        UnityEngine.Vector3 moveDir = new UnityEngine.Vector3(inputVector.x, 0, inputVector.y);             //keep input Vector separate fro the movement Vector
-        transform.position += (UnityEngine.Vector3)moveDir * moveSpeed * Time.deltaTime;         // zu 3D Vektor casten für die Spielwelt
-        //damit speed vom Player nicht abhängig von der Frame Rate ist --> multiply by (delta) time   ==> weil das alleine ultra langsam ist --> *moveSpeed
-
-
-        // damit Spieler in richtige Richtung schaut beim laufen, gibt es versch. Möglichkeiten: transform.rotation (arbeitet mit Quarternions); transform.eulerAngles(); oder transform.LookAt(Vector3 worldPosition) (rotate to look at a given poin --> müste man halt erst vorm Spieler berechnen);
-        float rotateSpeed = 10f;
-        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed) ;          //forward vector --> basically  die Move Direction    
-        //Spieler dreht sich sonst zu schnell --> also SLERP (für rotation gut - sonst nur LERP) nutzen!!! --> Slerp interpoliert zwischen Punkt a & b ind Zeit t   
-
-
-        // Debug.Log(Vector2.zero);
-        if (inputVector == UnityEngine.Vector2.zero) {Debug.Log(" - ");} else {Debug.Log(inputVector);}         //nur fürs Debugging!!!
+        // Bei Crouch Collider halbieren
+        if (isCrouching)
+        {
+            capsuleCollider.height = originalHeight / 2f;
+            capsuleCollider.center = new Vector3(
+                originalCenter.x,
+                originalCenter.y / 2f,
+                originalCenter.z
+            );
+        }
+        else
+        {
+            capsuleCollider.height = originalHeight;
+            capsuleCollider.center = originalCenter;
+        }
 
     }
+
+    /* void OnDrawGizmos()  //tried to see something for debugging - didn´t work lol
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * 2f);
+    } */    
 }
