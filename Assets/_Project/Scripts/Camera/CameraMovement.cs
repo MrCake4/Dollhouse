@@ -55,7 +55,7 @@ public class CameraMovement : MonoBehaviour
         Vector3 desiredCameraPos = playerPosition + cameraPosition + new Vector3(0, (float) Mathf.Sin(Time.time * floatAmplitude) * floatFrequency,0);
 
         // Step 2: Blend between the room's anchor and the desired position
-        float followStrength = 1; // 0 = stick to room, 1 = stick to player
+        float followStrength = currentRoom.followStrength; // 0 = stick to room, 1 = stick to player
         Vector3 blendedTarget = Vector3.Lerp(currentRoom.cameraAnchorPoint.position, desiredCameraPos, followStrength);
 
         // Step 3: Clamp the blended position inside the room bounds
