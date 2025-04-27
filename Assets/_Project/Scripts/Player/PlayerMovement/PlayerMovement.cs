@@ -7,16 +7,23 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float crouchSpeed = 2f;            // wie schnell beim crouchen
     [SerializeField] private float rotateSpeed = 10f;
     [SerializeField] private float jumpForce = 5f;              // Sprungstärke
+    [SerializeField] private float fallMultiplier = 2.5f;       // Für Schnelleres Fallen
+    [SerializeField] private float airControlMultiplier = 0.1f; // Steuerung in der Luft nur halb so stark
+
     [SerializeField] private LayerMask groundLayer;             // Was zählt als "Boden"?
+    [SerializeField] private LayerMask bigObject;               // Was zählt als "big Object" --> alle verschiebbaren (größeren) Objekte!   
+    [SerializeField] private float runSpeed = 10f;               // Run-Geschwindigkeit
 
 
     private bool isGrounded;                                    // Ist Spieler gerade auf dem Boden? (jumping)
+    private bool isOnBigObject;                                 // damit Spieler auch auf schiebbaren Objekten springen kann 
     private bool jumpInput;                                     // wird in Update gesetzt, in FixedUpdate benutzt (jumping)
     private bool isCrouching;
-
+    private bool isRunning;
     
     private Rigidbody rb;                                       //rigid body reference
     private Vector3 moveDir;
+
 
 
     //Bei Crouch den Collider halbieren
@@ -38,7 +45,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()                                                   // Update is called once per frame
     {
         // Bodencheck
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f, groundLayer);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.1f, groundLayer);
+        isOnBigObject = Physics.Raycast(transform.position, Vector3.down, 0.1f, bigObject);
         
         Debug.Log("isGrounded: " + isGrounded);
 
@@ -50,18 +58,22 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) inputVector.y = -1;            //TODO: ignorieren, wenn in 2D Movement wechselt
         if (Input.GetKey(KeyCode.A)) inputVector.x = -1;
         if (Input.GetKey(KeyCode.D)) inputVector.x = +1;
-            
+        
                 
         //FIRST GET INPUT -- THEN ACTUALLY MOVE THE OBJECT
         inputVector = inputVector.normalized;                       // Normalisieren, damit man diagonal nicht plötzlich schneller ist
         moveDir = new Vector3(inputVector.x, 0, inputVector.y);     //keep input Vector separate from the movement Vector
 
         // JUMP INPUT
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isCrouching) {jumpInput = true;}                //Springen nur dann, wenn Spieler Boden berührt & NICHT crouched
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded || isOnBigObject && !isCrouching) {jumpInput = true;}                //Springen nur dann, wenn Spieler Boden berührt & NICHT crouched  (+ auf verschiebbaren bigObjects geht Springen auch)
         
         // CROUCH INPUT
         isCrouching = Input.GetKey(KeyCode.LeftControl);                  //crouch solange gedrückt ist
-        Debug.Log("Crouching: " + isCrouching);                     
+        //Debug.Log("Crouching: " + isCrouching);                     
+
+        // RUN INPUT
+        isRunning = Input.GetKey(KeyCode.LeftShift) && !isCrouching;            // Rennen nur, wenn kein Crouch!
+        Debug.Log("is running " + isRunning);
 
         if (inputVector != Vector2.zero)
         {
@@ -71,13 +83,18 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Bewegung über Rigidbody
-        //rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime);
-        /*float currentSpeed = isCrouching ? crouchSpeed : moveSpeed;                               //MovePosition(), pusht stumpf durch Wände = kein Stop bei Kollision --> niedrige Hinderniss = Buggy :(
-        rb.MovePosition(rb.position + moveDir * currentSpeed * Time.fixedDeltaTime); */
+        
+        /*float currentSpeed = isCrouching ? crouchSpeed : moveSpeed;                               //MovePosition(), pusht stumpf durch Wände = kein Stop bei Kollision --> niedrige Hindernisse = Buggy :(
+        rb.MovePosition(rb.position + moveDir * currentSpeed * Time.fixedDeltaTime);                // Bewegung über Rigidbody*/
 
-        float currentSpeed = isCrouching ? crouchSpeed : moveSpeed;
-        Vector3 velocity = moveDir * currentSpeed;
+        //float currentSpeed = isCrouching ? crouchSpeed : moveSpeed;
+        float currentSpeed = isCrouching ? crouchSpeed : (isRunning ? runSpeed : moveSpeed);                        //wenn crouch = langsam, wenn rennen = schnell, sonst normal 
+        
+        
+        
+        float controlMultiplier = isGrounded ? 1f : airControlMultiplier;                                           // Steuerung, wenn Spieler in der Luft ist beschränken!
+        
+        Vector3 velocity = moveDir * currentSpeed * controlMultiplier;
         velocity.y = rb.linearVelocity.y;                                                                           // y-Velocity behalten (damit Jump/Gravity noch funktioniert)
         rb.linearVelocity = velocity;
 
@@ -111,6 +128,13 @@ public class PlayerMovement : MonoBehaviour
         {
             capsuleCollider.height = originalHeight;
             capsuleCollider.center = originalCenter;
+        }
+
+        // Fallbeschleunigung erhöhen
+        if (!isGrounded && rb.linearVelocity.y < 0)
+        {
+            float gravityStrength = Mathf.Lerp(1f, fallMultiplier, -rb.linearVelocity.y / 10f);                         // je schneller er fällt, desto stärker zieht es den Spieler zum Boden runter --> kann man dann noch clippen, wenn man bestimmte Höhen im Level kennt
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * (gravityStrength - 1) * Time.fixedDeltaTime;
         }
 
     }
