@@ -8,4 +8,6 @@ public class AIHuntState : AIBaseState
     
     public override void onUpdate(AIStateManager ai){
     }
+
+    public override void resetVariables(){}
 }

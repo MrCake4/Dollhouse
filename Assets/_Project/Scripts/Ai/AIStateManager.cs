@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /*
@@ -26,8 +27,13 @@ public class AIStateManager : MonoBehaviour
 
     // GAME OBJECTS
     [Header("Spawn Points")]
+    [Tooltip("Where the AIs idle spawn point is")]
     public Transform idleSpawn;
+    [Tooltip("Where the AIs patrol spawn point is")]
     public Transform patrolSpawn;
+
+    [Header("AI Behaviour")]
+    [Range(0,300)] public float idleTime;
 
     [Header("Game Objects")]
     public RoomContainer[] rooms;   // contains information about position of the window
