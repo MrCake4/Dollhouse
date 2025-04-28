@@ -1,18 +1,27 @@
 //using System.Numerics;
 using UnityEngine;
+using TMPro;   // damit man Text benutzen kannst
 
 public class PlayerMovement : MonoBehaviour
 {                                                               //mit [SerializeField] --> private + gleichzeitig für den Editor sichtbar
     [SerializeField] private float moveSpeed = 5f;              // in Unity-Einheit per second
     [SerializeField] private float crouchSpeed = 2f;            // wie schnell beim crouchen
     [SerializeField] private float rotateSpeed = 10f;
+    [SerializeField] private float runSpeed = 10f;              // Run-Geschwindigkeit
+    [SerializeField] private float pushSpeed = 2f;              // Push/Pull Geschwindigkeit
     [SerializeField] private float jumpForce = 5f;              // Sprungstärke
     [SerializeField] private float fallMultiplier = 2.5f;       // Für Schnelleres Fallen
     [SerializeField] private float airControlMultiplier = 0.1f; // Steuerung in der Luft nur halb so stark
 
-    [SerializeField] private LayerMask groundLayer;             // Was zählt als "Boden"?
+    // LAYERS
+    [Header("Layers")]
+    [SerializeField] private LayerMask groundLayer;             // Was zählt als "Boden"? 
     [SerializeField] private LayerMask bigObject;               // Was zählt als "big Object" --> alle verschiebbaren (größeren) Objekte!   
-    [SerializeField] private float runSpeed = 10f;               // Run-Geschwindigkeit
+    
+    [Header("Push Settings")]
+    [SerializeField] private float pushDistance = 0.01f;         // Abstand für Schieben erlauben
+    //[SerializeField] private TextMeshProUGUI pushPromptText;    // UI-Text anzeigen ("Press E to Push")  --> verworfen, aber für UI maybe nochmal hilfreich
+
 
 
     private bool isGrounded;                                    // Ist Spieler gerade auf dem Boden? (jumping)
@@ -20,8 +29,10 @@ public class PlayerMovement : MonoBehaviour
     private bool jumpInput;                                     // wird in Update gesetzt, in FixedUpdate benutzt (jumping)
     private bool isCrouching;
     private bool isRunning;
+    private bool isPushing;
     
     private Rigidbody rb;                                       //rigid body reference
+    private Rigidbody objectToPush;                             // Aktuelles bigObject, das gerade gepusht wird
     private Vector3 moveDir;
 
 
@@ -48,7 +59,8 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.1f, groundLayer);
         isOnBigObject = Physics.Raycast(transform.position, Vector3.down, 0.1f, bigObject);
         
-        Debug.Log("isGrounded: " + isGrounded);
+        
+        // Debug.Log("isGrounded: " + isGrounded);                  //Debugging
 
 
         // INPUT  Keyboard
@@ -73,13 +85,47 @@ public class PlayerMovement : MonoBehaviour
 
         // RUN INPUT
         isRunning = Input.GetKey(KeyCode.LeftShift) && !isCrouching;            // Rennen nur, wenn kein Crouch!
-        Debug.Log("is running " + isRunning);
+        //Debug.Log("is running " + isRunning);
 
-        if (inputVector != Vector2.zero)
+        /*if (inputVector != Vector2.zero)
         {
             Debug.Log("Input: " + inputVector);
-        }
+        } */
+
+        HandlePushPrompt();                                         // Text einblenden
     }
+
+    private void HandlePushPrompt()
+    {
+        //Ray ray = new Ray(transform.position, transform.forward);                 
+        Vector3 rayOrigin = transform.position + new Vector3(0, originalCenter.y, 0);
+        Ray ray = new Ray(rayOrigin, transform.forward);
+
+        Debug.DrawRay(rayOrigin, transform.forward * pushDistance, Color.red);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, pushDistance, bigObject))
+        {
+            isPushing = true;
+            objectToPush = hit.rigidbody;
+            Debug.Log("Start Pushing: " + objectToPush.name);       // just DEBUGGING
+        }
+        else
+        {
+            if (objectToPush != null)
+            {
+                Debug.Log("Stop Pushing: " + objectToPush.name);    // just DEBUGGING
+                objectToPush.linearVelocity = Vector3.zero;        // Geschwindigkeit auf 0 setzen, auch wenn LOSGELASSEN!!!
+                objectToPush.angularVelocity = Vector3.zero;
+            }
+
+        isPushing = false;
+        objectToPush = null;
+        
+        }
+            
+    }
+
+
 
     void FixedUpdate()
     {
@@ -87,10 +133,9 @@ public class PlayerMovement : MonoBehaviour
         /*float currentSpeed = isCrouching ? crouchSpeed : moveSpeed;                               //MovePosition(), pusht stumpf durch Wände = kein Stop bei Kollision --> niedrige Hindernisse = Buggy :(
         rb.MovePosition(rb.position + moveDir * currentSpeed * Time.fixedDeltaTime);                // Bewegung über Rigidbody*/
 
-        //float currentSpeed = isCrouching ? crouchSpeed : moveSpeed;
-        float currentSpeed = isCrouching ? crouchSpeed : (isRunning ? runSpeed : moveSpeed);                        //wenn crouch = langsam, wenn rennen = schnell, sonst normal 
-        
-        
+        //float currentSpeed = isCrouching ? crouchSpeed : (isRunning ? runSpeed : moveSpeed);                        //wenn crouch = langsam, wenn rennen = schnell, sonst normal 
+        float currentSpeed = isCrouching ? crouchSpeed : (isPushing ? pushSpeed : (isRunning ? runSpeed : moveSpeed));      //noch verwirrender + langsamer wenn pushing
+
         
         float controlMultiplier = isGrounded ? 1f : airControlMultiplier;                                           // Steuerung, wenn Spieler in der Luft ist beschränken!
         
@@ -129,6 +174,31 @@ public class PlayerMovement : MonoBehaviour
             capsuleCollider.height = originalHeight;
             capsuleCollider.center = originalCenter;
         }
+
+        // Objekt mitschieben, wenn Pushing aktiv
+        if (isPushing && objectToPush != null)
+        {
+            float distanceToObject = Vector3.Distance(transform.position, objectToPush.position);       // Überprüfe Abstand
+
+            if (distanceToObject < pushDistance)                                        // nur wenn wirklich nah genug!
+            {
+                Vector3 pushMovement = moveDir * pushSpeed * Time.fixedDeltaTime;
+
+                objectToPush.MovePosition(objectToPush.position + pushMovement);        // Position ändern
+
+                Debug.Log("Pushing Movement: " + pushMovement);                         //Just DEBUGGING
+
+                objectToPush.linearVelocity = Vector3.zero;                             // Bewegung auf 0 --> verhindert komisches Rutschen
+                objectToPush.angularVelocity = Vector3.zero;                            // falls nötig: auch Stop für Drehen
+            } 
+            else 
+            {
+                Debug.Log("Push abgebrochen: Zu weit weg");                             // Zu weit weg → Push abbrechen
+                isPushing = false;
+                objectToPush = null;
+            }
+        }
+
 
         // Fallbeschleunigung erhöhen
         if (!isGrounded && rb.linearVelocity.y < 0)
