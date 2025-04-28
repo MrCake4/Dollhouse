@@ -18,9 +18,14 @@ public class AIStateManager : MonoBehaviour
     AIBaseState currentState;
     public AIIdleState idleState = new AIIdleState();
     public AIPatrolState patrolState = new AIPatrolState();
+    public AISeekState seekState = new AISeekState();
+    public AIHuntState huntState = new AIHuntState();
+    public AIAttackState attackState = new AIAttackState();
 
     // GAME OBJECTS
-    public Transform spawn;
+    public Transform idleSpawn;
+    public Transform patrolSpawn;
+    public RoomContainer[] rooms;   // contains information about position of the window
 
     void Start()
     {

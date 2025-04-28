@@ -8,7 +8,7 @@ public class AIIdleState : AIBaseState
         Debug.Log("Dolly entered state 0");
 
         // move to spawn
-        ai.transform.position = new Vector3(ai.spawn.position.x, ai.spawn.position.y, ai.spawn.position.z);
+        ai.transform.position = new Vector3(ai.idleSpawn.position.x, ai.idleSpawn.position.y, ai.idleSpawn.position.z);
     }
     
     public override void onUpdate(AIStateManager ai){
