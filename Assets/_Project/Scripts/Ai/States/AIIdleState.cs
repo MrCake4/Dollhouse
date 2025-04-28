@@ -17,6 +17,7 @@ public class AIIdleState : AIBaseState
 
         if (idleStateTimer <= 0.0f)
         {
+            idleStateTimer = 5f;
             ai.switchState(ai.patrolState);
         }
 

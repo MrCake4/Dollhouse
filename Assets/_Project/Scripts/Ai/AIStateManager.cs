@@ -9,6 +9,8 @@ using UnityEngine;
 * States are declared as seperate Scripts / Classes
 * The Manager manages the states
 * States change inside the State classes
+*
+* State variables need to be reseted after switching a state, if not the variable will stay the same
 */
 
 public class AIStateManager : MonoBehaviour
@@ -23,8 +25,11 @@ public class AIStateManager : MonoBehaviour
     public AIAttackState attackState = new AIAttackState();
 
     // GAME OBJECTS
+    [Header("Spawn Points")]
     public Transform idleSpawn;
     public Transform patrolSpawn;
+
+    [Header("Game Objects")]
     public RoomContainer[] rooms;   // contains information about position of the window
 
     void Start()

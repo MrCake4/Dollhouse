@@ -3,9 +3,12 @@ using UnityEngine;
 public class AIPatrolState : AIBaseState
 {
     private Transform currentTarget; // Where Dolly is moving to
+    float checkTimer = 5f;          // How long does the ai check one window in seconds
+    int increment = 0;              // +1 every checked window
+    int maxIncrement = 4;
 
     public override void enterState(AIStateManager ai) {
-        Debug.Log("Dolly entered Patrol State");
+        Debug.Log("Dolly entered state 1");
 
         ai.transform.position = new Vector3(ai.patrolSpawn.position.x, ai.patrolSpawn.position.y, ai.patrolSpawn.position.z);
 
@@ -25,10 +28,20 @@ public class AIPatrolState : AIBaseState
 
         // Check if Dolly reached the target
         if (Vector3.Distance(ai.transform.position, currentTarget.position) < 0.1f) {
-            Debug.Log("Reached a window!");
+            Debug.Log("checking current window");
 
-            // Pick a new target or switch state
-            PickNewTarget(ai);
+            checkTimer -= Time.deltaTime;
+
+            if (checkTimer <= 0.0f)
+            {
+                increment++;
+                checkTimer = 5f;
+                if(increment >= maxIncrement){
+                    increment = 0;
+                    ai.switchState(ai.idleState);
+                }
+                PickNewTarget(ai);              // Pick a new target or switch state
+            }
         }
     }
 
