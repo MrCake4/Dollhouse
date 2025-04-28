@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class AIIdleState : AIBaseState
 {
+
+    float idleStateTimer = 5f;      // How long does she stay in Idle State in Seconds
     public override void enterState(AIStateManager ai){
         Debug.Log("Dolly entered state 0");
 
@@ -11,7 +13,12 @@ public class AIIdleState : AIBaseState
     
     public override void onUpdate(AIStateManager ai){
 
-        
+        idleStateTimer -= Time.deltaTime;
+
+        if (idleStateTimer <= 0.0f)
+        {
+            ai.switchState(ai.patrolState);
+        }
 
     }
 }

@@ -16,7 +16,8 @@ public class AIStateManager : MonoBehaviour
 
     // ALL STATES DECLARED HERE
     AIBaseState currentState;
-    AIIdleState idleState = new AIIdleState();
+    public AIIdleState idleState = new AIIdleState();
+    public AIPatrolState patrolState = new AIPatrolState();
 
     // GAME OBJECTS
     public Transform spawn;
@@ -32,5 +33,11 @@ public class AIStateManager : MonoBehaviour
     void Update()
     {
         currentState.onUpdate(this);
+    }
+
+    // switches the state
+    public void switchState(AIBaseState state) {
+        currentState = state;
+        currentState.enterState(this);
     }
 }
