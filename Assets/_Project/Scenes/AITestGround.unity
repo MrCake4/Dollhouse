@@ -199,6 +199,9 @@ MonoBehaviour:
   windowAnchorPoints:
   - {fileID: 533545513}
   - {fileID: 366676784}
+  triggered: 0
+  checkedRoom: 0
+  ai: {fileID: 358709971}
 --- !u!1 &157207112
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,6 +613,8 @@ MonoBehaviour:
   idleSpawn: {fileID: 250431270}
   patrolSpawn: {fileID: 1572353488}
   idleTime: 5
+  checkRoomTime: 1
+  moveSpeed: 10
   rooms:
   - {fileID: 89668705}
   - {fileID: 2085015473}
@@ -1257,6 +1262,9 @@ MonoBehaviour:
   windowAnchorPoints:
   - {fileID: 2052154295}
   - {fileID: 24982128}
+  triggered: 0
+  checkedRoom: 0
+  ai: {fileID: 358709971}
 --- !u!4 &2085015474
 Transform:
   m_ObjectHideFlags: 0
