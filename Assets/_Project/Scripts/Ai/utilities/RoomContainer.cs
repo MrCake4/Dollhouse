@@ -6,8 +6,8 @@ public class RoomContainer : MonoBehaviour
 {
 
     public Transform[] windowAnchorPoints;
-    [SerializeField] Boolean triggered = false;
-    [SerializeField] Boolean checkedRoom = false;
+    public Boolean triggered = false;
+    public Boolean checkedRoom = false;
     [SerializeField] AIStateManager ai;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
