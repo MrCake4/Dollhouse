@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class AIHuntState : AIBaseState
 {
     public RoomContainer currentTargetRoom;
     private Transform currentTargetWindow;
     private int windowIndex = 0;
+    float checkTime;
 
     public override void enterState(AIStateManager ai) {
         Debug.Log("Dolly entered HUNT state");
@@ -16,6 +18,7 @@ public class AIHuntState : AIBaseState
         }
 
         // Start from first window
+        checkTime = ai.checkRoomTime;
         windowIndex = 0;
         currentTargetWindow = currentTargetRoom.windowAnchorPoints[windowIndex];
     }
@@ -23,10 +26,11 @@ public class AIHuntState : AIBaseState
     public override void onUpdate(AIStateManager ai) {
         if (currentTargetRoom == null || currentTargetRoom.windowAnchorPoints.Length == 0) {
             ai.switchState(ai.patrolState);
-            Debug.Log("No Windows");
             return;
         }
+
         currentTargetRoom.triggered = false;
+
         // Move toward current window
         ai.transform.position = Vector3.MoveTowards(
             ai.transform.position,
@@ -36,14 +40,20 @@ public class AIHuntState : AIBaseState
 
         // If reached current window, move to next
         if (Vector3.Distance(ai.transform.position, currentTargetWindow.position) < 0.1f) {
-            windowIndex++;
+            
+            checkTime -= Time.deltaTime;
 
-            if (windowIndex < currentTargetRoom.windowAnchorPoints.Length) {
-                currentTargetWindow = currentTargetRoom.windowAnchorPoints[windowIndex];
-            } else {
-                // Finished all windows
-                currentTargetRoom.checkedRoom = true;
-                ai.switchState(ai.patrolState);
+            if (checkTime <= 0){            // if timer 0 go to next room
+                windowIndex++;
+
+                if (windowIndex < currentTargetRoom.windowAnchorPoints.Length) {
+                    checkTime = ai.checkRoomTime;
+                    currentTargetWindow = currentTargetRoom.windowAnchorPoints[windowIndex];
+                } else {
+                    // Finished searching room
+                    // currentTargetRoom.checkedRoom = true;
+                    ai.switchState(ai.patrolState);             // TODO: He doesn't go to patrol state but to seek state after this
+                }
             }
         }
     }
