@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class AIRoomScan : MonoBehaviour
 {
-    [SerializeField] private Boolean detected;
-    [SerializeField]float viewRadius = 20f;
-    [SerializeField]float viewAngle = 30f;
+    // sets the length of the cone
+    float viewRadius = 20f;
+    // changes how big the cone is
+    float viewAngle = 30f;
     [SerializeField]LayerMask targetMask;
     [SerializeField]LayerMask obstacleMask;
     [SerializeField]Boolean startScan = false;
@@ -14,7 +15,9 @@ public class AIRoomScan : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // sets what the ray is looking for
         targetMask = LayerMask.GetMask("Player");
+        // sets what blocks the ray
         obstacleMask = LayerMask.GetMask("Obstacle", "Ground");
     }
 
@@ -24,12 +27,13 @@ public class AIRoomScan : MonoBehaviour
         updateSpotlight();
         if(startScan == true)
         {
-            scanRoom();
+            scan();
         }
     }
 
-    void scanRoom()
-    {
+    void scan()
+    {   
+        
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
         foreach (Collider target in targetsInViewRadius)
         {
@@ -44,12 +48,10 @@ public class AIRoomScan : MonoBehaviour
                 {
                     Debug.Log("Ziel sichtbar: " + target.name);
                     Debug.DrawLine(transform.position, target.transform.position, Color.green);
-                    detected = true;
                 }
                 else
                 {
                     Debug.DrawLine(transform.position, target.transform.position, Color.yellow);
-                    detected = false;
                 }
             }
         }
