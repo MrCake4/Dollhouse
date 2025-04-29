@@ -99,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
     {
         //Ray ray = new Ray(transform.position, transform.forward);                 
         Vector3 rayOrigin = transform.position + new Vector3(0, originalCenter.y, 0);
-        Ray ray = new Ray(rayOrigin, transform.forward);
+        Ray ray = new Ray(rayOrigin, transform.forward);            //Ray ray = new Ray(rayOrigin, transform.forward * pushDistance);
 
         Debug.DrawRay(rayOrigin, transform.forward * pushDistance, Color.red);
 
@@ -107,6 +107,8 @@ public class PlayerMovement : MonoBehaviour
         {
             isPushing = true;
             objectToPush = hit.rigidbody;
+            objectToPush.transform.parent = this.transform;         // <-- Object anhängen!
+
             Debug.Log("Start Pushing: " + objectToPush.name);       // just DEBUGGING
         }
         else
@@ -114,8 +116,11 @@ public class PlayerMovement : MonoBehaviour
             if (objectToPush != null)
             {
                 Debug.Log("Stop Pushing: " + objectToPush.name);    // just DEBUGGING
+
                 objectToPush.linearVelocity = Vector3.zero;        // Geschwindigkeit auf 0 setzen, auch wenn LOSGELASSEN!!!
                 objectToPush.angularVelocity = Vector3.zero;
+
+                objectToPush.transform.parent = null;               // <--- Objekt wieder ablösen!
             }
 
         isPushing = false;
