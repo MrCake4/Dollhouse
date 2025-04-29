@@ -34,6 +34,8 @@ public class AIStateManager : MonoBehaviour
 
     [Header("AI Behaviour")]
     [Range(0,300)] public float idleTime;
+    [Range(0,300)] public float checkRoomTime;
+    [Range(0,10)] public float moveSpeed = 10;       // How fast AI goes from room to room
 
     [Header("Game Objects")]
     public RoomContainer[] rooms;   // contains information about position of the window

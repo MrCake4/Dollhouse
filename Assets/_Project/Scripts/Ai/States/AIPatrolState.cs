@@ -1,15 +1,19 @@
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class AIPatrolState : AIBaseState
 {
     private Transform currentTarget; // Where Dolly is moving to
-    float checkTimer = 5f;          // How long does the ai check one window in seconds
+    float checkTimer;      // How long does the ai check one window in seconds
     int increment = 0;              // +1 every checked window
     int maxIncrement = 4;
 
     public override void enterState(AIStateManager ai) {
         Debug.Log("Dolly entered state 1");
 
+        checkTimer = ai.checkRoomTime;
+
+        // Teleport to Patrol Spawn point
         ai.transform.position = new Vector3(ai.patrolSpawn.position.x, ai.patrolSpawn.position.y, ai.patrolSpawn.position.z);
 
         // Pick first target
@@ -23,7 +27,7 @@ public class AIPatrolState : AIBaseState
         ai.transform.position = Vector3.MoveTowards(
             ai.transform.position,
             currentTarget.position,
-            Time.deltaTime * 2f // move speed
+            Time.deltaTime * ai.moveSpeed // move speed
         );
 
         // Check if Dolly reached the target
