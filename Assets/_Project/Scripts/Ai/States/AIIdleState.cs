@@ -26,4 +26,8 @@ public class AIIdleState : AIBaseState
     }
 
     public override void resetVariables(AIStateManager ai){}
+
+        public override void exitState(AIStateManager ai)
+    {
+    }
 }

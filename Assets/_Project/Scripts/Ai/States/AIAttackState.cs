@@ -10,4 +10,8 @@ public class AIAttackState : AIBaseState
     }
 
     public override void resetVariables(AIStateManager ai){}
+
+        public override void exitState(AIStateManager ai)
+    {
+    }
 }

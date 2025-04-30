@@ -9,11 +9,12 @@ public class RoomContainer : MonoBehaviour
     public Boolean triggered = false;
     public Boolean checkedRoom = false;
     [SerializeField] AIStateManager ai;
+    public int windowCount;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        windowCount = windowAnchorPoints.Length;
     }
 
     // Update is called once per frame

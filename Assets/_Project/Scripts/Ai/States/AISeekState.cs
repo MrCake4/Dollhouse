@@ -10,4 +10,8 @@ public class AISeekState : AIBaseState
     }
 
     public override void resetVariables(AIStateManager ai){}
+
+        public override void exitState(AIStateManager ai)
+    {
+    }
 }

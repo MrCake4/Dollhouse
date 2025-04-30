@@ -21,17 +21,17 @@ public class AIPatrolState : AIBaseState
     }
 
     public override void onUpdate(AIStateManager ai) {
-        if (currentTarget == null) return;
+        if (ai.currentTargetWindow == null) return;
 
         // Move towards the current target
         ai.transform.position = Vector3.MoveTowards(
             ai.transform.position,
-            currentTarget.position,
+            ai.currentTargetWindow.position,
             Time.deltaTime * ai.moveSpeed // move speed
         );
 
         // Check if Dolly reached the target
-        if (Vector3.Distance(ai.transform.position, currentTarget.position) < 0.1f) {
+        if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
             
             // Checking current window
 
@@ -63,13 +63,19 @@ public class AIPatrolState : AIBaseState
         RoomContainer randomRoom = ai.rooms[Random.Range(0, ai.rooms.Length)];
 
         // Pick a random window in that room
-        if (randomRoom.windowAnchorPoints.Length > 0) {
-            currentTarget = randomRoom.windowAnchorPoints[Random.Range(0, randomRoom.windowAnchorPoints.Length)];
+        if (randomRoom.windowCount > 0) {
+            ai.currentTargetWindow = randomRoom.windowAnchorPoints[Random.Range(0, randomRoom.windowAnchorPoints.Length)];
         }
     }
 
     public override void resetVariables(AIStateManager ai)
     {
         increment = 0;
+        ai.currentTargetRoom = null;
+        ai.currentTargetWindow = null;
+    }
+
+        public override void exitState(AIStateManager ai)
+    {
     }
 }

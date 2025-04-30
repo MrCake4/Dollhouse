@@ -3,9 +3,9 @@ using UnityEngine.Animations;
 
 public class AIHuntState : AIBaseState
 {
-    public RoomContainer currentTargetRoom;
-    private Transform currentTargetWindow;
-    private int windowIndex = 0;
+    RoomContainer currentTargetRoom;
+    Transform currentTargetWindow;
+    int windowIndex = 0;
     float checkTime;
 
     public override void enterState(AIStateManager ai) {
@@ -13,7 +13,7 @@ public class AIHuntState : AIBaseState
 
         currentTargetRoom = ai.currentTargetRoom;
         
-        if (ai.currentTargetRoom == null) {
+        if (currentTargetRoom == null) {
             ai.switchState(ai.patrolState);
             return;
         }
@@ -21,35 +21,35 @@ public class AIHuntState : AIBaseState
         // Start from first window
         checkTime = ai.checkRoomTime;
         windowIndex = 0;
-        currentTargetWindow = currentTargetRoom.windowAnchorPoints[0];
+        ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[0]);
     }
 
     public override void onUpdate(AIStateManager ai) {
-        if (ai.currentTargetRoom == null || ai.currentTargetRoom.windowAnchorPoints.Length == 0) {
+        if (currentTargetRoom == null || currentTargetRoom.windowAnchorPoints.Length == 0) {
             ai.switchState(ai.patrolState);
             return;
         }
 
-        ai.currentTargetRoom.triggered = false;
+        currentTargetRoom.triggered = false;
 
         // Move toward current window
         ai.transform.position = Vector3.MoveTowards(
             ai.transform.position,
-            currentTargetWindow.position,
+            ai.currentTargetWindow.position,
             Time.deltaTime * ai.moveSpeed
         );
 
         // If reached current window, move to next
-        if (Vector3.Distance(ai.transform.position, currentTargetWindow.position) < 0.1f) {
+        if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
             
             checkTime -= Time.deltaTime;
 
             if (checkTime <= 0){            // if timer 0 go to next room
                 windowIndex++;
 
-                if (windowIndex < ai.currentTargetRoom.windowAnchorPoints.Length) {
+                if (windowIndex < ai.currentTargetRoom.windowCount) {
                     checkTime = ai.checkRoomTime;
-                    currentTargetWindow = ai.currentTargetRoom.windowAnchorPoints[windowIndex];
+                    ai.setCurrentTargetWindow(ai.currentTargetRoom.windowAnchorPoints[windowIndex]);
                 } else {
                     // Finished searching room
                     // currentTargetRoom.checkedRoom = true;
@@ -61,7 +61,11 @@ public class AIHuntState : AIBaseState
 
     public override void resetVariables(AIStateManager ai) {
         ai.currentTargetRoom = null;
-        currentTargetWindow = null;
+        ai.currentTargetWindow = null;
         windowIndex = 0;
+    }
+
+    public override void exitState(AIStateManager ai)
+    {
     }
 }
