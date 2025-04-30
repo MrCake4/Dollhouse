@@ -38,12 +38,13 @@ public class AIStateManager : MonoBehaviour
     [Range(0,300)] public float idleTime;
     [Range(0,300)] public float checkRoomTime;
     [Range(0,10)] public float moveSpeed = 10;       // How fast AI goes from room to room
-    public RoomContainer currentTargetRoom = null;
-    public RoomContainer lastKnownRoom = null;
-    public Transform currentTargetWindow = null;
-    public int seekIncrement = 0;
+    [HideInInspector] public RoomContainer currentTargetRoom = null;
+    [HideInInspector] public RoomContainer lastKnownRoom = null;
+    [HideInInspector] public Transform currentTargetWindow = null;
+    [HideInInspector] public int seekIncrement = 0;
 
     [Header("Game Objects")]
+    [Tooltip("Index 0 is equal to most left room on the map, index 1 is the room next to it and so on.")]
     public RoomContainer[] rooms;   // contains information about position of the window
 
     void Start()
