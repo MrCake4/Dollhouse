@@ -84,6 +84,6 @@ public class AIStateManager : MonoBehaviour
         if(currentTargetRoom != null) Debug.DrawLine(this.transform.position, currentTargetRoom.transform.position, Color.green);
 
         // draw line to targeted window
-        if(currentTargetRoom != null) Debug.DrawLine(this.transform.position, currentTargetWindow.transform.position, Color.red);
+        if(currentTargetRoom != null && currentTargetWindow != null) Debug.DrawLine(this.transform.position, currentTargetWindow.transform.position, Color.red);
     }
 }
