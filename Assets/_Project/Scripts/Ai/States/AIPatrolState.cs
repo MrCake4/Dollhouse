@@ -3,7 +3,7 @@ using UnityEngine.Animations;
 
 public class AIPatrolState : AIBaseState
 {
-    private Transform currentTarget; // Where Dolly is moving to
+// Removed unused variable 'currentTarget'
     float checkTimer;      // How long does the ai check one window in seconds
     int increment = 0;              // +1 every checked window
     int maxIncrement = 4;
