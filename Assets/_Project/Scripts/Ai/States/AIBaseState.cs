@@ -6,5 +6,5 @@ public abstract class AIBaseState
 
     public abstract void onUpdate(AIStateManager ai);
 
-    public abstract void resetVariables();
+    public abstract void resetVariables(AIStateManager ai);
 }

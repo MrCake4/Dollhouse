@@ -9,5 +9,5 @@ public class AIAttackState : AIBaseState
     public override void onUpdate(AIStateManager ai){
     }
 
-    public override void resetVariables(){}
+    public override void resetVariables(AIStateManager ai){}
 }

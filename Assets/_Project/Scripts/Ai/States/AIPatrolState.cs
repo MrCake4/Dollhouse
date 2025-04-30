@@ -32,7 +32,8 @@ public class AIPatrolState : AIBaseState
 
         // Check if Dolly reached the target
         if (Vector3.Distance(ai.transform.position, currentTarget.position) < 0.1f) {
-            Debug.Log("checking current window");
+            
+            // Checking current window
 
             checkTimer -= Time.deltaTime;
 
@@ -49,7 +50,7 @@ public class AIPatrolState : AIBaseState
                 increment++;
                 checkTimer = 5f;
                 if(increment >= maxIncrement){
-                    resetVariables();
+                    resetVariables(ai);
                     ai.switchState(ai.idleState);
                 }
                 PickNewTarget(ai);              // Pick a new target or switch state
@@ -67,7 +68,7 @@ public class AIPatrolState : AIBaseState
         }
     }
 
-    public override void resetVariables()
+    public override void resetVariables(AIStateManager ai)
     {
         increment = 0;
     }

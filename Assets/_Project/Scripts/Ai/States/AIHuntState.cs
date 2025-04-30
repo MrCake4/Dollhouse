@@ -11,8 +11,9 @@ public class AIHuntState : AIBaseState
     public override void enterState(AIStateManager ai) {
         Debug.Log("Dolly entered HUNT state");
 
+        currentTargetRoom = ai.currentTargetRoom;
         
-        if (currentTargetRoom == null) {
+        if (ai.currentTargetRoom == null) {
             ai.switchState(ai.patrolState);
             return;
         }
@@ -20,16 +21,16 @@ public class AIHuntState : AIBaseState
         // Start from first window
         checkTime = ai.checkRoomTime;
         windowIndex = 0;
-        currentTargetWindow = currentTargetRoom.windowAnchorPoints[windowIndex];
+        currentTargetWindow = currentTargetRoom.windowAnchorPoints[0];
     }
 
     public override void onUpdate(AIStateManager ai) {
-        if (currentTargetRoom == null || currentTargetRoom.windowAnchorPoints.Length == 0) {
+        if (ai.currentTargetRoom == null || ai.currentTargetRoom.windowAnchorPoints.Length == 0) {
             ai.switchState(ai.patrolState);
             return;
         }
 
-        currentTargetRoom.triggered = false;
+        ai.currentTargetRoom.triggered = false;
 
         // Move toward current window
         ai.transform.position = Vector3.MoveTowards(
@@ -46,9 +47,9 @@ public class AIHuntState : AIBaseState
             if (checkTime <= 0){            // if timer 0 go to next room
                 windowIndex++;
 
-                if (windowIndex < currentTargetRoom.windowAnchorPoints.Length) {
+                if (windowIndex < ai.currentTargetRoom.windowAnchorPoints.Length) {
                     checkTime = ai.checkRoomTime;
-                    currentTargetWindow = currentTargetRoom.windowAnchorPoints[windowIndex];
+                    currentTargetWindow = ai.currentTargetRoom.windowAnchorPoints[windowIndex];
                 } else {
                     // Finished searching room
                     // currentTargetRoom.checkedRoom = true;
@@ -58,13 +59,9 @@ public class AIHuntState : AIBaseState
         }
     }
 
-    public override void resetVariables() {
-        currentTargetRoom = null;
+    public override void resetVariables(AIStateManager ai) {
+        ai.currentTargetRoom = null;
         currentTargetWindow = null;
         windowIndex = 0;
-    }
-
-    public void setCurrentTargetRoom(RoomContainer targetRoom) {
-        this.currentTargetRoom = targetRoom;
     }
 }

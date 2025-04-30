@@ -20,8 +20,9 @@ public class RoomContainer : MonoBehaviour
     void Update()
     {
         if(triggered && !checkedRoom) {
+            
+            ai.setCurrentTargetRoom(this);
             ai.switchState(ai.huntState);
-            ai.huntState.setCurrentTargetRoom(this);
     }
 }
 }
