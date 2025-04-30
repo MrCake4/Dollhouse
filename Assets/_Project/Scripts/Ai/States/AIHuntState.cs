@@ -4,7 +4,6 @@ using UnityEngine.Animations;
 public class AIHuntState : AIBaseState
 {
     RoomContainer currentTargetRoom;
-    Transform currentTargetWindow;
     int windowIndex = 0;
     float checkTime;
 
