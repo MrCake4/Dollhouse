@@ -23,6 +23,7 @@ public class RoomContainer : MonoBehaviour
         if(triggered && !checkedRoom) {
             
             ai.setCurrentTargetRoom(this);
+            ai.setLastKnownRoom(this);
             ai.switchState(ai.huntState);
     }
 }

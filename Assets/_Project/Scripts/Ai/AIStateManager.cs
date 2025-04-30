@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.Rendering;
 
 /*
 * Dolly, FINITE STATE MACHINE SETUP
@@ -38,7 +39,9 @@ public class AIStateManager : MonoBehaviour
     [Range(0,300)] public float checkRoomTime;
     [Range(0,10)] public float moveSpeed = 10;       // How fast AI goes from room to room
     public RoomContainer currentTargetRoom = null;
+    public RoomContainer lastKnownRoom = null;
     public Transform currentTargetWindow = null;
+    public int seekIncrement = 0;
 
     [Header("Game Objects")]
     public RoomContainer[] rooms;   // contains information about position of the window
@@ -65,6 +68,10 @@ public class AIStateManager : MonoBehaviour
 
     public void setCurrentTargetRoom(RoomContainer room){
         this.currentTargetRoom = room;
+    }
+
+    public void setLastKnownRoom(RoomContainer room) {
+        this.lastKnownRoom = room;
     }
 
     public void setCurrentTargetWindow(Transform window){

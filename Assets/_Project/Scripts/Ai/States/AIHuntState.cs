@@ -53,7 +53,10 @@ public class AIHuntState : AIBaseState
                 } else {
                     // Finished searching room
                     // currentTargetRoom.checkedRoom = true;
-                    ai.switchState(ai.patrolState);             // TODO: He doesn't go to patrol state but to seek state after this
+                    //ai.switchState(ai.seekState);             // TODO: He doesn't go to patrol state but to seek state after this
+                    ai.seekIncrement++;
+                    ai.switchState(ai.seekState); // Go to next room
+
                 }
             }
         }
