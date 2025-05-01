@@ -38,6 +38,7 @@ public class AIStateManager : MonoBehaviour
     [Range(0,300)] public float idleTime;
     [Range(0,300)] public float checkRoomTime;
     [Range(0,10)] public float moveSpeed = 10;       // How fast AI goes from room to room
+    [Range(1,100)] public int checkWindowsPerPatrol = 4;
     [HideInInspector] public RoomContainer currentTargetRoom = null;
     [HideInInspector] public RoomContainer lastKnownRoom = null;
     [HideInInspector] public Transform currentTargetWindow = null;
