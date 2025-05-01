@@ -7,10 +7,13 @@ public class AIRoomScan : MonoBehaviour
     float viewRadius = 20f;
     // changes how big the cone is
     float viewAngle = 30f;
+
     [SerializeField]LayerMask targetMask;
     [SerializeField]LayerMask obstacleMask;
-    [SerializeField]Boolean startScan = false;
+    [SerializeField]Boolean startScan = true;
     [SerializeField]Light spotlight;
+
+    private Transform currentTarget;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,34 +32,47 @@ public class AIRoomScan : MonoBehaviour
         {
             scan();
         }
+
+        if (currentTarget != null)
+        {
+            FollowTarget();
+        }
     }
 
     void scan()
     {   
-        
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
         foreach (Collider target in targetsInViewRadius)
         {
             Vector3 directionToTarget = (target.transform.position - transform.position).normalized;
 
+            // Filters if things are in a
             if (Vector3.Angle(transform.forward, directionToTarget) < viewAngle / 2)
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
 
-                // Sichtlinie prüfen (ob Hindernis dazwischen)
+                // Checks if there are obstacles
                 if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))
                 {
-                    Debug.Log("Ziel sichtbar: " + target.name);
                     Debug.DrawLine(transform.position, target.transform.position, Color.green);
-                }
-                else
-                {
-                    Debug.DrawLine(transform.position, target.transform.position, Color.yellow);
+                    currentTarget = target.transform;
+                    break;
                 }
             }
         }
-
     }
+
+    void FollowTarget()
+    {
+        Vector3 direction = (currentTarget.position - transform.position).normalized;
+
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        }
+    }
+
 
     void updateSpotlight()
     {
