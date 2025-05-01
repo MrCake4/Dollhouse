@@ -81,6 +81,13 @@ public class AIRoomScan : MonoBehaviour
             spotlight.type = LightType.Spot;
             spotlight.spotAngle = viewAngle;
             spotlight.range = viewRadius;
+            spotlight.intensity = 40000;
+            if(currentTarget != null) 
+            {
+                spotlight.colorTemperature -= 500;
+            } else {
+                spotlight.colorTemperature = 6000;
+            }
         }
     }
 }
