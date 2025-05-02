@@ -84,7 +84,7 @@ public class AIRoomScan : MonoBehaviour
             spotlight.intensity = 40000;
             if(currentTarget != null) 
             {
-                spotlight.colorTemperature -= 500;
+                spotlight.colorTemperature -= 100;
             } else {
                 spotlight.colorTemperature = 6000;
             }
