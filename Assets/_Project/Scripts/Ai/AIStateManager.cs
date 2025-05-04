@@ -70,7 +70,7 @@ public class AIStateManager : MonoBehaviour
     }
 
     // switches the state, called by other states
-    public void switchState(AIBaseState state, Boolean skipOnEnter) {
+    public void switchState(AIBaseState state, bool skipOnEnter) {
         lastState = currentState;
         currentState = state;
         if (!skipOnEnter) currentState.enterState(this);
