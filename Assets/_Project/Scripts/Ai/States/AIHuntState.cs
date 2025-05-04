@@ -4,7 +4,6 @@ using UnityEngine.Animations;
 public class AIHuntState : AIBaseState
 {
     RoomContainer currentTargetRoom;
-    int windowIndex = 0;
     // float checkTime;
 
     public override void enterState(AIStateManager ai) {
