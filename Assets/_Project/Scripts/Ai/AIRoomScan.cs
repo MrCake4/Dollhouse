@@ -50,7 +50,6 @@ public class AIRoomScan : MonoBehaviour
         else if (currentTarget != null)
         {
             isFollowing = true;
-            //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, initialYRotation, 0), Time.deltaTime * rotationSpeed);
             FollowTarget();
         }
     }
