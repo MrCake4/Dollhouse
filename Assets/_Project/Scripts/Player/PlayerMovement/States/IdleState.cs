@@ -12,8 +12,13 @@ public class IdleState : BasePlayerState
         // switch to WalkState
         //if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.LeftShift)) { player.SwitchState(player.walkState);}
         
+        //wenn Crouching true
+        if (player.isCrouching)
+        {
+            player.SwitchState(player.crouchState);
+        }
         // Wenn Shift + WASD → RunState
-        if (player.moveInput != Vector2.zero && player.isRunning)
+        else if (player.moveInput != Vector2.zero && player.isRunning)
         {
             player.SwitchState(player.runState);
         }

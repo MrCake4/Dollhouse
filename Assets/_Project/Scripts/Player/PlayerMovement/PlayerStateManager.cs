@@ -20,6 +20,11 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public Vector3 moveDir;               // Richtung im 3D-Raum
     [HideInInspector] public Rigidbody rb;                  //rigid body reference
     public float rotateSpeed = 10f;
+
+    //crouch
+    [HideInInspector] public CapsuleCollider capsuleCollider;
+    [HideInInspector] public float originalHeight;
+    [HideInInspector] public Vector3 originalCenter;
     
     // Booleans
     [HideInInspector] public bool jumpPressed;
@@ -35,6 +40,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public float maxSpeed = 7f;
     public float crouchSpeed = 2f;
 
+
+    //JUST DEBUGGING!!!!
     
 
     
@@ -46,6 +53,11 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     void Start()
     {
         rb = GetComponent<Rigidbody>();             // <- Rigidbody Referenz setzen
+        capsuleCollider = GetComponent<CapsuleCollider>();
+
+        originalHeight = capsuleCollider.height;
+        originalCenter = capsuleCollider.center;
+
         currentState = idleState;
         currentState.onEnter(this);                 //this = alle Variablen/ Methoden aus dieser Klasse hier
     }
@@ -91,11 +103,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         currentState = state;
         currentState.onEnter(this);                 //führt vom neuen State onEnter aus 
 
-
     }
 
 
-    //Neue Methode: Bewegung anwenden
+    //Bewegung anwenden
     public void MovePlayer(float speed)
     {
         Vector3 velocity = moveDir * speed;
@@ -103,7 +114,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         rb.linearVelocity = velocity;
     }
 
-    //Neue Methode: Rotation zur Blickrichtung
+    //Rotation zur Blickrichtung
     public void RotateToMoveDirection()
     {
         if (moveDir == Vector3.zero) return;                        //nur return = macht nix 
@@ -117,4 +128,20 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         rb.MoveRotation(Quaternion.LookRotation(direction));        //Drehung über rigid Body anwenden
     }
 
+    //um zu schauen, wie viel Platz an der Position vom Spieler ist --> z.B. bei crouch, ob man überhaupt aufstehen kann, oder ob da kein Platz mehr ist (oder maybe sogar bei jump anwenden)
+    public bool HasHeadroom(float requiredHeight)
+    {
+        Vector3 rayOrigin = transform.position + Vector3.up * (capsuleCollider.height / 2f);
+        float rayLength = requiredHeight - (capsuleCollider.height / 2f);
+
+        Debug.DrawRay(rayOrigin, Vector3.up * rayLength, Color.red, 0.2f); // Zum Debuggen
+
+        return !Physics.Raycast(
+            rayOrigin,
+            Vector3.up,
+            rayLength,
+            ~0,                                 // = Alle Layer
+            QueryTriggerInteraction.Ignore      // = Trigger-Collider werden ignoriert
+        );
+    }
 }

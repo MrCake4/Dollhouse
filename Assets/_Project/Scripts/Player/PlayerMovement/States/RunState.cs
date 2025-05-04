@@ -22,7 +22,7 @@ public class RunState : BasePlayerState
         {
             player.SwitchState(player.idleState);
         }
-        // Wenn Shift losgelassen → zurück zu Walk
+        // Wenn Shift losgelassen → Walk
         else if (!player.isRunning)
         {
             player.SwitchState(player.walkState);

@@ -24,6 +24,12 @@ public class WalkState : BasePlayerState
         {
             player.SwitchState(player.runState);
         }
+        
+        //wenn crouch true
+        else if (player.isCrouching)
+        {
+            player.SwitchState(player.crouchState);
+        }
 
     }
     public override void onFixedUpdate(PlayerStateManager player)          //Physik
