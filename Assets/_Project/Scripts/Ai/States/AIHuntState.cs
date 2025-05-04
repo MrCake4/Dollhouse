@@ -5,7 +5,7 @@ public class AIHuntState : AIBaseState
 {
     RoomContainer currentTargetRoom;
     int windowIndex = 0;
-    float checkTime;
+    // float checkTime;
 
     public override void enterState(AIStateManager ai) {
         Debug.Log("Dolly entered HUNT state");
@@ -18,9 +18,8 @@ public class AIHuntState : AIBaseState
         }
 
         // Start from first window
-        checkTime = ai.getCheckRoomTime;
-        windowIndex = 0;
-        ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[0]);
+        // checkTime = ai.getCheckRoomTime;
+        ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[ai.currentWindowIndex]);
     }
 
     public override void onUpdate(AIStateManager ai) {
@@ -42,6 +41,19 @@ public class AIHuntState : AIBaseState
         // If reached current window, move to next
         if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
             
+            if(ai.currentWindowIndex <= currentTargetRoom.windowCount - 1) {
+                ai.currentWindowIndex++;
+                ai.switchState(ai.scanState, false); // Go to scan state
+            } else {
+                // Finished searching room
+                // currentTargetRoom.checkedRoom = true;
+                // ai.switchState(ai.seekState);             // TODO: He doesn't go to patrol state but to seek state after this
+                ai.seekIncrement++;
+                ai.currentWindowIndex = 0; // Reset window index for next room
+                ai.switchState(ai.seekState, false); // Go to next room
+            }
+
+            /*
             checkTime -= Time.deltaTime;
 
             if (checkTime <= 0){            // if timer 0 go to next room
@@ -59,6 +71,7 @@ public class AIHuntState : AIBaseState
 
                 }
             }
+            */
         }
     }
 

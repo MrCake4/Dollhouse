@@ -24,6 +24,7 @@ public class RoomContainer : MonoBehaviour
             
             ai.setCurrentTargetRoom(this);
             ai.setLastKnownRoom(this);
+            ai.eye.setStartScan(false);
             ai.switchState(ai.huntState,false);
     }
 }
