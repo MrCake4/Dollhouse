@@ -35,6 +35,7 @@ public class AIStateManager : MonoBehaviour
     public Transform idleSpawn;
     [Tooltip("Where the AIs patrol spawn point is")]
     public Transform patrolSpawn;
+    public AIRoomScan eye;
     
     // TODO: Pseudo code for eyes
     // [RequiredType] public Eye[] eyes;    // Array List with all available eyes, 0 is left, 1 is right  

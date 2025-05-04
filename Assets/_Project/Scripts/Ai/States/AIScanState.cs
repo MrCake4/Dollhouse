@@ -7,6 +7,7 @@ public class AIScanState : AIBaseState
     public override void enterState(AIStateManager ai){
         Debug.Log("Dolly entered Scan State");
         checkRoomTime = ai.getCheckRoomTime;
+        ai.eye.setStartScan(true);
 
     }
     
@@ -24,6 +25,7 @@ public class AIScanState : AIBaseState
 
     public override void exitState(AIStateManager ai)
     {
+        ai.eye.setStartScan(false);
         ai.switchState(ai.getLastState, false);
     }
 }

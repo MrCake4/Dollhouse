@@ -33,7 +33,7 @@ public class AIRoomScan : MonoBehaviour
     void Update()
     {
         UpdateSpotlight();
-        DrawDetectionRays();
+       
 
         if (currentTarget == null && startScan)
         {
@@ -42,11 +42,12 @@ public class AIRoomScan : MonoBehaviour
             float targetRotationAngle = initialYRotation + Mathf.Sin(Time.time * rotationSpeed) * maxRotationAngle;
             // Rotates the object
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, targetRotationAngle, 0), Time.deltaTime * rotationSpeed);
-
+             DrawDetectionRays();
             Scan();
         }
         else if (currentTarget != null)
         {
+             DrawDetectionRays();
             FollowTarget();
         }
     }
@@ -125,5 +126,12 @@ public class AIRoomScan : MonoBehaviour
     void ShootSequence()
     {
         
+    }
+
+    public bool getStartScan => startScan;
+    
+    public void setStartScan(bool startScan)
+    {
+        this.startScan = startScan;
     }
 }
