@@ -894,6 +894,9 @@ MonoBehaviour:
     m_Bits: 0
   startScan: 0
   spotlight: {fileID: 1530866621}
+  rayCount: 30
+  rotationSpeed: 0.3
+  maxRotationAngle: 90
 --- !u!135 &1404433093
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -976,14 +979,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1404433091}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.46275213, y: -0.5359017, z: 0.47272485, w: 0.5245962}
-  m_LocalPosition: {x: 5.46, y: 6.64, z: -4.81}
+  m_LocalRotation: {x: 0.036641143, y: -0.7089906, z: 0.037927594, w: 0.7032435}
+  m_LocalPosition: {x: 11.48, y: 1.89, z: -4.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1530866623}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 82.832, y: -91.222, z: 0}
+  m_LocalEulerAnglesHint: {x: 6.045, y: -90.462, z: 0.08}
 --- !u!1 &1530866620
 GameObject:
   m_ObjectHideFlags: 0

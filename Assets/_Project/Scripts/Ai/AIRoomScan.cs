@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 
 public class AIRoomScan : MonoBehaviour
 {
@@ -8,12 +9,16 @@ public class AIRoomScan : MonoBehaviour
     // changes how big the cone is
     float viewAngle = 30f;
 
-    [SerializeField]LayerMask targetMask;
-    [SerializeField]LayerMask obstacleMask;
-    [SerializeField]Boolean startScan = true;
-    [SerializeField]Light spotlight;
-
+    [SerializeField] LayerMask targetMask;
+    [SerializeField] LayerMask obstacleMask;
+    [SerializeField] Boolean startScan = true;
+    [SerializeField] Light spotlight;
+    [SerializeField] int rayCount = 30;
+    [SerializeField] float rotationSpeed = 0.3f;
+    [SerializeField] float maxRotationAngle = 90f;
+    private float initialYRotation;
     private Transform currentTarget;
+    private bool isFollowing = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,31 +27,42 @@ public class AIRoomScan : MonoBehaviour
         targetMask = LayerMask.GetMask("Player");
         // sets what blocks the ray
         obstacleMask = LayerMask.GetMask("Obstacle", "Ground");
+        initialYRotation = transform.eulerAngles.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-        updateSpotlight();
-        if(startScan == true)
-        {
-            scan();
-        }
+        UpdateSpotlight();
+        DrawDetectionRays();
 
-        if (currentTarget != null)
+        if (currentTarget == null && startScan)
         {
+            isFollowing = false;
+
+            float targetRotationAngle = initialYRotation + Mathf.Sin(Time.time * rotationSpeed) * maxRotationAngle;
+
+            // Weiches Drehen zur Zielrotation
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, targetRotationAngle, 0), Time.deltaTime * rotationSpeed);
+
+            Scan();
+        }
+        else if (currentTarget != null)
+        {
+            isFollowing = true;
+            //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, initialYRotation, 0), Time.deltaTime * rotationSpeed);
             FollowTarget();
         }
     }
 
-    void scan()
+    void Scan()
     {   
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
         foreach (Collider target in targetsInViewRadius)
         {
             Vector3 directionToTarget = (target.transform.position - transform.position).normalized;
 
-            // Filters if things are in a
+            // Filters if things are inside the cone
             if (Vector3.Angle(transform.forward, directionToTarget) < viewAngle / 2)
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
@@ -54,7 +70,6 @@ public class AIRoomScan : MonoBehaviour
                 // Checks if there are obstacles
                 if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))
                 {
-                    Debug.DrawLine(transform.position, target.transform.position, Color.green);
                     currentTarget = target.transform;
                     break;
                 }
@@ -73,8 +88,7 @@ public class AIRoomScan : MonoBehaviour
         }
     }
 
-
-    void updateSpotlight()
+    void UpdateSpotlight()
     {
         if (spotlight != null)
         {
@@ -89,5 +103,34 @@ public class AIRoomScan : MonoBehaviour
                 spotlight.colorTemperature = 6000;
             }
         }
+    }
+
+    void DrawDetectionRays()
+    {
+        float halfAngle = viewAngle / 2f;
+
+        for (int i = 0; i < rayCount; i++)
+        {
+            // Berechne den Winkel für diesen Ray
+            float angle = -halfAngle + (viewAngle / (rayCount - 1)) * i;
+
+            // Drehe den Blickrichtungs-Vektor um den Y-Winkel
+            Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
+
+            // Optional: Raycast machen und Farbe je nach Treffer wählen
+            if (Physics.Raycast(transform.position, direction, out RaycastHit hit, viewRadius, targetMask | obstacleMask))
+            {
+                Debug.DrawLine(transform.position, hit.point, Color.red);  // trifft etwas
+            }
+            else
+            {
+                Debug.DrawRay(transform.position, direction * viewRadius, Color.green);  // freie Sicht
+            }
+        }
+    }
+
+    void ShootSequence()
+    {
+
     }
 }
