@@ -8,7 +8,7 @@ public class AIIdleState : AIBaseState
     public override void enterState(AIStateManager ai){
         Debug.Log("Dolly entered state 0");
 
-        idleStateTimer = ai.getIdleTime();
+        idleStateTimer = ai.getIdleTime;
 
         // move to spawn
         ai.transform.position = new Vector3(ai.idleSpawn.position.x, ai.idleSpawn.position.y, ai.idleSpawn.position.z);

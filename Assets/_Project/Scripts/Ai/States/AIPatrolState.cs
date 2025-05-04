@@ -11,8 +11,8 @@ public class AIPatrolState : AIBaseState
     public override void enterState(AIStateManager ai) {
         Debug.Log("Dolly entered state 1");
 
-        checkTimer = ai.checkRoomTime;
-        maxIncrement = ai.checkWindowsPerPatrol;   
+        checkTimer = ai.getCheckRoomTime;
+        maxIncrement = ai.getCheckWindowPerPatrol;   
 
         // Teleport to Patrol Spawn point
         ai.transform.position = new Vector3(ai.patrolSpawn.position.x, ai.patrolSpawn.position.y, ai.patrolSpawn.position.z);

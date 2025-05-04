@@ -18,7 +18,7 @@ public class AIHuntState : AIBaseState
         }
 
         // Start from first window
-        checkTime = ai.checkRoomTime;
+        checkTime = ai.getCheckRoomTime;
         windowIndex = 0;
         ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[0]);
     }
@@ -47,7 +47,7 @@ public class AIHuntState : AIBaseState
                 windowIndex++;
 
                 if (windowIndex < ai.currentTargetRoom.windowCount) {
-                    checkTime = ai.checkRoomTime;
+                    checkTime = ai.getCheckRoomTime;
                     ai.setCurrentTargetWindow(ai.currentTargetRoom.windowAnchorPoints[windowIndex]);
                 } else {
                     // Finished searching room
