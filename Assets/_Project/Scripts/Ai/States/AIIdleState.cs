@@ -27,10 +27,8 @@ public class AIIdleState : AIBaseState
     {
         ai.switchState(ai.patrolState);
     }
-
-    /*
-    *  Waits and does nothing until idleStateTimer reaches 0
-    */
+    
+    // Waits and does nothing until idleStateTimer reaches 0
     private void Wait(AIStateManager ai){
         this.idleStateTimer -= Time.deltaTime;
 

@@ -7,6 +7,10 @@ public class AIAttackState : AIBaseState
     }
     
     public override void onUpdate(AIStateManager ai){
+        /*
+            if eye shot
+                ai.switchState(ai.huntState);
+        */
     }
 
     public override void resetVariables(AIStateManager ai){}
