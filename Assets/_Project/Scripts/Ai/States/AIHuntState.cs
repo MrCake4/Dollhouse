@@ -77,7 +77,7 @@ public class AIHuntState : AIBaseState
     public override void resetVariables(AIStateManager ai) {
         ai.currentTargetRoom = null;
         ai.currentTargetWindow = null;
-        windowIndex = 0;
+        ai.currentWindowIndex = 0;
     }
 
     public override void exitState(AIStateManager ai)
