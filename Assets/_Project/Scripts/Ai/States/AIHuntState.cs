@@ -18,7 +18,7 @@ public class AIHuntState : AIBaseState
 
         // Start from first window
         // checkTime = ai.getCheckRoomTime;
-        ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[ai.currentWindowIndex]);
+        if(ai.currentWindowIndex <= currentTargetRoom.windowCount - 1) ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[ai.currentWindowIndex]);
     }
 
     public override void onUpdate(AIStateManager ai) {
