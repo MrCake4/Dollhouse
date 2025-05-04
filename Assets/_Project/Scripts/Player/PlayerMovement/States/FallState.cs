@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FallState : BasePlayerState
+public class FallState : BasePlayerState                                //dann, wenn Y-Velocity negativ ist!
 {
     public override void onEnter(PlayerStateManager player)
     {
