@@ -23,12 +23,12 @@ public class CrouchState : BasePlayerState
         {
             // Wenn keine Bewegung → Idle
             if (player.moveInput == Vector2.zero){
-                onExit(player);
+                //onExit(player);
                 player.SwitchState(player.idleState);
             }
             // Wenn Bewegung → Walk (kein Run möglich beim Crouch)
             else{
-                onExit(player);
+                //onExit(player);
                 player.SwitchState(player.walkState);
             }
         }

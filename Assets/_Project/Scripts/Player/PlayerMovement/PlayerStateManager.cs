@@ -20,6 +20,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public Vector3 moveDir;               // Richtung im 3D-Raum
     [HideInInspector] public Rigidbody rb;                  //rigid body reference
     public float rotateSpeed = 10f;
+    public float jumpForce = 2f;
+    public float airControlMultiplier = 0.3f;              //um mitten im Jump noch Richtung steuern zu können
 
     //crouch
     [HideInInspector] public CapsuleCollider capsuleCollider;
@@ -33,12 +35,13 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public bool interactPressed;
 
     //RayCasts
-    public bool isGrounded;                 //auf Boden, oder frei fallend?
+    //public bool isGrounded;                 
+            //ob auf Boden, oder frei fallend?   --> wird jetzt als Methode genutzt, also egal
 
     //Speed
-    public float walkSpeed = 4f;
-    public float maxSpeed = 7f;
-    public float crouchSpeed = 2f;
+    public float walkSpeed = 2.5f;
+    public float maxSpeed = 5f;
+    public float crouchSpeed = 1f;
 
 
     //JUST DEBUGGING!!!!
@@ -100,6 +103,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
 
     public void SwitchState(BasePlayerState state){
+        currentState.onExit(this);
         currentState = state;
         currentState.onEnter(this);                 //führt vom neuen State onEnter aus 
 
@@ -144,4 +148,33 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
             QueryTriggerInteraction.Ignore      // = Trigger-Collider werden ignoriert
         );
     }
+
+    public bool IsGrounded()                                                    //für Fall & Jump
+    {
+        float rayLength = 0.1f;
+        Vector3 origin = transform.position + Vector3.up * 0.01f;
+
+        Debug.DrawRay(origin, Vector3.down * rayLength, Color.green, 0.1f);     // Debug
+
+        return Physics.Raycast(
+            origin,
+            Vector3.down,
+            rayLength,
+            ~0,
+            QueryTriggerInteraction.Ignore                                      //wieder ignorieren, wenn Triggerbox 
+        );
+    }
+
+
+    // my BOOLEANS
+    public bool IsFalling()
+    {
+        return !IsGrounded() && rb.linearVelocity.y < 0f;
+    }
+
+    public bool JumpAllowed()                                   //steht bei Idle, Walk und Run drinne!  --> damit man gleichzeitig Logik bearbeiten kann --> weniger copy paste
+    {
+        return jumpPressed && IsGrounded() && !isCrouching;
+    }
+
 }

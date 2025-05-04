@@ -17,8 +17,15 @@ public class RunState : BasePlayerState
 
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
+        if (player.JumpAllowed())           //JUMP
+        {
+            player.jumpPressed = false;
+            player.SwitchState(player.jumpState);
+            return;
+        }
+
         // Wenn keine Eingabe → Idle
-        if (player.moveInput == Vector2.zero)
+        else if (player.moveInput == Vector2.zero)
         {
             player.SwitchState(player.idleState);
         }

@@ -7,13 +7,17 @@ public class IdleState : BasePlayerState
     {
         Debug.Log("not walking anymore");
     }
-    public override void onUpdate(PlayerStateManager player)               //pro Frame
+    public override void onUpdate(PlayerStateManager player)                        //pro Frame
     {
-        // switch to WalkState
-        //if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.LeftShift)) { player.SwitchState(player.walkState);}
-        
+        if (player.JumpAllowed())       //JUMP
+        {
+            player.jumpPressed = false;
+            player.SwitchState(player.jumpState);
+            return;                                                                 //retrun, damit Code direkt hier aufhört und zu JumpState switched
+        }
+
         //wenn Crouching true
-        if (player.isCrouching)
+        else if (player.isCrouching)
         {
             player.SwitchState(player.crouchState);
         }
@@ -28,7 +32,7 @@ public class IdleState : BasePlayerState
             player.SwitchState(player.walkState);
         }
     }
-    public override void onFixedUpdate(PlayerStateManager player)          //Physik
+    public override void onFixedUpdate(PlayerStateManager player)                   //Physik
     {
         // Stoppe alle horizontalen Bewegungen
         Vector3 stoppedVelocity = player.rb.linearVelocity;
