@@ -9,11 +9,11 @@ using UnityEngine.Rendering;
 * =================================
 *
 * Abstract script defines functionality of one state
-* States are declared as seperate Scripts / Classes
+* States are declared as seperate Scripts / Classes / Components however you want to call them
 * The Manager manages the states
 * States change inside the State classes
 *
-* State variables need to be reseted after switching a state, if not the variable will stay the same
+* Some variables need to be reseted after switching a state, if not the variable will stay the same
 */
 
 public class AIStateManager : MonoBehaviour
@@ -35,7 +35,7 @@ public class AIStateManager : MonoBehaviour
     public Transform patrolSpawn;
 
     [Header("AI Behaviour")]
-    [Range(0,300)] public float idleTime;
+    [SerializeField, Range(0,300)] private float idleTime;
     [Range(0,300)] public float checkRoomTime;
     [Range(0,10)] public float moveSpeed = 10;       // How fast AI goes from room to room
     [Range(1,100)] public int checkWindowsPerPatrol = 4;
@@ -86,5 +86,9 @@ public class AIStateManager : MonoBehaviour
 
         // draw line to targeted window
         if(currentTargetRoom != null && currentTargetWindow != null) Debug.DrawLine(this.transform.position, currentTargetWindow.transform.position, Color.red);
+    }
+
+    public float getIdleTime(){
+        return idleTime;
     }
 }
