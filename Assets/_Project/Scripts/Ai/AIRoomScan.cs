@@ -11,14 +11,13 @@ public class AIRoomScan : MonoBehaviour
 
     [SerializeField] LayerMask targetMask;
     [SerializeField] LayerMask obstacleMask;
-    [SerializeField] Boolean startScan = true;
+    [SerializeField] Boolean startScan = false;
     [SerializeField] Light spotlight;
     [SerializeField] int rayCount = 30;
     [SerializeField] float rotationSpeed = 0.3f;
     [SerializeField] float maxRotationAngle = 90f;
     private float initialYRotation;
     private Transform currentTarget;
-    private bool isFollowing = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -38,18 +37,16 @@ public class AIRoomScan : MonoBehaviour
 
         if (currentTarget == null && startScan)
         {
-            isFollowing = false;
-
+            
+            // Calculates the rotation angle
             float targetRotationAngle = initialYRotation + Mathf.Sin(Time.time * rotationSpeed) * maxRotationAngle;
-
-            // Weiches Drehen zur Zielrotation
+            // Rotates the object
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, targetRotationAngle, 0), Time.deltaTime * rotationSpeed);
 
             Scan();
         }
         else if (currentTarget != null)
         {
-            isFollowing = true;
             FollowTarget();
         }
     }
@@ -110,26 +107,23 @@ public class AIRoomScan : MonoBehaviour
 
         for (int i = 0; i < rayCount; i++)
         {
-            // Berechne den Winkel für diesen Ray
             float angle = -halfAngle + (viewAngle / (rayCount - 1)) * i;
 
-            // Drehe den Blickrichtungs-Vektor um den Y-Winkel
             Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
 
-            // Optional: Raycast machen und Farbe je nach Treffer wählen
             if (Physics.Raycast(transform.position, direction, out RaycastHit hit, viewRadius, targetMask | obstacleMask))
             {
-                Debug.DrawLine(transform.position, hit.point, Color.red);  // trifft etwas
+                Debug.DrawLine(transform.position, hit.point, Color.red);
             }
             else
             {
-                Debug.DrawRay(transform.position, direction * viewRadius, Color.green);  // freie Sicht
+                Debug.DrawRay(transform.position, direction * viewRadius, Color.green);
             }
         }
     }
 
     void ShootSequence()
     {
-
+        
     }
 }
