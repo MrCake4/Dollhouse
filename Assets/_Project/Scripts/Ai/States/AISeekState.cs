@@ -27,7 +27,7 @@ public class AISeekState : AIBaseState
         if (nextIndex < ai.rooms.Length)
         {
             ai.setCurrentTargetRoom(ai.rooms[nextIndex]);
-            ai.switchState(ai.huntState); // hunt will use currentTargetRoom
+            ai.switchState(ai.huntState,false); // hunt will use currentTargetRoom
         }
         else
         {
@@ -46,6 +46,6 @@ public class AISeekState : AIBaseState
     public override void exitState(AIStateManager ai)
     {
         ai.seekIncrement = 0;
-        ai.switchState(ai.patrolState);
+        ai.switchState(ai.patrolState, false);
     }
 }

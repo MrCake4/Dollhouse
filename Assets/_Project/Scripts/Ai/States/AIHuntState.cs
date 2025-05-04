@@ -13,7 +13,7 @@ public class AIHuntState : AIBaseState
         currentTargetRoom = ai.currentTargetRoom;
         
         if (currentTargetRoom == null) {
-            ai.switchState(ai.patrolState);
+            ai.switchState(ai.patrolState, false);
             return;
         }
 
@@ -25,7 +25,7 @@ public class AIHuntState : AIBaseState
 
     public override void onUpdate(AIStateManager ai) {
         if (currentTargetRoom == null || currentTargetRoom.windowAnchorPoints.Length == 0) {
-            ai.switchState(ai.patrolState);
+            ai.switchState(ai.patrolState, false);
             return;
         }
 
@@ -38,6 +38,7 @@ public class AIHuntState : AIBaseState
             Time.deltaTime * ai.moveSpeed
         );
 
+    
         // If reached current window, move to next
         if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
             
@@ -54,7 +55,7 @@ public class AIHuntState : AIBaseState
                     // currentTargetRoom.checkedRoom = true;
                     //ai.switchState(ai.seekState);             // TODO: He doesn't go to patrol state but to seek state after this
                     ai.seekIncrement++;
-                    ai.switchState(ai.seekState); // Go to next room
+                    ai.switchState(ai.seekState, false); // Go to next room
 
                 }
             }

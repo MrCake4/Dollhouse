@@ -21,11 +21,13 @@ public class AIStateManager : MonoBehaviour
 
     // ALL STATES DECLARED HERE
     AIBaseState currentState;
-    public AIIdleState idleState = new AIIdleState();
-    public AIPatrolState patrolState = new AIPatrolState();
-    public AISeekState seekState = new AISeekState();
-    public AIHuntState huntState = new AIHuntState();
-    public AIAttackState attackState = new AIAttackState();
+    AIBaseState lastState = null;
+    public AIIdleState idleState = new();
+    public AIPatrolState patrolState = new();
+    public AISeekState seekState = new();
+    public AIHuntState huntState = new();
+    public AIAttackState attackState = new();
+    public AIScanState scanState = new();
 
     // GAME OBJECTS
     [Header("Spawn Points")]
@@ -46,6 +48,7 @@ public class AIStateManager : MonoBehaviour
     [HideInInspector] public RoomContainer lastKnownRoom = null;
     [HideInInspector] public Transform currentTargetWindow = null;
     [HideInInspector] public int seekIncrement = 0;
+    [HideInInspector] public int currentWindowIndex = 0;
 
     [Header("Game Objects")]
     [Tooltip("Index 0 is equal to most left room on the map, index 1 is the room next to it and so on.")]
@@ -66,9 +69,10 @@ public class AIStateManager : MonoBehaviour
     }
 
     // switches the state, called by other states
-    public void switchState(AIBaseState state) {
+    public void switchState(AIBaseState state, Boolean skipOnEnter) {
+        lastState = currentState;
         currentState = state;
-        currentState.enterState(this);
+        if (!skipOnEnter) currentState.enterState(this);
     }
 
     // this sets the current target room to where the ai is going to
@@ -100,4 +104,5 @@ public class AIStateManager : MonoBehaviour
     public float getIdleTime => idleTime;
     public float getCheckRoomTime => checkRoomTime;
     public int getCheckWindowPerPatrol => checkWindowsPerPatrol;
+    public AIBaseState getLastState => lastState;
 }

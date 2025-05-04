@@ -25,16 +25,16 @@ public class AIIdleState : AIBaseState
 
         public override void exitState(AIStateManager ai)
     {
-        ai.switchState(ai.patrolState);
+        ai.switchState(ai.patrolState, false);
     }
-    
+
     // Waits and does nothing until idleStateTimer reaches 0
     private void Wait(AIStateManager ai){
         this.idleStateTimer -= Time.deltaTime;
 
         if (this.idleStateTimer <= 0.0f)
         {
-            ai.switchState(ai.patrolState);
+            ai.switchState(ai.patrolState, false);
         }
     }
 }
