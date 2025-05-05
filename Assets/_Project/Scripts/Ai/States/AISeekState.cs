@@ -45,7 +45,7 @@ public class AISeekState : AIBaseState
 
     public override void exitState(AIStateManager ai)
     {
-        ai.seekIncrement = 0;
+        ai.seekIncrement = -1;
         ai.switchState(ai.patrolState, false);
     }
 }
