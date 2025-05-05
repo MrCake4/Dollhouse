@@ -22,7 +22,7 @@ public class AISeekState : AIBaseState
         }
 
         // Set next room based on seek increment
-        int nextIndex = currentRoomIndexPosition + ai.seekIncrement;
+        int nextIndex = currentRoomIndexPosition + 1 * ai.seekIncrement;      // added + 1 * 
 
         if (nextIndex < ai.rooms.Length)
         {
