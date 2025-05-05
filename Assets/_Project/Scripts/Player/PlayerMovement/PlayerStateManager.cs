@@ -21,6 +21,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public Rigidbody rb;                  //rigid body reference
     public float rotateSpeed = 10f;
     public float jumpForce = 2f;
+    public float jumpHeight = 1.5f;                         // gewünschte konstante Sprunghöhe
+
     public float airControlMultiplier = 0.3f;              //um mitten im Jump noch Richtung steuern zu können
 
     //crouch
@@ -95,11 +97,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
 
     void FixedUpdate(){
+        isRunning = Input.GetKey(KeyCode.LeftShift);        //Für JUMP & Fall --> damit man direkt weiterrennen kann
         currentState.onFixedUpdate(this);           //beim aktuellen State FixedUpdate() aufrufen
 
     }
-
-
 
 
     public void SwitchState(BasePlayerState state){
@@ -174,7 +175,34 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     public bool JumpAllowed()                                   //steht bei Idle, Walk und Run drinne!  --> damit man gleichzeitig Logik bearbeiten kann --> weniger copy paste
     {
-        return jumpPressed && IsGrounded() && !isCrouching;
+        return jumpPressed 
+        && IsGrounded() 
+        && !isCrouching
+        &&HasHeadroom(1.2f);            //1.2f damit der ray länger ist als der Ray der schaut, ob man grounded ist --> dann kann man eigenntlich immer den FallState erreichen
     }
+
+
+    //FALL / JUMP
+    public Vector3 GetHorizontalVelocity()
+    {
+        return new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+    }
+
+    public float GetHorizontalSpeed()
+    {
+        return GetHorizontalVelocity().magnitude;
+    }
+
+    public void ApplyAirControl(PlayerStateManager player)                                         //Damit man mit WASD noch leicht umlenken kann in der Luft. ohne den  Fall nach unten zu beeinflussen
+        {
+            Vector3 airMove = player.moveDir * player.maxSpeed * player.airControlMultiplier;
+            Vector3 currentVel = player.rb.linearVelocity;
+
+            currentVel.x = Mathf.Lerp(currentVel.x, airMove.x, Time.fixedDeltaTime * 2f);
+            currentVel.z = Mathf.Lerp(currentVel.z, airMove.z, Time.fixedDeltaTime * 2f);
+
+            player.rb.linearVelocity = currentVel;
+        }
+
 
 }

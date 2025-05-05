@@ -10,14 +10,11 @@ public class FallState : BasePlayerState                                //dann, 
     {
         if (player.IsGrounded())
         {
-            // Nach Landung zurück zu Idle, Walk oder Run je nach Input
-            if (player.moveInput != Vector2.zero && player.isRunning)
+            float speed = player.GetHorizontalSpeed();
+
+            if (speed >= player.walkSpeed)
             {
-                player.SwitchState(player.runState);
-            }
-            else if (player.moveInput != Vector2.zero)
-            {
-                player.SwitchState(player.walkState);
+                player.SwitchState(player.isRunning ? player.runState : player.walkState);
             }
             else
             {
@@ -27,16 +24,12 @@ public class FallState : BasePlayerState                                //dann, 
     }
     public override void onFixedUpdate(PlayerStateManager player)          //Physik
     {
-        // Luftsteuerung (nur leichte Richtungsänderung)
-        Vector3 airMove = player.moveDir * player.maxSpeed * player.airControlMultiplier;
-
-        // Additiv statt überschreiben → verhindert Abbremsen
-        player.rb.AddForce(new Vector3(airMove.x, 0f, airMove.z), ForceMode.Acceleration);
-
+        player.ApplyAirControl(player);
         player.RotateToMoveDirection();
     }
     public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
     {
         
     }
+    
 }

@@ -5,50 +5,54 @@ public class JumpState : BasePlayerState
     
     public override void onEnter(PlayerStateManager player)
     {
-        Vector3 forwardVelocity = new Vector3(player.rb.linearVelocity.x, 0f, player.rb.linearVelocity.z);      // Horizontale Geschwindigkeit auslesen (ohne y)
+        // Spieler kann aus Idle mit WASD schräg springen
+        Vector3 direction = player.moveDir != Vector3.zero
+            ? player.moveDir.normalized
+            : Vector3.zero; // Falls keine Eingabe
+
+        float horizontalSpeed = player.isRunning ? player.maxSpeed : player.walkSpeed;
+
+        // Sprungkraft (wie gehabt)
+        float baseY = Mathf.Sqrt(2f * Physics.gravity.magnitude * player.jumpHeight);
+        if (player.isRunning)
+            baseY *= 1.1f; // Bonushöhe beim Rennen
+
+        // Zusammensetzen
+        Vector3 jumpImpulse = direction * horizontalSpeed + Vector3.up * baseY;
+
+        player.rb.AddForce(jumpImpulse, ForceMode.VelocityChange);
+
+        Debug.Log($"Jumping | Direction: {direction} | Speed: {horizontalSpeed:F2} | Vertical: {baseY:F2}");
 
 
-        player.rb.linearDamping = 1f;       //!!!!!!!!!!player.rb.drag = 1f; // höherer Luftwiderstand nur in Jump
-        
-
-        // Cap horizontal speed
-        if (forwardVelocity.magnitude > player.maxSpeed)
-            forwardVelocity = forwardVelocity.normalized * player.maxSpeed;
-
-        Vector3 jumpVector = forwardVelocity + Vector3.up * player.jumpForce;           // Sprung-Vektor erstellen
-
-        player.rb.linearVelocity = jumpVector;                                          //Anwenden
-
-        Debug.Log("Jumping");
-        Debug.Log("Initial Speed: " + forwardVelocity.magnitude);
     }
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
-        // Falls der Sprung physikalisch nicht ausgeführt wurde → zurücksetzen
-        if (player.rb.linearVelocity.y <= 0f)
+        if (player.IsGrounded())                                            // Wenn der Jump physisch nicht gezündet hat (z. B. wegen Blockade)
+        {
+            float speed = player.GetHorizontalSpeed();
+            if (speed >= player.walkSpeed)
+                player.SwitchState(player.isRunning ? player.runState : player.walkState);
+            else
+                player.SwitchState(player.idleState);                           // oder Run/Walk je nach Input, wenn gewünscht
+        }
+        else if (player.IsFalling())                                        // Wenn man wirklich abspringt --> falling
         {
             player.SwitchState(player.fallState);
-            return;
         }
-    // Standard: Wenn Spieler fällt → FallState
-        if (player.IsFalling())
-        {
-            player.SwitchState(player.fallState);
-        }
+
     }
+
     public override void onFixedUpdate(PlayerStateManager player)          //Physik
     {
-        // Bewegung in Blickrichtung (während des Sprungs)
-        Vector3 airMove = player.moveDir * player.maxSpeed * player.airControlMultiplier;
-
-        // Statt direkt überschreiben → addiere nur die gewünschte Änderung
-        player.rb.AddForce(new Vector3(airMove.x, 0f, airMove.z), ForceMode.Acceleration);
-
+        player.ApplyAirControl(player);
         player.RotateToMoveDirection();
+        
     }
     public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
     {
         //nix weiter nötig lol
-        player.rb.linearDamping = 0f; // !!!!!!!!!!!!!!!zurücksetzen
     }
+
+    
 }
