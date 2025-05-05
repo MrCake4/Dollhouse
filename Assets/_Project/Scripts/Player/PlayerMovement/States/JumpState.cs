@@ -13,12 +13,12 @@ public class JumpState : BasePlayerState
         float horizontalSpeed = player.isRunning ? player.maxSpeed : player.walkSpeed;
 
         // Sprungkraft (wie gehabt)
-        float baseY = Mathf.Sqrt(2f * Physics.gravity.magnitude * player.jumpHeight);
+        float baseY = Mathf.Sqrt(2f * Physics.gravity.magnitude * player.jumpHeight);   // TODO: Find out what *2 is doing here
         if (player.isRunning)
             baseY *= 1.1f; // Bonushöhe beim Rennen
 
         // Zusammensetzen
-        Vector3 jumpImpulse = direction * horizontalSpeed + Vector3.up * baseY;
+        Vector3 jumpImpulse = 0.2f * (direction * horizontalSpeed) + Vector3.up * baseY;
 
         player.rb.AddForce(jumpImpulse, ForceMode.VelocityChange);
 

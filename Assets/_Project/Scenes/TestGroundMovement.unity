@@ -145,7 +145,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 133870757}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: dbdd02aca4a4bf249be55c0c6143e93b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -253,7 +253,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147779372}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: dbdd02aca4a4bf249be55c0c6143e93b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -361,7 +361,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 386996530}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: dbdd02aca4a4bf249be55c0c6143e93b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -464,8 +464,9 @@ MonoBehaviour:
   moveDir: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   rotateSpeed: 10
-  jumpForce: 5
-  airControlMultiplier: 0.5
+  jumpForce: 1
+  jumpHeight: 1.5
+  airControlMultiplier: 1
   capsuleCollider: {fileID: 0}
   originalHeight: 0
   originalCenter: {x: 0, y: 0, z: 0}
@@ -473,9 +474,9 @@ MonoBehaviour:
   isRunning: 0
   isCrouching: 0
   interactPressed: 0
-  walkSpeed: 6
-  maxSpeed: 9
-  crouchSpeed: 3
+  walkSpeed: 3
+  maxSpeed: 5
+  crouchSpeed: 2
 --- !u!1 &908699918
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,7 +503,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 908699918}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: dbdd02aca4a4bf249be55c0c6143e93b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -638,7 +639,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1127316691}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: dbdd02aca4a4bf249be55c0c6143e93b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1393,7 +1394,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1882090024}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: dbdd02aca4a4bf249be55c0c6143e93b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1723,6 +1724,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2137225621503774681, guid: 2a2a7e47188c7784f85b25ed3a7e23b8, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3206654409726155743, guid: 2a2a7e47188c7784f85b25ed3a7e23b8, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: dbdd02aca4a4bf249be55c0c6143e93b, type: 2}
     - target: {fileID: 3617325911962885337, guid: 2a2a7e47188c7784f85b25ed3a7e23b8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.803

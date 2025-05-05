@@ -23,7 +23,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public float jumpForce = 2f;
     public float jumpHeight = 1.5f;                         // gewünschte konstante Sprunghöhe
 
-    public float airControlMultiplier = 0.3f;              //um mitten im Jump noch Richtung steuern zu können
+    public float airControlMultiplier = 1f;              //um mitten im Jump noch Richtung steuern zu können
 
     //crouch
     [HideInInspector] public CapsuleCollider capsuleCollider;
