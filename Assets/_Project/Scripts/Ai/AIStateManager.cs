@@ -48,7 +48,7 @@ public class AIStateManager : MonoBehaviour
     [HideInInspector] public RoomContainer currentTargetRoom = null;
     [HideInInspector] public RoomContainer lastKnownRoom = null;
     [HideInInspector] public Transform currentTargetWindow = null;
-    [HideInInspector] public int seekIncrement = 0;
+    [HideInInspector] public int seekIncrement = -1;    // switched to -1
     [HideInInspector] public int currentWindowIndex = 0;
 
     [Header("Game Objects")]
