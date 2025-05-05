@@ -9,7 +9,7 @@ public class AISeekState : AIBaseState
         Debug.Log("Dolly entered SEEK state");
 
         // Only determine index on first seek pass
-        if (ai.seekIncrement == 0 && ai.currentTargetRoom != null)
+        if (ai.currentTargetRoom != null)   // removed ai.seekIncrement == 0
         {
             for (int i = 0; i < ai.rooms.Length; i++)
             {
