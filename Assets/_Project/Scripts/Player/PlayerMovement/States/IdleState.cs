@@ -9,6 +9,7 @@ public class IdleState : BasePlayerState
     }
     public override void onUpdate(PlayerStateManager player)                        //pro Frame
     {
+
         if (player.JumpAllowed())       //JUMP
         {
             player.jumpPressed = false;
@@ -16,6 +17,13 @@ public class IdleState : BasePlayerState
             return;                                                                 //retrun, damit Code direkt hier aufhört und zu JumpState switched
         }
 
+        if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //PUSH
+        {
+            player.pushState.SetTarget(pushTarget);
+            player.SwitchState(player.pushState);
+            return;
+        }
+        
         //wenn Crouching true
         else if (player.isCrouching)
         {

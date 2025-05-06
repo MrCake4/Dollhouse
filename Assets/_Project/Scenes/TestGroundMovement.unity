@@ -474,6 +474,9 @@ MonoBehaviour:
   isRunning: 0
   isCrouching: 0
   interactPressed: 0
+  bigObjectLayer:
+    serializedVersion: 2
+    m_Bits: 128
   walkSpeed: 3
   maxSpeed: 8
   crouchSpeed: 2
@@ -613,7 +616,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1127316691}
   serializedVersion: 4
-  m_Mass: 20
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

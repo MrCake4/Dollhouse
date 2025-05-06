@@ -24,6 +24,13 @@ public class RunState : BasePlayerState
             return;
         }
 
+        if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //PUSH
+        {
+            player.pushState.SetTarget(pushTarget);
+            player.SwitchState(player.pushState);
+            return;
+        }
+
         // Wenn keine Eingabe → Idle
         else if (player.moveInput == Vector2.zero)
         {

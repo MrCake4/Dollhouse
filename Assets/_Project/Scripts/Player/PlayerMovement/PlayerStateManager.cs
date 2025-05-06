@@ -36,9 +36,9 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public bool isCrouching;
     [HideInInspector] public bool interactPressed;
 
-    //RayCasts
-    //public bool isGrounded;                 
-            //ob auf Boden, oder frei fallend?   --> wird jetzt als Methode genutzt, also egal
+    //for the RayCasts
+    public LayerMask bigObjectLayer;
+        
 
     //Speed
     public float walkSpeed = 2.5f;
@@ -179,6 +179,37 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         && IsGrounded() 
         && !isCrouching
         &&HasHeadroom(1.2f);            //1.2f damit der ray länger ist als der Ray der schaut, ob man grounded ist --> dann kann man eigenntlich immer den FallState erreichen
+    }
+
+    public bool PushAllowed(out Rigidbody pushTarget)
+    {
+        pushTarget = null;
+
+        Vector3 rayOrigin = transform.position + Vector3.up * (capsuleCollider.height / 3f); // Mitte der Figur
+        Vector3 direction = transform.forward;
+         float rayLength = 0.6f;
+
+        // 🔧 Zeichne Ray zur visuellen Kontrolle
+        Debug.DrawRay(rayOrigin, direction * rayLength, Color.blue, 0.1f);
+        
+
+        if (Physics.Raycast(rayOrigin, direction, out RaycastHit hit, 0.6f, bigObjectLayer, QueryTriggerInteraction.Ignore))
+        {
+            // Prüfe Winkel der Normale
+            float angle = Vector3.Angle(-hit.normal, direction);
+            if (angle < 25f) // ± einstellbarer Toleranzwinkel
+            {
+                Rigidbody hitRb = hit.collider.attachedRigidbody;
+                if (hitRb != null && !hitRb.isKinematic)
+                {
+                    pushTarget = hitRb;
+                    Debug.Log("congratulations, you can push!");
+                    return true;
+                } else{ Debug.Log("Hit, aber kein Rigidbody oder ist kinematic."); }
+            } else{ Debug.Log("Winkel zu steil: " + angle); }
+        }
+
+        return false;
     }
 
 
