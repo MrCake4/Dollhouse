@@ -17,9 +17,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("Layers")]
     [SerializeField] private LayerMask groundLayer;             // Was zählt als "Boden"? 
     [SerializeField] private LayerMask bigObject;               // Was zählt als "big Object" --> alle verschiebbaren (größeren) Objekte!   
+    [SerializeField] private LayerMask smallObject;             // Was zählt als "small Object" --> alle tragbaren Objekte!  
     
     [Header("Push Settings")]
     [SerializeField] private float pushDistance = 0.01f;         // Abstand für Schieben erlauben
+    [SerializeField] private float carryDistance = 0.01f;         // Abstand für Aufheben von Sachen erlauben
     //[SerializeField] private TextMeshProUGUI pushPromptText;    // UI-Text anzeigen ("Press E to Push")  --> verworfen, aber für UI maybe nochmal hilfreich
 
 
@@ -30,9 +32,11 @@ public class PlayerMovement : MonoBehaviour
     private bool isCrouching;
     private bool isRunning;
     private bool isPushing;
+    private bool isCarrying;
     
     private Rigidbody rb;                                       //rigid body reference
     private Rigidbody objectToPush;                             // Aktuelles bigObject, das gerade gepusht wird
+    private Rigidbody objectToCarry;                            // Aktuelles bigObject, das gerade getragen wird
     private Vector3 moveDir;
 
 
@@ -80,30 +84,30 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded || isOnBigObject && !isCrouching) {jumpInput = true;}                //Springen nur dann, wenn Spieler Boden berührt & NICHT crouched  (+ auf verschiebbaren bigObjects geht Springen auch)
         
         // CROUCH INPUT
-        isCrouching = Input.GetKey(KeyCode.LeftControl);                  //crouch solange gedrückt ist
+        isCrouching = Input.GetKey(KeyCode.LeftControl);                    //crouch solange gedrückt ist
         //Debug.Log("Crouching: " + isCrouching);                     
 
         // RUN INPUT
-        isRunning = Input.GetKey(KeyCode.LeftShift) && !isCrouching;            // Rennen nur, wenn kein Crouch!
+        isRunning = Input.GetKey(KeyCode.LeftShift) && !isCrouching;        // Rennen nur, wenn kein Crouch!
         //Debug.Log("is running " + isRunning);
 
-        /*if (inputVector != Vector2.zero)
-        {
-            Debug.Log("Input: " + inputVector);
-        } */
+        isCarrying = Input.GetKeyDown(KeyCode.E);                               //mit E Sache aufheben
+        //Debug.Log("Carries Object: " + isCarrying);  
 
-        HandlePushPrompt();                                         // Text einblenden
+        //if (inputVector != Vector2.zero) { Debug.Log("Input: " + inputVector); } 
+        HandlePushPrompt();
     }
 
     private void HandlePushPrompt()
     {
-        //Ray ray = new Ray(transform.position, transform.forward);                 
-        Vector3 rayOrigin = transform.position + new Vector3(0, originalCenter.y, 0);
-        Ray ray = new Ray(rayOrigin, transform.forward);            //Ray ray = new Ray(rayOrigin, transform.forward * pushDistance);
+        //Ray ray = new Ray(transform.position, transform.forward);              
+        //Vector3 rayOrigin = transform.position + transform.up * originalCenter.y + transform.forward * capsuleCollider.radius;
+        Vector3 rayOrigin = transform.position + transform.up * originalCenter.y;
+        //Ray ray = new Ray(rayOrigin, transform.forward);            //Ray ray = new Ray(rayOrigin, transform.forward * pushDistance);
 
         Debug.DrawRay(rayOrigin, transform.forward * pushDistance, Color.red);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, pushDistance, bigObject))
+        if (Physics.Raycast(rayOrigin, transform.forward, out RaycastHit hit, pushDistance, bigObject))
         {
             isPushing = true;
             objectToPush = hit.rigidbody;
