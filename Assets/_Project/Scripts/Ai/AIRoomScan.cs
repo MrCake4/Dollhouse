@@ -8,6 +8,8 @@ public class AIRoomScan : MonoBehaviour
     float viewRadius = 20f;
     // changes how big the cone is
     float viewAngle = 30f;
+    float minViewAngle = 8f;
+    float viewAngleChangeSpeed = 10f;
 
     [SerializeField] LayerMask targetMask;
     [SerializeField] LayerMask obstacleMask;
@@ -96,6 +98,9 @@ public class AIRoomScan : MonoBehaviour
             if(currentTarget != null) 
             {
                 spotlight.colorTemperature -= 100;
+                if (viewAngle > minViewAngle){
+                    viewAngle -= viewAngleChangeSpeed * Time.deltaTime;
+                }
             } else {
                 spotlight.colorTemperature = 6000;
             }
