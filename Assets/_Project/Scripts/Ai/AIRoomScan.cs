@@ -143,6 +143,7 @@ public class AIRoomScan : MonoBehaviour
     // activates when the laser sees the player
     // hits the player if there is no obstacle in the way, else it misses and continues to scan
     // TODO: Update scan state to stay om scan until shotAtPlayer is true
+    // TODO: if the player is hit, player dies
     void ShootSequence()
     {
         // if player is detected by one of the rays, shoot at player, else if there is an obstacle between player and ray, shoot but miss
@@ -152,7 +153,7 @@ public class AIRoomScan : MonoBehaviour
             Vector3 directionToTarget = (currentTarget.position - transform.position).normalized;
             float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
 
-            if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))
+            if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))    // (casts a ray from eye position to target position and checks if its hits an obstacle mask)
             {
                 // No obstacle, hit the player
                 hitPlayer = true;
@@ -173,6 +174,7 @@ public class AIRoomScan : MonoBehaviour
 
     public bool getStartScan => startScan;
     public bool getShotAtPlayer => shotAtPlayer;
+    public bool getHitPlayer => hitPlayer;
     
     public void setStartScan(bool startScan)
     {
