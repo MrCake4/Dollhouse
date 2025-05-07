@@ -1,19 +1,26 @@
-using System;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
 public class AIRoomScan : MonoBehaviour
 {
+
+
+    /*  LIGHT SETTINGS  */
     // sets the length of the cone
     float viewRadius = 20f;
     // changes how big the cone is
     float viewAngle = 30f;
+    float maxViewAngle; // max angle of the cone, takes the resets to view angle after shot
     float minViewAngle = 8f;
-    float viewAngleChangeSpeed = 10f;
+    float viewAngleChangeAmount = 10f;
+
+    [Range(0.1f, 10f), SerializeField] float laserBuildupTime = 3f;        // time in seconds for how long the laser needs to shoot at the player
 
     [SerializeField] LayerMask targetMask;
     [SerializeField] LayerMask obstacleMask;
-    [SerializeField] Boolean startScan = false;
+    [SerializeField] bool startScan = false;
+    bool shotAtPlayer = false;
+    bool hitPlayer = false;
     [SerializeField] Light spotlight;
     [SerializeField] int rayCount = 30;
     [SerializeField] float rotationSpeed = 0.3f;
@@ -29,6 +36,8 @@ public class AIRoomScan : MonoBehaviour
         // sets what blocks the ray
         obstacleMask = LayerMask.GetMask("Obstacle", "Ground");
         initialYRotation = transform.eulerAngles.y;
+
+        maxViewAngle = viewAngle;
     }
 
     // Update is called once per frame
@@ -44,13 +53,14 @@ public class AIRoomScan : MonoBehaviour
             float targetRotationAngle = initialYRotation + Mathf.Sin(Time.time * rotationSpeed) * maxRotationAngle;
             // Rotates the object
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, targetRotationAngle, 0), Time.deltaTime * rotationSpeed);
-             DrawDetectionRays();
+            DrawDetectionRays();
             Scan();
         }
         else if (currentTarget != null)
         {
-             DrawDetectionRays();
+            DrawDetectionRays();
             FollowTarget();
+            ShootSequence();
         }
     }
 
@@ -85,6 +95,7 @@ public class AIRoomScan : MonoBehaviour
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         }
+
     }
 
     void UpdateSpotlight()
@@ -95,14 +106,15 @@ public class AIRoomScan : MonoBehaviour
             spotlight.spotAngle = viewAngle;
             spotlight.range = viewRadius;
             spotlight.intensity = 40000;
-            if(currentTarget != null) 
+            if(currentTarget != null)       
             {
-                spotlight.colorTemperature -= 100;
-                if (viewAngle > minViewAngle){
-                    viewAngle -= viewAngleChangeSpeed * Time.deltaTime;
+                spotlight.colorTemperature -= 100;  
+                if (viewAngle > minViewAngle){      // update size of cone each second
+                    viewAngle -= viewAngleChangeAmount * Time.deltaTime;
                 }
             } else {
                 spotlight.colorTemperature = 6000;
+                viewAngle = 30f; // reset to default value
             }
         }
     }
@@ -128,12 +140,39 @@ public class AIRoomScan : MonoBehaviour
         }
     }
 
+    // activates when the laser sees the player
+    // hits the player if there is no obstacle in the way, else it misses and continues to scan
+    // TODO: Update scan state to stay om scan until shotAtPlayer is true
     void ShootSequence()
     {
-        
+        // if player is detected by one of the rays, shoot at player, else if there is an obstacle between player and ray, shoot but miss
+        laserBuildupTime -= 1* Time.deltaTime;
+        // if timer runs out shoot at player
+        if(laserBuildupTime < 0f){
+            Vector3 directionToTarget = (currentTarget.position - transform.position).normalized;
+            float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
+
+            if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))
+            {
+                // No obstacle, hit the player
+                hitPlayer = true;
+                Debug.Log("Shot at player and hit!");
+            }
+            else
+            {
+                // Obstacle in the way, miss the player
+                hitPlayer = false;
+                Debug.Log("Shot at player but missed!");
+            }
+            // reset timer
+            shotAtPlayer = true;
+            laserBuildupTime = 3f;
+            currentTarget = null; // reset target
+        }
     }
 
     public bool getStartScan => startScan;
+    public bool getShotAtPlayer => shotAtPlayer;
     
     public void setStartScan(bool startScan)
     {

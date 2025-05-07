@@ -13,7 +13,7 @@ public class AIScanState : AIBaseState
     
     public override void onUpdate(AIStateManager ai){
 
-        Debug.Log("Scan Window");
+        //Debug.Log("Scan Window");
         checkRoomTime -= Time.deltaTime;
         // if eye sees player
         //      ai.switchState(ai.attackState)
