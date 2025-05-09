@@ -5,22 +5,22 @@ public class AIPatrolState : AIBaseState
 {
 // Removed unused variable 'currentTarget'
     float checkTimer;      // How long does the ai check one window in seconds
-    int increment = 0;              // +1 every checked window
     int maxIncrement;        // max amount of windows dolly checks each patrol
-    bool startPatrol = false; // 
+   Transform lastWindow = null;
+    RoomContainer randomRoom; 
+    int randomWindow;
 
     public override void enterState(AIStateManager ai) {
-        Debug.Log("Dolly entered state 1");
+        Debug.Log("Dolly entered PATROL State");
 
         checkTimer = ai.getCheckRoomTime;
         maxIncrement = ai.getCheckWindowPerPatrol;   
 
         // Teleport to Patrol Spawn point
-        if (!startPatrol) {
+        if (!ai.isPatroling) {
             ai.transform.position = new Vector3(ai.patrolSpawn.position.x, ai.patrolSpawn.position.y, ai.patrolSpawn.position.z);
-            startPatrol = true;    
+            ai.isPatroling = true;    
         }
-
         // Pick first target
         PickNewTarget(ai);
     }
@@ -28,43 +28,39 @@ public class AIPatrolState : AIBaseState
     public override void onUpdate(AIStateManager ai) {
         if (ai.currentTargetWindow == null) return;
 
-        if( increment >= maxIncrement) exitState(ai);
+        if( ai.windwosPatrolled >= maxIncrement) exitState(ai);
         else {
-            // Move towards the current target
-            ai.transform.position = Vector3.MoveTowards(
-                ai.transform.position,
-                ai.currentTargetWindow.position,
-                Time.deltaTime * ai.moveSpeed // move speed
-            );
-
-            // Check if Dolly reached the target
-            if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
-                
-                // Checking current window
-
-                increment++;
-                
-                ai.switchState(ai.scanState, false);
-            }
+            ai.setCurrentTargetRoom(randomRoom);
+            ai.currentWindowIndex = randomWindow;
+            ai.windwosPatrolled++;
+            ai.switchState(ai.scanState, false);
         }
         
     }
 
     private void PickNewTarget(AIStateManager ai) {
         // Pick a random room
-        RoomContainer randomRoom = ai.rooms[Random.Range(0, ai.rooms.Length)];
+        randomRoom = ai.rooms[Random.Range(0, ai.rooms.Length)];
 
         // Pick a random window in that room
         if (randomRoom.windowCount > 0) {
-            ai.currentTargetWindow = randomRoom.windowAnchorPoints[Random.Range(0, randomRoom.windowAnchorPoints.Length)];
+            Transform newWindow;
+            int safety = 0;
+            do {
+                randomWindow = Random.Range(0, randomRoom.windowAnchorPoints.Length);
+                newWindow = randomRoom.windowAnchorPoints[randomWindow];
+                safety++;
+            } while (newWindow == lastWindow && safety < 10);
+        ai.currentTargetWindow = newWindow;
+        lastWindow = newWindow;
         }
     }
 
     public override void resetVariables(AIStateManager ai)
     {
-        increment = 0;
+        ai.windwosPatrolled = 0;
         ai.currentTargetWindow = null;
-        startPatrol = false;
+        ai.isPatroling = false;
     }
 
     public override void exitState(AIStateManager ai)

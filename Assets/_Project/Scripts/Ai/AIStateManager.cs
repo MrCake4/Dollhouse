@@ -45,12 +45,14 @@ public class AIStateManager : MonoBehaviour
     [SerializeField, Range(0,300)] private float checkRoomTime;
     [Range(0,10)] public float moveSpeed = 10;       // How fast AI goes from room to room
     [SerializeField, Range(1,100)] private int checkWindowsPerPatrol = 4;
+    [HideInInspector] public int windwosPatrolled = 0;
     [HideInInspector] public RoomContainer currentTargetRoom = null;
     [HideInInspector] public RoomContainer lastKnownRoom = null;
     [HideInInspector] public Transform currentTargetWindow = null;
     [HideInInspector] public int seekIncrement = 0;
     [HideInInspector] public int currentWindowIndex = 0;
     [HideInInspector] public bool scanDone = false;
+    [HideInInspector] public bool isPatroling = false;
 
     [Header("Game Objects")]
     [Tooltip("Index 0 is equal to most left room on the map, index 1 is the room next to it and so on.")]
