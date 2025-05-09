@@ -27,13 +27,12 @@ public class AIScanState : AIBaseState
     public override void onUpdate(AIStateManager ai){
         if (ai.currentTargetWindow == null) return;
 
-         // If reached current window, move to next
+         // If reached current window
         if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
-            // only goes down if arrived
             checkRoomTime -= Time.deltaTime;
 
             if(ai.isPatroling && checkRoomTime <= 0.0f){
-                ai.currentWindowIndex = 0;
+                resetVariables(ai);
                 ai.scanDone = true;
                 ai.switchState(ai.getLastState,false);
             }
@@ -46,7 +45,7 @@ public class AIScanState : AIBaseState
             // if done with room
             if(ai.currentWindowIndex >= currentTargetRoom.windowAnchorPoints.Length) {
                 // Reset window index for next room
-                ai.currentWindowIndex = 0;
+                resetVariables(ai);
                 ai.scanDone = true; 
                 ai.switchState(ai.getLastState, false);
                 return;
@@ -58,7 +57,7 @@ public class AIScanState : AIBaseState
     }
 
     public override void resetVariables(AIStateManager ai){
-
+        ai.currentWindowIndex = 0;
     }
 
     public override void exitState(AIStateManager ai)

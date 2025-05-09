@@ -9,10 +9,9 @@ public class AIHuntState : AIBaseState
 
     public override void enterState(AIStateManager ai) {
         Debug.Log("Dolly entered HUNT state");
-
         currentTargetRoom = ai.currentTargetRoom;
-
-        // case null
+        
+        // incase Null
         if (currentTargetRoom == null) {
             Debug.LogWarning("HuntState: currentTargetRoom is null. Returning to patrol.");
             ai.switchState(ai.patrolState, false);
@@ -25,15 +24,18 @@ public class AIHuntState : AIBaseState
 
     public override void onUpdate(AIStateManager ai) {
         if(ai.scanDone){
+            resetVariables(ai);
             ai.switchState(ai.seekState, false);
         } else{
             ai.seekIncrement = 1;
+            resetVariables(ai);
             ai.switchState(ai.scanState, false);
         }
     }
 
     public override void resetVariables(AIStateManager ai) {
-        currentTargetRoom = null;
+        ai.currentWindowIndex = 0;
+        ai.currentTargetWindow = null;
     }
 
     public override void exitState(AIStateManager ai) {
