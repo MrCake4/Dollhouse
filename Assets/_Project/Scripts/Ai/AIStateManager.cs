@@ -50,6 +50,7 @@ public class AIStateManager : MonoBehaviour
     [HideInInspector] public Transform currentTargetWindow = null;
     [HideInInspector] public int seekIncrement = 0;
     [HideInInspector] public int currentWindowIndex = 0;
+    [HideInInspector] public bool scanDone = false;
 
     [Header("Game Objects")]
     [Tooltip("Index 0 is equal to most left room on the map, index 1 is the room next to it and so on.")]

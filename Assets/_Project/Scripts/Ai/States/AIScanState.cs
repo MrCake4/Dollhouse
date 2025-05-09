@@ -9,6 +9,14 @@ public class AIScanState : AIBaseState
         Debug.Log("Dolly entered Scan State");
         checkRoomTime = ai.getCheckRoomTime;
         currentTargetRoom = ai.currentTargetRoom;
+        ai.scanDone = false;
+
+        // incase of null
+        if (currentTargetRoom == null || currentTargetRoom.windowAnchorPoints.Length == 0) {
+            ai.switchState(ai.patrolState, false);
+            Debug.Log("Room is empty or has no windows");
+            return;
+        }
 
         ai.eye.setStartScan(true);
 
@@ -17,38 +25,36 @@ public class AIScanState : AIBaseState
     }
     
     public override void onUpdate(AIStateManager ai){
-
-        Debug.Log("Scan Window");
-
-        checkRoomTime -= Time.deltaTime;
-        if (checkRoomTime <= 0.0f) {
-            exitState(ai);
-        }
-
-        if (currentTargetRoom == null || currentTargetRoom.windowAnchorPoints.Length == 0) {
-            ai.switchState(ai.patrolState, false);
-            return;
-        }
+        if (ai.currentTargetWindow == null) return;
 
          // If reached current window, move to next
         if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
-            
-            if(ai.currentWindowIndex <= currentTargetRoom.windowCount - 1) {
+            // only goes down if arrived
+            checkRoomTime -= Time.deltaTime;
+    
+            if (checkRoomTime <= 0.0f) {
                 ai.currentWindowIndex++;
-            } else {
-                ai.seekIncrement = 0;        
-                ai.currentWindowIndex = 0; // Reset window index for next room
-                ai.switchState(ai.seekState, false); // Go to next room
+                checkRoomTime = ai.getCheckRoomTime;
             }
+
+            if(ai.currentWindowIndex >= currentTargetRoom.windowAnchorPoints.Length) {
+                // Reset window index for next room
+                ai.currentWindowIndex = 0;
+                ai.scanDone = true; 
+                ai.switchState(ai.getLastState, false);
+                return;
+            }
+            ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[ai.currentWindowIndex]);
+
              // Move toward current window
         } else {ai.transform.position = Vector3.MoveTowards(ai.transform.position,ai.currentTargetWindow.position,Time.deltaTime * ai.moveSpeed);}
     }
 
-    public override void resetVariables(AIStateManager ai){}
+    public override void resetVariables(AIStateManager ai){
+
+    }
 
     public override void exitState(AIStateManager ai)
     {
-        ai.eye.setStartScan(false);
-        ai.switchState(ai.getLastState, false);
     }
 }

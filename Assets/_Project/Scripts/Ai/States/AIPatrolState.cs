@@ -45,28 +45,6 @@ public class AIPatrolState : AIBaseState
                 increment++;
                 
                 ai.switchState(ai.scanState, false);
-                
-                // checkTimer -= Time.deltaTime;
-
-            /*
-            
-            if eye of ai sees player
-
-                ai.switchState(ai.attackState);
-
-            */
-
-    /*
-                if (checkTimer <= 0.0f)
-                {
-                    increment++;
-                    checkTimer = 5f;
-                    if(increment >= maxIncrement){
-                        exitState(ai);
-                    }
-                    PickNewTarget(ai);              // Pick a new target or switch state
-                }
-            */
             }
         }
         
@@ -85,7 +63,6 @@ public class AIPatrolState : AIBaseState
     public override void resetVariables(AIStateManager ai)
     {
         increment = 0;
-        ai.currentTargetRoom = null;
         ai.currentTargetWindow = null;
         startPatrol = false;
     }

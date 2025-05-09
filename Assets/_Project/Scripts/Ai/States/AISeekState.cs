@@ -2,50 +2,56 @@ using UnityEngine;
 
 public class AISeekState : AIBaseState
 {
-   int currentRoomIndexPosition = 0;
+   int centerRoomIndexPosition = 0;
 
     public override void enterState(AIStateManager ai)
     {
         Debug.Log("Dolly entered SEEK state");
-
-        // Only determine index on first seek pass
-        if (ai.seekIncrement == 0 && ai.currentTargetRoom != null)
-        {
-            for (int i = 0; i < ai.rooms.Length; i++)
-            {
-                if (ai.currentTargetRoom == ai.rooms[i])
-                {
-                    currentRoomIndexPosition = i;
+        
+        // gets index of room
+        if(ai.lastKnownRoom != null){
+            for (int i = 0; i < ai.rooms.Length; i++){
+                if (ai.lastKnownRoom == ai.rooms[i]){
+                    centerRoomIndexPosition = i;
                     break;
                 }
             }
         }
 
         // Set next room based on seek increment
-        int nextIndex = currentRoomIndexPosition + ai.seekIncrement;
+        int nextIndex = centerRoomIndexPosition + ai.seekIncrement;
 
-        if (nextIndex < ai.rooms.Length)
+        if (nextIndex >= 0 && nextIndex < ai.rooms.Length)
         {
-            ai.setCurrentTargetRoom(ai.rooms[nextIndex]);
-            ai.switchState(ai.huntState,false); // hunt will use currentTargetRoom
+            RoomContainer nextRoom = ai.rooms[nextIndex];
+            ai.setCurrentTargetRoom(nextRoom);
+            ai.seekIncrement = -1;
+            ai.switchState(ai.scanState, false);
+            return;
         }
-        else
-        {
-            exitState(ai); // No more rooms to check, go back to patrol
-        }
+        exitState(ai);
     }
 
     public override void onUpdate(AIStateManager ai) {
-        // No logic here anymore
     }
 
     public override void resetVariables(AIStateManager ai)
     {
+        ai.currentTargetRoom = null;
+        ai. seekIncrement = 1;
     }
 
     public override void exitState(AIStateManager ai)
     {
-        ai.seekIncrement = 0;
-        ai.switchState(ai.patrolState, false);
+        if (ai.seekIncrement == 1)
+        {
+            ai.seekIncrement = -1; 
+            ai.switchState(ai.seekState, false);
+        }
+        else
+        {
+            resetVariables(ai);
+            ai.switchState(ai.patrolState, false);
+        }
     }
 }

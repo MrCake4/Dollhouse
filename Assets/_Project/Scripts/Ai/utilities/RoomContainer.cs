@@ -5,27 +5,27 @@ using UnityEngine.Animations;
 public class RoomContainer : MonoBehaviour
 {
 
+    [Header("AnkerPoints in Room")]
     public Transform[] windowAnchorPoints;
     public Boolean triggered = false;
     public Boolean checkedRoom = false;
     [SerializeField] AIStateManager ai;
-    public int windowCount;
+    public int windowCount => windowAnchorPoints.Length;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        windowCount = windowAnchorPoints.Length;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(triggered && !checkedRoom) {
-            
+        if (triggered && !checkedRoom)
+        {
             ai.setCurrentTargetRoom(this);
             ai.setLastKnownRoom(this);
             ai.eye.setStartScan(false);
-            ai.switchState(ai.huntState,false);
+            ai.switchState(ai.huntState, false);
+        }
     }
-}
 }
