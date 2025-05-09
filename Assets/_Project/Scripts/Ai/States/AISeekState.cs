@@ -24,6 +24,8 @@ public class AISeekState : AIBaseState
         if (nextIndex >= 0 && nextIndex < ai.rooms.Length)
         {
             RoomContainer nextRoom = ai.rooms[nextIndex];
+
+            // increments starts with 1 so this only applies if it's -1
             if(ai.currentTargetRoom == nextRoom){
                 resetVariables(ai);
                 ai.switchState(ai.patrolState,false);

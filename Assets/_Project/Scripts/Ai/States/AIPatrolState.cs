@@ -5,7 +5,6 @@ public class AIPatrolState : AIBaseState
 {
 // Removed unused variable 'currentTarget'
     float checkTimer;      // How long does the ai check one window in seconds
-    int maxIncrement;        // max amount of windows dolly checks each patrol
    Transform lastWindow = null;
     RoomContainer randomRoom; 
     int randomWindow;
@@ -14,25 +13,24 @@ public class AIPatrolState : AIBaseState
         Debug.Log("Dolly entered PATROL State");
 
         checkTimer = ai.getCheckRoomTime;
-        maxIncrement = ai.getCheckWindowPerPatrol;   
 
         // Teleport to Patrol Spawn point
         if (!ai.isPatroling) {
             ai.transform.position = new Vector3(ai.patrolSpawn.position.x, ai.patrolSpawn.position.y, ai.patrolSpawn.position.z);
             ai.isPatroling = true;    
         }
-        // Pick first target
+        // Pick target
         PickNewTarget(ai);
     }
 
     public override void onUpdate(AIStateManager ai) {
         if (ai.currentTargetWindow == null) return;
 
-        if( ai.windwosPatrolled >= maxIncrement) exitState(ai);
+        if( ai.windowsPatrolled >= ai.getCheckWindowPerPatrol) exitState(ai);
         else {
             ai.setCurrentTargetRoom(randomRoom);
             ai.currentWindowIndex = randomWindow;
-            ai.windwosPatrolled++;
+            ai.windowsPatrolled++;
             ai.switchState(ai.scanState, false);
         }
         
@@ -58,7 +56,7 @@ public class AIPatrolState : AIBaseState
 
     public override void resetVariables(AIStateManager ai)
     {
-        ai.windwosPatrolled = 0;
+        ai.windowsPatrolled = 0;
         ai.currentTargetWindow = null;
         ai.isPatroling = false;
     }

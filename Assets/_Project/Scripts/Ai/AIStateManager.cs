@@ -45,7 +45,7 @@ public class AIStateManager : MonoBehaviour
     [SerializeField, Range(0,300)] private float checkRoomTime;
     [Range(0,10)] public float moveSpeed = 10;       // How fast AI goes from room to room
     [SerializeField, Range(1,100)] private int checkWindowsPerPatrol = 4;
-    [HideInInspector] public int windwosPatrolled = 0;
+    [HideInInspector] public int windowsPatrolled = 0;
     [HideInInspector] public RoomContainer currentTargetRoom = null;
     [HideInInspector] public RoomContainer lastKnownRoom = null;
     [HideInInspector] public Transform currentTargetWindow = null;
