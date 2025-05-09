@@ -28,6 +28,11 @@ public class AIRoomScan : MonoBehaviour
     private float initialYRotation;
     private Transform currentTarget;
 
+    // Orientation of the eye, given in x y z coordinates
+    // +x changes the view of the eye down, -x up
+    // TODO: maybe change to a quaternion
+    public Quaternion orientation;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -52,7 +57,7 @@ public class AIRoomScan : MonoBehaviour
             // Calculates the rotation angle
             float targetRotationAngle = initialYRotation + Mathf.Sin(Time.time * rotationSpeed) * maxRotationAngle;
             // Rotates the object
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, targetRotationAngle, 0), Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(orientation.x, targetRotationAngle, 0), Time.deltaTime * rotationSpeed);
             DrawDetectionRays();
             Scan();
         }
