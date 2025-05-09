@@ -24,6 +24,12 @@ public class AISeekState : AIBaseState
         if (nextIndex >= 0 && nextIndex < ai.rooms.Length)
         {
             RoomContainer nextRoom = ai.rooms[nextIndex];
+            if(ai.currentTargetRoom == nextRoom){
+                resetVariables(ai);
+                ai.switchState(ai.patrolState,false);
+                return;
+            }
+
             ai.setCurrentTargetRoom(nextRoom);
             ai.seekIncrement = -1;
             ai.switchState(ai.scanState, false);
@@ -38,20 +44,10 @@ public class AISeekState : AIBaseState
     public override void resetVariables(AIStateManager ai)
     {
         ai.currentTargetRoom = null;
-        ai. seekIncrement = 1;
+        ai.seekIncrement = 1;
     }
 
     public override void exitState(AIStateManager ai)
     {
-        if (ai.seekIncrement == 1)
-        {
-            ai.seekIncrement = -1; 
-            ai.switchState(ai.seekState, false);
-        }
-        else
-        {
-            resetVariables(ai);
-            ai.switchState(ai.patrolState, false);
-        }
     }
 }
