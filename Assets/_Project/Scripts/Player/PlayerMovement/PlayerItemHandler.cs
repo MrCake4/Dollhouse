@@ -1,38 +1,58 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerItemHandler : MonoBehaviour
 {
-    public Transform attachPoint;
+    private bool wantsToPickup = false; // Nur true, wenn Spieler gerade E gedrückt hat
     private GameObject carriedObject = null;
     private BoxCollider triggerCollider;
+    private Coroutine pickupWindowRoutine;
 
     private void Start()
     {
         triggerCollider = GetComponent<BoxCollider>();
-        if (triggerCollider == null || !triggerCollider.isTrigger)
-            Debug.LogError("❗ Spieler braucht einen BoxCollider mit isTrigger=true");
+        //if (triggerCollider == null || !triggerCollider.isTrigger)
+            //Debug.LogError("❗ Spieler braucht einen BoxCollider mit isTrigger=true");
 
-        triggerCollider.enabled = false;
+        //triggerCollider.enabled = false;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (carriedObject == null)
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                triggerCollider.enabled = true; // Trigger kurz aktivieren
-            }
-            else
-            {
-                DropItem();
+                if (carriedObject == null)
+                {
+                    TryStartPickupWindow();
+                }
+                else
+                {
+                    DropItem();
+                }
             }
         }
     }
 
+    private void TryStartPickupWindow()
+    {
+        if (pickupWindowRoutine != null) StopCoroutine(pickupWindowRoutine);
+        wantsToPickup = true;
+        triggerCollider.enabled = true;
+        pickupWindowRoutine = StartCoroutine(PickupWindowCoroutine());
+    }
+    private IEnumerator PickupWindowCoroutine()
+    {
+        yield return new WaitForSeconds(0.2f); // 200 ms Fenster
+        wantsToPickup = false;
+        triggerCollider.enabled = false;
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
-        if (carriedObject != null) return;
+        if (!wantsToPickup) return; // Nur aktiv, wenn Spieler gerade E gedrückt hat
 
         if (other.gameObject.layer == LayerMask.NameToLayer("smallObject"))
         {
@@ -58,7 +78,14 @@ public class PlayerItemHandler : MonoBehaviour
         Rigidbody rb = carriedObject.GetComponent<Rigidbody>();
         if (rb) rb.isKinematic = true;
 
+        wantsToPickup = false;
         triggerCollider.enabled = false;
+
+        if (pickupWindowRoutine != null)
+        {
+            StopCoroutine(pickupWindowRoutine);
+            pickupWindowRoutine = null;
+        }
     }
 
     private void DropItem()
