@@ -12,6 +12,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
      public FallState fallState = new FallState();
      public PushState pushState = new PushState();
      public CrouchState crouchState = new CrouchState();
+    //private PlayerItemHandler PlayerItemHandler;                //CARRY
 
 
         // important variables
@@ -23,7 +24,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public float jumpForce = 2f;
     public float jumpHeight = 1.5f;                         // gewünschte konstante Sprunghöhe
 
-    public float airControlMultiplier = 1f;              //um mitten im Jump noch Richtung steuern zu können
+    public float airControlMultiplier = 0.3f;              //um mitten im Jump noch Richtung steuern zu können
 
     //crouch
     [HideInInspector] public CapsuleCollider capsuleCollider;
@@ -38,6 +39,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     //for the RayCasts
     public LayerMask bigObjectLayer;
+    //public LayerMask smallObjectLayer;
         
 
     //Speed
@@ -91,6 +93,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         //Zustand updaten
         currentState.onUpdate(this);                //beim aktuellen State Update() aufrufen
+
     }
 
 
