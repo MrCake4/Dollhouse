@@ -31,21 +31,24 @@ public class AISeekState : AIBaseState
         nextIndex = centerRoomIndexPosition - 1;
     }
 
+    if(ai.seekRoomsChecked == 2){
+            resetVariables(ai);
+            ai.switchState(ai.patrolState,false);
+            return;
+    }
+
     // Check if the calculated nextIndex is valid
     if (nextIndex >= 0 && nextIndex < ai.rooms.Length)
     {
         RoomContainer nextRoom = ai.rooms[nextIndex];
 
         // If the next room is the same as the current target room, exit seek state
-        if(ai.currentTargetRoom == nextRoom){
-            resetVariables(ai);
-            ai.switchState(ai.patrolState,false);
-            return;
-        }
+        
 
         ai.setCurrentTargetRoom(nextRoom);
         // Switch direction for next time
         ai.seekIncrement = -ai.seekIncrement;
+        ai.seekRoomsChecked++;
         ai.switchState(ai.scanState, false);
         return;
     }
@@ -62,6 +65,7 @@ public class AISeekState : AIBaseState
         ai.seekIncrement = 1;
         ai.isPatroling = true;
         ai.windowsPatrolled = 0;
+        ai.seekRoomsChecked = 0;
     }
 
     public override void exitState(AIStateManager ai)

@@ -53,6 +53,7 @@ public class AIStateManager : MonoBehaviour
     [HideInInspector] public int currentWindowIndex = 0;
     [HideInInspector] public bool scanDone = false;
     [HideInInspector] public bool isPatroling = false;
+    [HideInInspector] public int seekRoomsChecked = 0;
 
     [Header("Game Objects")]
     [Tooltip("Index 0 is equal to most left room on the map, index 1 is the room next to it and so on.")]

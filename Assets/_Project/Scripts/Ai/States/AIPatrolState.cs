@@ -59,6 +59,7 @@ public class AIPatrolState : AIBaseState
         ai.windowsPatrolled = 0;
         ai.currentTargetWindow = null;
         ai.isPatroling = false;
+        ai.currentWindowIndex = 0;
     }
 
     public override void exitState(AIStateManager ai)
