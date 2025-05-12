@@ -152,7 +152,7 @@ public class AIRoomScan : MonoBehaviour
     void ShootSequence()
     {
         // if player is detected by one of the rays, shoot at player, else if there is an obstacle between player and ray, shoot but miss
-        laserBuildupTime -= 1* Time.deltaTime;
+        laserBuildupTime -= Time.deltaTime;
         // if timer runs out shoot at player
         if(laserBuildupTime < 0f){
             Vector3 directionToTarget = (currentTarget.position - transform.position).normalized;
