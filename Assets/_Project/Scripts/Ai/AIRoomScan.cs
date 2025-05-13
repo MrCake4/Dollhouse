@@ -14,7 +14,8 @@ public class AIRoomScan : MonoBehaviour
     float minViewAngle = 8f;
     float viewAngleChangeAmount = 10f;
 
-    [Range(0.1f, 10f), SerializeField] float laserBuildupTime = 3f;        // time in seconds for how long the laser needs to shoot at the player
+    [Range(0.1f, 10f), SerializeField] float laserBuildupTime = 1f;        // time in seconds for how long the laser needs to shoot at the player
+    float resetTimer;
 
     [SerializeField] LayerMask targetMask;
     [SerializeField] LayerMask obstacleMask;
@@ -36,10 +37,13 @@ public class AIRoomScan : MonoBehaviour
     // Laser settings
     // gets the laser from the object
     LineRenderer laserLine;
+    float laserDrawResetTime = 0.5f; // time in seconds for how long the laser is visible
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // saves laser buildup time to reset it after shooting
+        resetTimer = laserBuildupTime;        
         // sets what the ray is looking for
         targetMask = LayerMask.GetMask("Player");
         // sets what blocks the ray
@@ -57,6 +61,7 @@ public class AIRoomScan : MonoBehaviour
     void Update()
     {
         UpdateSpotlight();
+        UpdateLaserLine();
        
 
         if (currentTarget == null && startScan)
@@ -121,9 +126,14 @@ public class AIRoomScan : MonoBehaviour
             spotlight.intensity = 40000;
             if(currentTarget != null)       
             {
+                // calculates the change according to the laser buildup time
                 spotlight.colorTemperature -= 100;  
-                if (viewAngle > minViewAngle){      // update size of cone each second
-                    viewAngle -= viewAngleChangeAmount * Time.deltaTime;
+                float angleChangeRate = viewAngleChangeAmount * (3f / laserBuildupTime);
+
+                if (viewAngle > minViewAngle)
+                {
+                    viewAngle -= angleChangeRate * Time.deltaTime;
+                    viewAngle = Mathf.Max(viewAngle, minViewAngle); // Clamp to min
                 }
             } else {
                 spotlight.colorTemperature = 6000;
@@ -188,7 +198,7 @@ public class AIRoomScan : MonoBehaviour
             }
             // reset timer
             shotAtPlayer = true;
-            laserBuildupTime = 3f;
+            laserBuildupTime = resetTimer;
             currentTarget = null; // reset target
         }
     }
@@ -197,6 +207,20 @@ public class AIRoomScan : MonoBehaviour
     {
         laserLine.SetPosition(0, start);
         laserLine.SetPosition(1, end);
+    }
+
+    // resets the laser after a certain time
+    private void UpdateLaserLine()
+    {
+        if (laserLine.enabled)
+        {
+            laserDrawResetTime -= Time.deltaTime;
+            if (laserDrawResetTime <= 0f)
+            {
+                laserLine.enabled = false;
+                laserDrawResetTime = 0.5f; // reset time
+            }
+        }
     }
 
     public bool getStartScan => startScan;
