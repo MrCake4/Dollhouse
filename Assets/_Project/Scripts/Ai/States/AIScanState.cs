@@ -27,6 +27,7 @@ public class AIScanState : AIBaseState
     public override void onUpdate(AIStateManager ai){
         if (ai.currentTargetWindow == null) return;
 
+
          // If reached current window
         if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
             checkRoomTime -= Time.deltaTime;
