@@ -23,6 +23,11 @@ public class RunState : BasePlayerState
             player.SwitchState(player.jumpState);
             return;
         }
+        
+        if(player.IsFalling()){                        //Damit man wirklich von jedem State aus auch nach Falling wechseln könnte
+            player.SwitchState(player.fallState);
+            //Debug.Log("Switcherooo");
+        }
 
         if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //PUSH
         {
