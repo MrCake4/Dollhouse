@@ -39,6 +39,12 @@ public class IdleState : BasePlayerState
         {
             player.SwitchState(player.walkState);
         }
+
+        if(player.IsFalling()){                        //Damit man wirklich von jedem State aus auch nach Falling wechseln könnte
+            player.SwitchState(player.fallState);
+            //Debug.Log("Switcherooo");
+        }
+
     }
     public override void onFixedUpdate(PlayerStateManager player)                   //Physik
     {

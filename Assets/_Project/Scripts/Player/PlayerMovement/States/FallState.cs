@@ -29,7 +29,19 @@ public class FallState : BasePlayerState                                //dann, 
     }
     public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
     {
-        
+        Vector3 vel = player.rb.linearVelocity;
+
+        //Restgeschwindigkeit limitieren
+        float maxLandSpeed = player.maxSpeed * 1.1f;
+
+        Vector3 horizontal = new Vector3(vel.x, 0f, vel.z);
+        if (horizontal.magnitude > maxLandSpeed)
+        {
+            horizontal = horizontal.normalized * maxLandSpeed;
+            vel.x = horizontal.x;
+            vel.z = horizontal.z;
+            player.rb.linearVelocity = vel;
+        }
     }
     
 }

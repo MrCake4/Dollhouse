@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("Push Settings")]
     [SerializeField] private float pushDistance = 0.01f;         // Abstand für Schieben erlauben
-    [SerializeField] private float carryDistance = 0.01f;         // Abstand für Aufheben von Sachen erlauben
+    //[SerializeField] private float carryDistance = 0.01f;         // Abstand für Aufheben von Sachen erlauben
     //[SerializeField] private TextMeshProUGUI pushPromptText;    // UI-Text anzeigen ("Press E to Push")  --> verworfen, aber für UI maybe nochmal hilfreich
 
 
