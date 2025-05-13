@@ -33,6 +33,10 @@ public class AIRoomScan : MonoBehaviour
     // TODO: maybe change to a quaternion
     public Quaternion orientation;
 
+    // Laser settings
+    // gets the laser from the object
+    LineRenderer laserLine;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -43,6 +47,10 @@ public class AIRoomScan : MonoBehaviour
         initialYRotation = transform.eulerAngles.y;
 
         maxViewAngle = viewAngle;
+
+        // make laser invisible at start
+        laserLine = GetComponent<LineRenderer>();
+        laserLine.enabled = false;
     }
 
     // Update is called once per frame
@@ -158,15 +166,23 @@ public class AIRoomScan : MonoBehaviour
             Vector3 directionToTarget = (currentTarget.position - transform.position).normalized;
             float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
 
-            if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))    // (casts a ray from eye position to target position and checks if its hits an obstacle mask)
+           RaycastHit hit;
+
+            if (!Physics.Raycast(transform.position, directionToTarget, out hit, distanceToTarget, obstacleMask))
             {
-                // No obstacle, hit the player
+                // No obstacle in the way — we can see the player
+                laserLine.enabled = true;
+                shootLaser(transform.position, currentTarget.position);
+
                 hitPlayer = true;
                 Debug.Log("Shot at player and hit!");
             }
             else
             {
-                // Obstacle in the way, miss the player
+                // Obstacle in the way — we hit something in the obstacleMask, uses hit point to get obstacle position
+                laserLine.enabled = true;
+                shootLaser(transform.position, hit.point);
+
                 hitPlayer = false;
                 Debug.Log("Shot at player but missed!");
             }
@@ -175,6 +191,12 @@ public class AIRoomScan : MonoBehaviour
             laserBuildupTime = 3f;
             currentTarget = null; // reset target
         }
+    }
+
+    private void shootLaser(Vector3 start, Vector3 end)
+    {
+        laserLine.SetPosition(0, start);
+        laserLine.SetPosition(1, end);
     }
 
     public bool getStartScan => startScan;
