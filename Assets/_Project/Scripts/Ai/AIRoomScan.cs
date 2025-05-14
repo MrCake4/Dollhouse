@@ -14,7 +14,8 @@ public class AIRoomScan : MonoBehaviour
     float minViewAngle = 8f;
     float viewAngleChangeAmount = 10f;
 
-    [Range(0.1f, 10f), SerializeField] float laserBuildupTime = 3f;        // time in seconds for how long the laser needs to shoot at the player
+    [Range(0.1f, 10f), SerializeField] float laserBuildupTime = 1f;        // time in seconds for how long the laser needs to shoot at the player
+    float resetTimer;
 
     [SerializeField] LayerMask targetMask;
     [SerializeField] LayerMask obstacleMask;
@@ -33,9 +34,16 @@ public class AIRoomScan : MonoBehaviour
     // TODO: maybe change to a quaternion
     public Quaternion orientation;
 
+    // Laser settings
+    // gets the laser from the object
+    LineRenderer laserLine;
+    float laserDrawResetTime = 5f; // time in seconds for how long the laser is visible
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // saves laser buildup time to reset it after shooting
+        resetTimer = laserBuildupTime;        
         // sets what the ray is looking for
         targetMask = LayerMask.GetMask("Player");
         // sets what blocks the ray
@@ -43,12 +51,17 @@ public class AIRoomScan : MonoBehaviour
         initialYRotation = transform.eulerAngles.y;
 
         maxViewAngle = viewAngle;
+
+        // make laser invisible at start
+        laserLine = GetComponent<LineRenderer>();
+        laserLine.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdateSpotlight();
+        UpdateLaserLine();
        
 
         if (currentTarget == null && startScan)
@@ -113,9 +126,14 @@ public class AIRoomScan : MonoBehaviour
             spotlight.intensity = 40000;
             if(currentTarget != null)       
             {
+                // calculates the change according to the laser buildup time
                 spotlight.colorTemperature -= 100;  
-                if (viewAngle > minViewAngle){      // update size of cone each second
-                    viewAngle -= viewAngleChangeAmount * Time.deltaTime;
+                float angleChangeRate = viewAngleChangeAmount * (3f / laserBuildupTime);
+
+                if (viewAngle > minViewAngle)
+                {
+                    viewAngle -= angleChangeRate * Time.deltaTime;
+                    viewAngle = Mathf.Max(viewAngle, minViewAngle); // Clamp to min
                 }
             } else {
                 spotlight.colorTemperature = 6000;
@@ -158,29 +176,59 @@ public class AIRoomScan : MonoBehaviour
             Vector3 directionToTarget = (currentTarget.position - transform.position).normalized;
             float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
 
-            if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))    // (casts a ray from eye position to target position and checks if its hits an obstacle mask)
+           RaycastHit hit;
+
+            if (!Physics.Raycast(transform.position, directionToTarget, out hit, distanceToTarget, obstacleMask))
             {
-                // No obstacle, hit the player
+                // No obstacle in the way — we can see the player
+                laserLine.enabled = true;
+                shootLaser(transform.position, currentTarget.position);
+
                 hitPlayer = true;
                 Debug.Log("Shot at player and hit!");
             }
             else
             {
-                // Obstacle in the way, miss the player
+                // Obstacle in the way — we hit something in the obstacleMask, uses hit point to get obstacle position
+                laserLine.enabled = true;
+                shootLaser(transform.position, hit.point);
+
                 hitPlayer = false;
                 Debug.Log("Shot at player but missed!");
             }
             // reset timer
             shotAtPlayer = true;
-            laserBuildupTime = 3f;
+            laserBuildupTime = resetTimer;
             currentTarget = null; // reset target
+            LaserReflection laserReflection = GetComponent<LaserReflection>();
+            laserReflection.ClearLaser(); // clear laser
+        }
+    }
+
+    private void shootLaser(Vector3 start, Vector3 end)
+    {
+        laserLine.SetPosition(0, start);
+        laserLine.SetPosition(1, end);
+    }
+
+    // resets the laser after a certain time
+    private void UpdateLaserLine()
+    {
+        if (laserLine.enabled)
+        {
+            laserDrawResetTime -= Time.deltaTime;
+            if (laserDrawResetTime <= 0f)
+            {
+                laserLine.enabled = false;
+                laserDrawResetTime = 5f; // reset time
+            }
         }
     }
 
     public bool getStartScan => startScan;
     public bool getShotAtPlayer => shotAtPlayer;
     public bool getHitPlayer => hitPlayer;
-    
+    public bool getLaserEnabled => laserLine.enabled;
     public void setStartScan(bool startScan)
     {
         this.startScan = startScan;
