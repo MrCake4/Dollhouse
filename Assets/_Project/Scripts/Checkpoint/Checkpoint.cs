@@ -9,12 +9,15 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
     bool isActive = false;
-    [SerializeField]CheckpointHandler checkpointHandler;
+    [SerializeField] CheckpointHandler checkpointHandler;
+
+    
 
     void start()
     {
     }
 
+    // when player enters the trigger, activate the checkpoint
     void OnTriggerEnter(Collider other)
     {
         if(checkpointHandler != null){
