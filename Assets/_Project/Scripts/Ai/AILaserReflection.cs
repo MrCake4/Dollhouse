@@ -44,7 +44,7 @@ public class LaserReflection : MonoBehaviour
 
     private void ReflectLaser(int i)
     {
-        if (i + 1 >= laserLine.positionCount ||i >= maxLines) return; // Prevent out of bounds
+        if (i + 1 >= laserLine.positionCount || i >= maxLines) return; // Prevent out of bounds
 
         Vector3 origin = laserLine.GetPosition(i);
         Vector3 direction = laserLine.GetPosition(i + 1) - origin;
@@ -70,7 +70,7 @@ public class LaserReflection : MonoBehaviour
                  Vector3 origin2 = laserLine.GetPosition(i+1);
                 if(Physics.Raycast(origin2, reflection, out hit2))                                              
                 {
-                    if (hit.collider.CompareTag("Reflector")){
+                    if (hit2.collider.CompareTag("Reflector")){
                         laserLine.positionCount++;
                         laserLine.SetPosition(laserLine.positionCount - 1, hit2.point);
                     }
