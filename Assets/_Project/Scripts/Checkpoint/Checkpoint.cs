@@ -1,0 +1,39 @@
+using UnityEngine;
+
+/*
+*
+*   Checks if the player has entered a checkpoint. Then activates the checkpoint.
+*
+*/
+
+public class Checkpoint : MonoBehaviour
+{
+    bool isActive = false;
+    [SerializeField]CheckpointHandler checkpointHandler;
+
+    void start()
+    {
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(checkpointHandler != null){
+            if (other.CompareTag("Player"))
+            {
+                if (!isActive)
+                {
+                    isActive = true;
+                    checkpointHandler.ActivateCheckpoint(this);
+                    Debug.Log("Checkpoint activated: " + gameObject.name);
+                }
+            }
+        }
+    }
+
+    public bool getIsActive => isActive;
+
+    public void setIsActive(bool value)
+    {
+        isActive = value;
+    }
+}
