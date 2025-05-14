@@ -6,11 +6,17 @@ public class CheckpointHandler : MonoBehaviour
     // stores all checkpoints in the scene
     public Checkpoint[] checkpoints;
     
+    public GameObject[] respawnableObjects;
+    public Vector3[] objectSpawnPoints;
 
     void Start()
     {
         // Find all checkpoints in the scene
         checkpoints = FindObjectsByType<Checkpoint>(FindObjectsSortMode.None);
+
+        respawnableObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+
+        objectSpawnPoints = new Vector3[respawnableObjects.Length];	
     }
 
     // Update is called once per frame
@@ -37,8 +43,16 @@ public class CheckpointHandler : MonoBehaviour
                 checkpoints[i].setIsActive(false);
             }
         }
+
+        // set current positions of objects as the spawn points
+        for(int i = 0; i < respawnableObjects.Length; i++)
+        {
+            Vector3 spawnPoint = respawnableObjects[i].transform.position;
+            objectSpawnPoints[i] = spawnPoint;
+        }
     }
 
+    // "Respawns" aka. "teleports" the player to the last active checkpoint
     public void RespawnPlayer(Transform player)
     {
         // Respawn the player at the last active checkpoint
@@ -47,8 +61,17 @@ public class CheckpointHandler : MonoBehaviour
             if (checkpoints[i].getIsActive)
             {
                 player.position = checkpoints[i].transform.position;
+                RespawnObjects();
                 break;
             }
+        }
+    }
+
+    public void RespawnObjects(){
+        // Respawn all objects at their last active spawn points
+        for (int i = 0; i < respawnableObjects.Length; i++)
+        {
+            respawnableObjects[i].transform.position = objectSpawnPoints[i];
         }
     }
 }
