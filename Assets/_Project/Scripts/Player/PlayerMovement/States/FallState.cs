@@ -14,13 +14,20 @@ public class FallState : BasePlayerState                                //dann, 
 
             if (speed >= player.walkSpeed)
             {
-                player.SwitchState(player.isRunning ? player.runState : player.walkState);
+                player.SwitchState(player.isRunning ? player.runState : player.walkState);      //SWITCH Run / Walk
             }
             else
             {
-                player.SwitchState(player.idleState);
+                player.SwitchState(player.idleState);                                           //SWITCH Idle
             }
         }
+
+        if (player.holdPressed)                                             //SWITCH  HOLD
+        {
+            player.SwitchState(player.holdState);
+            return;
+        }
+        
     }
     public override void onFixedUpdate(PlayerStateManager player)          //Physik
     {
