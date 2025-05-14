@@ -6,6 +6,13 @@ using UnityEngine.Rendering;
 *   This script is part of the AI.
 *   The laser reflects of Object that have the tag "reflector"
 *   calculated with vector math. (reflection, normals)
+*
+*   So, this abomination works as follows:
+*   1. When the laser is enabled it casts a ray from the laser's 0 index toward the 1 index
+*   2. If the ray hits a collider with the tag "reflector" it calculates the reflection vector
+*   3. The reflection vector is then used to cast a new ray from the 1 index to the reflection point
+*   4. If the ray hits another collider with the tag "reflector" it calculates the reflection vector again
+*   5. This process continues until the maximum amount of lines is reached or the ray hits a collider without the tag "reflector"
 */
 
 public class LaserReflection : MonoBehaviour
@@ -31,18 +38,6 @@ public class LaserReflection : MonoBehaviour
         else if(!aiRoomScan.getLaserEnabled && laserLine.positionCount > 2){
             ClearLaser();
         }
-        /*
-        if (aiRoomScan.getLaserEnabled && Physics.Raycast(transform.position + transform.forward, transform.forward , out hit)){
-            if(hit.collider.CompareTag("Reflector") && laserLine.positionCount < 3){
-                // Get the normal of the surface
-                Vector3 normal = hit.normal;
-
-                // Calculate the reflection vector
-                Vector3 reflection = Vector3.Reflect(transform.forward, normal);
-
-                ReflectLaser(transform.position, reflection);
-            }
-        }*/
 
         Debug.DrawRay(transform.position + transform.forward, transform.forward * 10f, Color.red);
     }
@@ -57,7 +52,7 @@ public class LaserReflection : MonoBehaviour
         RaycastHit hit;
         Debug.DrawRay(origin, direction.normalized, Color.red, 1f);
 
-        if (Physics.Raycast(origin, direction.normalized, out hit))                                                           //    o --> dh
+        if (Physics.Raycast(origin, direction.normalized, out hit))                                                    
         {
             // Check if the hit object is a reflector
             if (hit.collider.CompareTag("Reflector"))
@@ -68,12 +63,12 @@ public class LaserReflection : MonoBehaviour
                 Vector3 normal = hit.normal;
 
                 // Calculate the reflection vector
-                Vector3 reflection = Vector3.Reflect(direction.normalized, normal);                                         //      o --> dh --> r
+                Vector3 reflection = Vector3.Reflect(direction.normalized, normal);                                     
 
                 // Add the hit point to the LineRenderer
                 RaycastHit hit2;
                  Vector3 origin2 = laserLine.GetPosition(i+1);
-                if(Physics.Raycast(origin2, reflection, out hit2))                                                          //      d --> rh
+                if(Physics.Raycast(origin2, reflection, out hit2))                                              
                 {
                     if (hit.collider.CompareTag("Reflector")){
                         laserLine.positionCount++;
@@ -86,12 +81,6 @@ public class LaserReflection : MonoBehaviour
                     }
                     Debug.DrawRay(hit.point, reflection * 10f, Color.blue, 1f);
                 }
-
-/*
-                laserLine.positionCount++;
-                laserLine.SetPosition(laserLine.positionCount - 1, reflection);
-*/
-                // Recursively reflect the laser
                 ReflectLaser(i + 1);
             }
         }
