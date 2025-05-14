@@ -13,6 +13,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
      public PushState pushState = new PushState();
      public CrouchState crouchState = new CrouchState();
     //private PlayerItemHandler PlayerItemHandler;                //CARRY
+    public PullUpState pullUpState = new PullUpState();
 
 
         // important variables
@@ -36,6 +37,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public bool isRunning;
     [HideInInspector] public bool isCrouching;
     [HideInInspector] public bool interactPressed;
+    [HideInInspector] public bool pullUpPressed;
 
     //for the RayCasts
     public LayerMask bigObjectLayer;
@@ -90,6 +92,9 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         isRunning = Input.GetKey(KeyCode.LeftShift);
         isCrouching = Input.GetKey(KeyCode.LeftControl);
         interactPressed = Input.GetKeyDown(KeyCode.E);
+        pullUpPressed = Input.GetMouseButtonDown(0);
+
+        //if(pullUpPressed){Debug.Log("PullUpTry");}
 
         //Zustand updaten
         currentState.onUpdate(this);                //beim aktuellen State Update() aufrufen
