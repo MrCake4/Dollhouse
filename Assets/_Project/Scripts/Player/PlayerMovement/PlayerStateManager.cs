@@ -13,7 +13,9 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
      public PushState pushState = new PushState();
      public CrouchState crouchState = new CrouchState();
     //private PlayerItemHandler PlayerItemHandler;                //CARRY
+    public HoldState holdState = new HoldState();
     public PullUpState pullUpState = new PullUpState();
+    public HangState hangState = new HangState();
 
 
         // important variables
@@ -37,7 +39,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public bool isRunning;
     [HideInInspector] public bool isCrouching;
     [HideInInspector] public bool interactPressed;
-    [HideInInspector] public bool pullUpPressed;
+    //[HideInInspector] public bool pullUpPressed;
+    [HideInInspector] public bool holdPressed;      //Festhalten --> für PullUp, Hang, climb, etc
 
     //for the RayCasts
     public LayerMask bigObjectLayer;
@@ -49,6 +52,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public float maxSpeed = 5f;
     public float crouchSpeed = 1f;
 
+    //PULL UP
+    [Header("Pull Up Settings")]
+    public float verticalPullUp = 0.8f;
+    public float horizontalPullUp = -0.3f;
 
     //JUST DEBUGGING!!!!
     
@@ -92,9 +99,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         isRunning = Input.GetKey(KeyCode.LeftShift);
         isCrouching = Input.GetKey(KeyCode.LeftControl);
         interactPressed = Input.GetKeyDown(KeyCode.E);
-        pullUpPressed = Input.GetMouseButtonDown(0);
-
-        //if(pullUpPressed){Debug.Log("PullUpTry");}
+        holdPressed = Input.GetMouseButtonDown(0);              //Trying to hold onto something?
 
         //Zustand updaten
         currentState.onUpdate(this);                //beim aktuellen State Update() aufrufen
@@ -160,7 +165,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     public bool IsGrounded()                                                    //für Fall & Jump
     {
-        float rayLength = 0.1f;
+        float rayLength = 0.05f;
         Vector3 origin = transform.position + Vector3.up * 0.01f;
 
         Debug.DrawRay(origin, Vector3.down * rayLength, Color.green, 0.1f);     // Debug
@@ -188,6 +193,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         && !isCrouching
         &&HasHeadroom(1.2f);            //1.2f damit der ray länger ist als der Ray der schaut, ob man grounded ist --> dann kann man eigenntlich immer den FallState erreichen
     }
+
 
     public bool PushAllowed(out Rigidbody pushTarget)
     {

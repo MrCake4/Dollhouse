@@ -24,6 +24,12 @@ public class WalkState : BasePlayerState
             return;
         }
         
+        if (player.holdPressed)                                 //SWITCH  HOLD
+        {
+            player.SwitchState(player.holdState);
+            return;
+        }
+
         if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
         {
             player.pushState.SetTarget(pushTarget);

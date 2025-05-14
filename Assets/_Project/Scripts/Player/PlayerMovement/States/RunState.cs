@@ -29,6 +29,13 @@ public class RunState : BasePlayerState
             //Debug.Log("Switcherooo");
         }
 
+        if (player.holdPressed)                             //SWITCH  HOLD
+        {
+            player.SwitchState(player.holdState);
+            return;
+        }
+
+
         if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
         {
             player.pushState.SetTarget(pushTarget);

@@ -21,6 +21,13 @@ public class FallState : BasePlayerState                                //dann, 
                 player.SwitchState(player.idleState);                                           //SWITCH Idle
             }
         }
+
+        if (player.holdPressed)                                             //SWITCH  HOLD
+        {
+            player.SwitchState(player.holdState);
+            return;
+        }
+        
     }
     public override void onFixedUpdate(PlayerStateManager player)          //Physik
     {

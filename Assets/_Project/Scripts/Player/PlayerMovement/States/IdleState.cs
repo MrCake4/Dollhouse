@@ -45,6 +45,13 @@ public class IdleState : BasePlayerState
             //Debug.Log("Switcherooo");
         }
 
+        if (player.holdPressed)                                             //SWITCH  HOLD
+        {
+            player.SwitchState(player.holdState);
+            return;
+        }
+
+
         //SWITCH Pull Up
 
     }
