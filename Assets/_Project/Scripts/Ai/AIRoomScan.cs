@@ -37,7 +37,7 @@ public class AIRoomScan : MonoBehaviour
     // Laser settings
     // gets the laser from the object
     LineRenderer laserLine;
-    float laserDrawResetTime = 0.5f; // time in seconds for how long the laser is visible
+    float laserDrawResetTime = 5f; // time in seconds for how long the laser is visible
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -200,6 +200,8 @@ public class AIRoomScan : MonoBehaviour
             shotAtPlayer = true;
             laserBuildupTime = resetTimer;
             currentTarget = null; // reset target
+            LaserReflection laserReflection = GetComponent<LaserReflection>();
+            laserReflection.ClearLaser(); // clear laser
         }
     }
 
@@ -218,7 +220,7 @@ public class AIRoomScan : MonoBehaviour
             if (laserDrawResetTime <= 0f)
             {
                 laserLine.enabled = false;
-                laserDrawResetTime = 0.5f; // reset time
+                laserDrawResetTime = 5f; // reset time
             }
         }
     }
@@ -226,7 +228,7 @@ public class AIRoomScan : MonoBehaviour
     public bool getStartScan => startScan;
     public bool getShotAtPlayer => shotAtPlayer;
     public bool getHitPlayer => hitPlayer;
-    
+    public bool getLaserEnabled => laserLine.enabled;
     public void setStartScan(bool startScan)
     {
         this.startScan = startScan;
