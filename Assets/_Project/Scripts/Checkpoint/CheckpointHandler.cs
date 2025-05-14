@@ -14,7 +14,7 @@ public class CheckpointHandler : MonoBehaviour
         // Find all checkpoints in the scene
         checkpoints = FindObjectsByType<Checkpoint>(FindObjectsSortMode.None);
 
-        respawnableObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+        respawnableObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);       // This could maybe break the game, TODO: maybe change to a specific tag
 
         objectSpawnPoints = new Vector3[respawnableObjects.Length];	
     }
