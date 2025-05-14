@@ -4,10 +4,10 @@ public class CheckpointHandler : MonoBehaviour
 {
 
     // stores all checkpoints in the scene
-    public Checkpoint[] checkpoints;
+    Checkpoint[] checkpoints;
     
-    public GameObject[] respawnableObjects;
-    public Vector3[] objectSpawnPoints;
+    GameObject[] respawnableObjects;
+    Vector3[] objectSpawnPoints;
 
     void Start()
     {
@@ -60,8 +60,9 @@ public class CheckpointHandler : MonoBehaviour
         {
             if (checkpoints[i].getIsActive)
             {
-                player.position = checkpoints[i].transform.position;
                 RespawnObjects();
+                player.position = checkpoints[i].transform.position;
+                // TODO: reset Player State to idle instead of dying
                 break;
             }
         }
@@ -73,5 +74,10 @@ public class CheckpointHandler : MonoBehaviour
         {
             respawnableObjects[i].transform.position = objectSpawnPoints[i];
         }
+    }
+
+    // resets the AI to the idle state
+    public void ResetAI(AIStateManager ai){
+        ai.switchState(ai.idleState, false);
     }
 }
