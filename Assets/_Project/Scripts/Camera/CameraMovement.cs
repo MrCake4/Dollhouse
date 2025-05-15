@@ -19,13 +19,15 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] float floatAmplitude = 1f;
     [SerializeField] float floatFrequency = 0.2f;
     private Vector3 playerPosition;
+    private Vector3 cameraLookAt;                   // The position the camera should look at
+    private Vector3 currentLookAt;                  // The current position the camera is looking at
+    bool lookAtPlayer;                              // Whether the camera should look at the player or not
 
     [Header("Room to room behaviour")]
     [SerializeField] Room[] rooms;
     [SerializeField] Room currentRoom;
     Vector3 targetCameraPos;
     [SerializeField] float cameraSpeed = 3f;
-    private Vector3 velocity = Vector3.zero;
     private float currentCameraAngle; 
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,6 +35,8 @@ public class CameraMovement : MonoBehaviour
     {
         targetCameraPos = currentRoom.cameraAnchorPoint.position;
         currentCameraAngle = currentRoom.getCameraAngle;
+        lookAtPlayer = currentRoom.getLookAtPlayer;
+        currentLookAt = player.position;
     }
 
     // Update is called once per frame
@@ -46,6 +50,7 @@ public class CameraMovement : MonoBehaviour
                 if (room != currentRoom){
                     currentRoom = room;
                     targetCameraPos = room.cameraAnchorPoint.position;
+                    lookAtPlayer = currentRoom.getLookAtPlayer;
                     Debug.Log("Room changed");
                 }
             }
@@ -57,6 +62,11 @@ public class CameraMovement : MonoBehaviour
         // Apply the smoothed camera angle to the player's Y-position
         playerPosition.y += currentCameraAngle; // Add the camera angle to the player position
         
+        if (lookAtPlayer)
+            cameraLookAt = playerPosition;
+        else
+            cameraLookAt = new Vector3(currentRoom.transform.position.x, currentCameraAngle, 0);
+
         // TODO: IMPROVE THE FOLLOWING CODE
         
         // Camera stays at player position and adds it by the camera position
@@ -78,8 +88,9 @@ public class CameraMovement : MonoBehaviour
 
         // Step 4: Smooth camera move
         transform.position = Vector3.Lerp(transform.position, cameraPosition + targetCameraPos, Time.deltaTime * cameraSpeed);
-
-
-        transform.LookAt(playerPosition, Vector3.up);
+        
+        // Step 5: Smooth camera look at
+        currentLookAt = Vector3.Lerp(currentLookAt, cameraLookAt, Time.deltaTime * cameraSpeed);
+        transform.LookAt(currentLookAt, Vector3.up);
     }
 }
