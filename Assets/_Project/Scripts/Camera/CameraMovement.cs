@@ -26,17 +26,20 @@ public class CameraMovement : MonoBehaviour
     Vector3 targetCameraPos;
     [SerializeField] float cameraSpeed = 3f;
     private Vector3 velocity = Vector3.zero;
+    private float currentCameraAngle; 
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         targetCameraPos = currentRoom.cameraAnchorPoint.position;
+        currentCameraAngle = currentRoom.getCameraAngle;
     }
 
     // Update is called once per frame
     void Update()
     {
         playerPosition = player.transform.position;
+        
 
         foreach(Room room in rooms){
             if(room.roomCollider.bounds.Contains(playerPosition)){
@@ -48,6 +51,12 @@ public class CameraMovement : MonoBehaviour
             }
         }
 
+        // Smoothly interpolate the camera angle
+        currentCameraAngle = Mathf.Lerp(currentCameraAngle, currentRoom.getCameraAngle, Time.deltaTime * cameraSpeed);
+
+        // Apply the smoothed camera angle to the player's Y-position
+        playerPosition.y += currentCameraAngle; // Add the camera angle to the player position
+        
         // TODO: IMPROVE THE FOLLOWING CODE
         
         // Camera stays at player position and adds it by the camera position
@@ -55,7 +64,7 @@ public class CameraMovement : MonoBehaviour
         Vector3 desiredCameraPos = playerPosition + cameraPosition + new Vector3(0, (float) Mathf.Sin(Time.time * floatAmplitude) * floatFrequency,0);
 
         // Step 2: Blend between the room's anchor and the desired position
-        float followStrength = currentRoom.followStrength; // 0 = stick to room, 1 = stick to player
+        float followStrength = currentRoom.getFollowStrength; // 0 = stick to room, 1 = stick to player
         Vector3 blendedTarget = Vector3.Lerp(currentRoom.cameraAnchorPoint.position, desiredCameraPos, followStrength);
 
         // Step 3: Clamp the blended position inside the room bounds
