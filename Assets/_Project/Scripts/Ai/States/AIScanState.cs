@@ -34,10 +34,13 @@ public class AIScanState : AIBaseState
                 resetVariables(ai);
                 ai.scanDone = true;
                 ai.switchState(ai.getLastState, false);
+                ai.eye.setStartScan(false);
             }
-    
-            if (isDoneScanning) {
+
+            if (isDoneScanning)
+            {
                 ai.currentWindowIndex++;
+                ai.eye.setStartScan(false);
             }
 
             // if done with room

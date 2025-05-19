@@ -80,7 +80,7 @@ public class AIRoomScan : MonoBehaviour
     UpdateSpotlight();
     UpdateLaserLine();
 
-    if (currentTarget == null && startScan && !isDoneScanning)
+    if (currentTarget == null && startScan)
     {
         DrawDetectionRays();
         isDoneScanning = false;
