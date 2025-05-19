@@ -37,7 +37,8 @@ public class AIRoomScan : MonoBehaviour
     // Laser settings
     // gets the laser from the object
     LineRenderer laserLine;
-    float laserDrawResetTime = 5f; // time in seconds for how long the laser is visible
+     [SerializeField]float laserDrawResetTime = 5; // time in seconds for how long the laser is visible
+     float laserDrawReset;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -55,6 +56,7 @@ public class AIRoomScan : MonoBehaviour
         // make laser invisible at start
         laserLine = GetComponent<LineRenderer>();
         laserLine.enabled = false;
+        laserDrawReset = laserDrawResetTime;
     }
 
     // Update is called once per frame
@@ -111,7 +113,7 @@ public class AIRoomScan : MonoBehaviour
         if (direction != Vector3.zero)
         {
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
         }
 
     }
@@ -200,6 +202,7 @@ public class AIRoomScan : MonoBehaviour
             shotAtPlayer = true;
             laserBuildupTime = resetTimer;
             currentTarget = null; // reset target
+            
             LaserReflection laserReflection = GetComponent<LaserReflection>();
             laserReflection.ClearLaser(); // clear laser
         }
@@ -216,11 +219,11 @@ public class AIRoomScan : MonoBehaviour
     {
         if (laserLine.enabled)
         {
-            laserDrawResetTime -= Time.deltaTime;
-            if (laserDrawResetTime <= 0f)
+            laserDrawReset -= Time.deltaTime;
+            if (laserDrawReset <= 0f)
             {
                 laserLine.enabled = false;
-                laserDrawResetTime = 5f; // reset time
+                laserDrawReset = laserDrawResetTime; // reset time
             }
         }
     }
