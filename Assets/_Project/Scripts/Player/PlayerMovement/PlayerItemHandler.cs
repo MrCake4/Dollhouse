@@ -21,16 +21,13 @@ public class PlayerItemHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (carriedObject == null)
             {
-                if (carriedObject == null)
-                {
-                    TryStartPickupWindow();
-                }
-                else
-                {
-                    DropItem();
-                }
+                TryStartPickupWindow();
+            }
+            else
+            {
+                DropItem();
             }
         }
     }
@@ -64,14 +61,13 @@ public class PlayerItemHandler : MonoBehaviour
     {
         carriedObject = item;
 
-        // Objekt an eine Position hinter dem Spieler verschieben
-        Vector3 offset = transform.TransformDirection(new Vector3(0, 0.5f, -0.6f));
+        Vector3 offset = transform.TransformDirection(new Vector3(0, 0.5f, -0.6f));     // Objekt an Position hinter Spieler verschieben
         carriedObject.transform.position = transform.position + offset;
 
         // Optional: leicht ausrichten
         carriedObject.transform.rotation = transform.rotation;
 
-        carriedObject.transform.SetParent(transform); // Objekt mitbewegen
+        carriedObject.transform.SetParent(transform);           // Objekt mitbewegen
         Collider col = carriedObject.GetComponent<Collider>();
         if (col) col.enabled = false;
 
