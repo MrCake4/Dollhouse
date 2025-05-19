@@ -4,10 +4,8 @@ using UnityEngine.Animations;
 public class AIScanState : AIBaseState
 {
     RoomContainer currentTargetRoom;
-    float checkRoomTime;
     public override void enterState(AIStateManager ai){
         Debug.Log("Dolly entered Scan State");
-        checkRoomTime = ai.getCheckRoomTime;
         currentTargetRoom = ai.currentTargetRoom;
         ai.scanDone = false;
 
@@ -17,8 +15,6 @@ public class AIScanState : AIBaseState
             Debug.Log("Room is empty or has no windows");
             return;
         }
-
-        ai.eye.setStartScan(true);
 
         // Sets the first window as target
         ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[ai.currentWindowIndex]);
@@ -30,17 +26,18 @@ public class AIScanState : AIBaseState
 
          // If reached current window
         if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
-            checkRoomTime -= Time.deltaTime;
+            ai.eye.setStartScan(true);
+            bool isDoneScanning = ai.eye.getDoneScanning;
 
-            if(ai.isPatroling && checkRoomTime <= 0.0f){
+            if (ai.isPatroling && isDoneScanning)
+            {
                 resetVariables(ai);
                 ai.scanDone = true;
-                ai.switchState(ai.getLastState,false);
+                ai.switchState(ai.getLastState, false);
             }
     
-            if (checkRoomTime <= 0.0f) {
+            if (isDoneScanning) {
                 ai.currentWindowIndex++;
-                checkRoomTime = ai.getCheckRoomTime;
             }
 
             // if done with room
