@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1829159430633270927
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3058345505330673559}
+  m_Layer: 0
+  m_Name: RightHandGrabTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3058345505330673559
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829159430633270927}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6563007175588199187}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6097221543302031936
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5204215993161313792}
+  m_Layer: 0
+  m_Name: LeftHandGrabTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5204215993161313792
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6097221543302031936}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6563007175588199185}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6464013861910799758
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,7 +127,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   pushDistance: 1.5
-  carryDistance: 0.01
 --- !u!54 &2137225621503774681
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -175,9 +236,25 @@ PrefabInstance:
     - {fileID: 100012, guid: fd7d68a65822e4a44a9ef78850e64cfc, type: 3}
     - {fileID: 100016, guid: fd7d68a65822e4a44a9ef78850e64cfc, type: 3}
     - {fileID: 100076, guid: fd7d68a65822e4a44a9ef78850e64cfc, type: 3}
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 400048, guid: fd7d68a65822e4a44a9ef78850e64cfc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5204215993161313792}
+    - targetCorrespondingSourceObject: {fileID: 400050, guid: fd7d68a65822e4a44a9ef78850e64cfc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3058345505330673559}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd7d68a65822e4a44a9ef78850e64cfc, type: 3}
+--- !u!4 &6563007175588199185 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400048, guid: fd7d68a65822e4a44a9ef78850e64cfc, type: 3}
+  m_PrefabInstance: {fileID: 6563007175587799457}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6563007175588199187 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400050, guid: fd7d68a65822e4a44a9ef78850e64cfc, type: 3}
+  m_PrefabInstance: {fileID: 6563007175587799457}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6563007175588199219 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400018, guid: fd7d68a65822e4a44a9ef78850e64cfc, type: 3}

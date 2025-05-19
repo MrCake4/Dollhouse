@@ -17,14 +17,20 @@ public class WalkState : BasePlayerState
             //Debug.Log("Switcherooo");
         }
 
-        if (player.JumpAllowed())       //JUMP
+        if (player.JumpAllowed())                               //SWITCH JUMP
         {
             player.jumpPressed = false;
             player.SwitchState(player.jumpState);
             return;
         }
         
-        if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //PUSH
+        if (player.holdPressed)                                 //SWITCH  HOLD
+        {
+            player.SwitchState(player.holdState);
+            return;
+        }
+
+        if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
         {
             player.pushState.SetTarget(pushTarget);
             player.SwitchState(player.pushState);
@@ -32,22 +38,24 @@ public class WalkState : BasePlayerState
         }
 
         //Keine Bewegung → Idle
-        else if (player.moveInput == Vector2.zero)
+        else if (player.moveInput == Vector2.zero)          //SWITCH Idle
         {
             player.SwitchState(player.idleState);
         }
 
         //Shift gedrückt → Wechsel in Run
-        else if (player.isRunning)
+        else if (player.isRunning)                          //SWITCH Run
         {
             player.SwitchState(player.runState);
         }
         
         //wenn crouch true
-        else if (player.isCrouching)
+        else if (player.isCrouching)                        //SWITCH Crouch
         {
             player.SwitchState(player.crouchState);
         }
+
+        //SWITCH Pull Up
 
     }
     public override void onFixedUpdate(PlayerStateManager player)          //Physik

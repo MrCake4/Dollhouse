@@ -22,18 +22,18 @@ public class CrouchState : BasePlayerState
         if (!player.isCrouching && player.HasHeadroom(player.originalHeight))
         {
             // Wenn keine Bewegung → Idle
-            if (player.moveInput == Vector2.zero){
+            if (player.moveInput == Vector2.zero){                      //SWITCH Idle
                 //onExit(player);
                 player.SwitchState(player.idleState);
             }
             // Wenn Bewegung → Walk (kein Run möglich beim Crouch)
             else{
                 //onExit(player);
-                player.SwitchState(player.walkState);
+                player.SwitchState(player.walkState);                   //SWITCH Walk
             }
         }
 
-        if(player.IsFalling()){                        //Damit man wirklich von jedem State aus auch nach Falling wechseln könnte
+        if(player.IsFalling()){                                         //SWITCH Fall
             player.SwitchState(player.fallState);
             //Debug.Log("Switcherooo");
         }

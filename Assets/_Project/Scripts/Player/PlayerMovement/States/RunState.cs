@@ -17,19 +17,26 @@ public class RunState : BasePlayerState
 
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
-        if (player.JumpAllowed())           //JUMP
-        {
+        if (player.JumpAllowed())                           //SWITCH JUMP
+        {   
             player.jumpPressed = false;
             player.SwitchState(player.jumpState);
             return;
         }
         
-        if(player.IsFalling()){                        //Damit man wirklich von jedem State aus auch nach Falling wechseln könnte
+        if(player.IsFalling()){                             //SWICTH Fall
             player.SwitchState(player.fallState);
             //Debug.Log("Switcherooo");
         }
 
-        if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //PUSH
+        if (player.holdPressed)                             //SWITCH  HOLD
+        {
+            player.SwitchState(player.holdState);
+            return;
+        }
+
+
+        if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
         {
             player.pushState.SetTarget(pushTarget);
             player.SwitchState(player.pushState);
@@ -39,12 +46,12 @@ public class RunState : BasePlayerState
         // Wenn keine Eingabe → Idle
         else if (player.moveInput == Vector2.zero)
         {
-            player.SwitchState(player.idleState);
+            player.SwitchState(player.idleState);               //SWITCH Idle
         }
         // Wenn Shift losgelassen → Walk
         else if (!player.isRunning)
         {
-            player.SwitchState(player.walkState);
+            player.SwitchState(player.walkState);               //SWICTH Walk
         }
     }
 
