@@ -7,17 +7,17 @@ public class IdleState : BasePlayerState
     {
         Debug.Log("not walking anymore");
     }
-    public override void onUpdate(PlayerStateManager player)                        //pro Frame
+    public override void onUpdate(PlayerStateManager player) //pro Frame
     {
 
-        if (player.JumpAllowed())       //JUMP
+        if (player.JumpAllowed())                                           //SWITCH JUMP
         {
             player.jumpPressed = false;
             player.SwitchState(player.jumpState);
-            return;                                                                 //retrun, damit Code direkt hier aufhört und zu JumpState switched
+            return; //retrun, damit Code direkt aufhört und zu JumpState switched
         }
 
-        if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //PUSH
+        if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
         {
             player.pushState.SetTarget(pushTarget);
             player.SwitchState(player.pushState);
@@ -25,25 +25,34 @@ public class IdleState : BasePlayerState
         }
         
         //wenn Crouching true
-        else if (player.isCrouching)
+        else if (player.isCrouching)                                        //SWITCH Crouch
         {
             player.SwitchState(player.crouchState);
         }
         // Wenn Shift + WASD → RunState
-        else if (player.moveInput != Vector2.zero && player.isRunning)
+        else if (player.moveInput != Vector2.zero && player.isRunning)      //SWITCH Run
         {
             player.SwitchState(player.runState);
         }
         // Wenn nur WASD → WalkState
-        else if (player.moveInput != Vector2.zero)
+        else if (player.moveInput != Vector2.zero)                          //SWITCH Walk
         {
             player.SwitchState(player.walkState);
         }
 
-        if(player.IsFalling()){                        //Damit man wirklich von jedem State aus auch nach Falling wechseln könnte
+        if(player.IsFalling()){                                             //SWITCH Fall
             player.SwitchState(player.fallState);
             //Debug.Log("Switcherooo");
         }
+
+        if (player.holdPressed)                                             //SWITCH  HOLD
+        {
+            player.SwitchState(player.holdState);
+            return;
+        }
+
+
+        //SWITCH Pull Up
 
     }
     public override void onFixedUpdate(PlayerStateManager player)                   //Physik

@@ -6,7 +6,7 @@ public class AIIdleState : AIBaseState
 
     float idleStateTimer;      // How long does she stay in Idle State in Seconds
     public override void enterState(AIStateManager ai){
-        Debug.Log("Dolly entered state 0");
+        Debug.Log("Dolly entered IDLE state");
 
         idleStateTimer = ai.getIdleTime;
 
