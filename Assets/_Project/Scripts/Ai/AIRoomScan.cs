@@ -41,7 +41,7 @@ public class AIRoomScan : MonoBehaviour
     // Orientation of the eye, given in x y z coordinates
     // +x changes the view of the eye down, -x up
     // TODO: maybe change to a quaternion
-    public Quaternion orientation;
+    public Vector3 orientation;
 
     // Laser settings
     // gets the laser from the object

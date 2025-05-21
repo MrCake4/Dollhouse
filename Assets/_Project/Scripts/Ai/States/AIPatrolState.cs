@@ -13,7 +13,8 @@ public class AIPatrolState : AIBaseState
 
         // Teleport to Patrol Spawn point
         if (!ai.isPatroling) {
-            ai.transform.position = new Vector3(ai.patrolSpawn.position.x, ai.patrolSpawn.position.y, ai.patrolSpawn.position.z);
+            if (!ai.isHunting) ai.transform.position = new Vector3(ai.patrolSpawn.position.x, ai.patrolSpawn.position.y, ai.patrolSpawn.position.z);
+            else ai.isHunting = false;      // This fixes the AI teleporting to patrol spawn after hunt
             ai.isPatroling = true;    
         }
         // Pick target
