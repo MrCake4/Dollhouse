@@ -23,8 +23,10 @@ public class AIPatrolState : AIBaseState
     public override void onUpdate(AIStateManager ai) {
         if (ai.currentTargetWindow == null) return;
 
-        if( ai.windowsPatrolled >= ai.getCheckWindowPerPatrol) exitState(ai);
-        else {
+
+        if (ai.windowsPatrolled >= ai.getCheckWindowPerPatrol) exitState(ai);
+        else
+        {
             ai.setCurrentTargetRoom(randomRoom);
             ai.currentWindowIndex = randomWindow;
             ai.windowsPatrolled++;
