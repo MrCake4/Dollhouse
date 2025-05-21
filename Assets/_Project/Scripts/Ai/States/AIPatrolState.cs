@@ -4,7 +4,6 @@ using UnityEngine.Animations;
 public class AIPatrolState : AIBaseState
 {
 // Removed unused variable 'currentTarget'
-    float checkTimer;      // How long does the ai check one window in seconds
    Transform lastWindow = null;
     RoomContainer randomRoom; 
     int randomWindow;
@@ -12,11 +11,10 @@ public class AIPatrolState : AIBaseState
     public override void enterState(AIStateManager ai) {
         Debug.Log("Dolly entered PATROL State");
 
-        checkTimer = ai.getCheckRoomTime;
-
         // Teleport to Patrol Spawn point
         if (!ai.isPatroling) {
-            ai.transform.position = new Vector3(ai.patrolSpawn.position.x, ai.patrolSpawn.position.y, ai.patrolSpawn.position.z);
+            if (!ai.isHunting) ai.transform.position = new Vector3(ai.patrolSpawn.position.x, ai.patrolSpawn.position.y, ai.patrolSpawn.position.z);
+            else ai.isHunting = false;      // This fixes the AI teleporting to patrol spawn after hunt
             ai.isPatroling = true;    
         }
         // Pick target

@@ -10,9 +10,11 @@ public class AIHuntState : AIBaseState
     public override void enterState(AIStateManager ai) {
         Debug.Log("Dolly entered HUNT state");
         currentTargetRoom = ai.currentTargetRoom;
+        ai.isHunting = true;
         
         // incase Null
-        if (currentTargetRoom == null) {
+        if (currentTargetRoom == null)
+        {
             Debug.LogWarning("HuntState: currentTargetRoom is null. Returning to patrol.");
             ai.switchState(ai.patrolState, false);
             return;

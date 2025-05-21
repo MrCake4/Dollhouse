@@ -1,62 +1,78 @@
+using System;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
 public class AIRoomScan : MonoBehaviour
 {
-
-
-    /*  LIGHT SETTINGS  */
-    // sets the length of the cone
-    float viewRadius = 20f;
-    // changes how big the cone is
-    float viewAngle = 30f;
-    float maxViewAngle; // max angle of the cone, takes the resets to view angle after shot
-    float minViewAngle = 8f;
-    float viewAngleChangeAmount = 10f;
-
-    [Range(0.1f, 10f), SerializeField] float laserBuildupTime = 1f;        // time in seconds for how long the laser needs to shoot at the player
-    float resetTimer;
-
-    [SerializeField] LayerMask targetMask;
-    [SerializeField] LayerMask obstacleMask;
-    [SerializeField] bool startScan = false;
-    bool shotAtPlayer = false;
-    bool hitPlayer = false;
     [SerializeField] Light spotlight;
-    [SerializeField] int rayCount = 30;
+
+
+    // SCAN VALUES
+    float viewRadius = 20f;
+
+    float viewAngle = 30f; // changes how big the cone is
+    float minViewAngle = 10f;
+    float viewAngleChangeAmount = 30f; // how fast the cone gets smaller
     [SerializeField] float rotationSpeed = 0.3f;
     [SerializeField] float maxRotationAngle = 90f;
+    float returnToCenterSpeed = 3f;
+
+
+    // DETECTION 
+    [SerializeField] LayerMask targetMask;
+    [SerializeField] LayerMask obstacleMask;
+    [SerializeField] bool startScan;
+
+
+    // SHOOT SEQUENCE
+    bool shotAtPlayer = false;
+    bool hitPlayer = false;
+    [SerializeField] float laserBuildupTime = 1f;        // time in seconds for how long the laser needs to shoot at the player
+    float resetTimer;
+
+
+    // DEBUG
+    [SerializeField] int rayCount = 30;
+
     private float initialYRotation;
     private Transform currentTarget;
 
     // Orientation of the eye, given in x y z coordinates
     // +x changes the view of the eye down, -x up
     // TODO: maybe change to a quaternion
-    public Quaternion orientation;
+    public Vector3 orientation;
 
     // Laser settings
     // gets the laser from the object
     LineRenderer laserLine;
-     [SerializeField]float laserDrawResetTime = 5; // time in seconds for how long the laser is visible
-     float laserDrawReset;
+    [SerializeField] float laserDrawResetTime = 0.1f; // time in seconds for how long the laser is visible
+    float laserDrawReset;
+
+    private bool isReturningToCenter;
+    private Quaternion centerRotation;
+
+    private bool isSweeping = false;
+    private float sweepStartTime;
+    [SerializeField] float sweepDuration = 3f; // Dauer eines Sweeps in Sekunden
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // saves laser buildup time to reset it after shooting
-        resetTimer = laserBuildupTime;        
+        resetTimer = laserBuildupTime;
         // sets what the ray is looking for
         targetMask = LayerMask.GetMask("Player");
         // sets what blocks the ray
         obstacleMask = LayerMask.GetMask("Obstacle", "Ground");
         initialYRotation = transform.eulerAngles.y;
 
-        maxViewAngle = viewAngle;
-
         // make laser invisible at start
         laserLine = GetComponent<LineRenderer>();
         laserLine.enabled = false;
         laserDrawReset = laserDrawResetTime;
+
+        centerRotation = Quaternion.Euler(orientation.x, initialYRotation, 0);
     }
 
     // Update is called once per frame
@@ -64,28 +80,56 @@ public class AIRoomScan : MonoBehaviour
     {
         UpdateSpotlight();
         UpdateLaserLine();
-       
-
         if (currentTarget == null && startScan)
         {
-            
-            // Calculates the rotation angle
-            float targetRotationAngle = initialYRotation + Mathf.Sin(Time.time * rotationSpeed) * maxRotationAngle;
-            // Rotates the object
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(orientation.x, targetRotationAngle, 0), Time.deltaTime * rotationSpeed);
             DrawDetectionRays();
-            Scan();
+            if (!isSweeping)
+            {
+                // Starte Sweep
+                isSweeping = true;
+                sweepStartTime = Time.time;
+            }
+
+            float elapsed = Time.time - sweepStartTime;
+            if (elapsed <= sweepDuration)
+            {
+                // Aktiver Sweep
+                float targetRotationAngle = initialYRotation + Mathf.Sin(elapsed * rotationSpeed * Mathf.PI * 2f / sweepDuration) * maxRotationAngle;
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    Quaternion.Euler(orientation.x, targetRotationAngle, 0),
+                    Time.deltaTime * rotationSpeed
+                );
+                Scan();
+            }
+            else
+            {
+                // Sweep vorbei → zurück zur Mittelposition
+                ReturnToCenterPosition();
+                if (!isReturningToCenter)
+                {
+                    // Nach Rückkehr: beende Scan
+                    isSweeping = false;
+                    startScan = false;
+                }
+            }
         }
         else if (currentTarget != null)
         {
-            DrawDetectionRays();
             FollowTarget();
+            DrawDetectionRays();
             ShootSequence();
+        }
+        else
+        {
+            ReturnToCenterPosition();
+            isSweeping = false;
         }
     }
 
+
     void Scan()
-    {   
+    {
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
         foreach (Collider target in targetsInViewRadius)
         {
@@ -103,6 +147,18 @@ public class AIRoomScan : MonoBehaviour
                     break;
                 }
             }
+        }
+    }
+
+    private void ReturnToCenterPosition()
+    {
+        isReturningToCenter = true;
+        transform.rotation = Quaternion.Slerp(transform.rotation, centerRotation, Time.deltaTime * returnToCenterSpeed);
+
+        if (Quaternion.Angle(transform.rotation, centerRotation) < 0.5f)
+        {
+            transform.rotation = centerRotation;
+            isReturningToCenter = false;
         }
     }
 
@@ -126,20 +182,17 @@ public class AIRoomScan : MonoBehaviour
             spotlight.spotAngle = viewAngle;
             spotlight.range = viewRadius;
             spotlight.intensity = 40000;
-            if(currentTarget != null)       
+            if (currentTarget != null)
             {
-                // calculates the change according to the laser buildup time
-                spotlight.colorTemperature -= 100;  
-                float angleChangeRate = viewAngleChangeAmount * (3f / laserBuildupTime);
-
-                if (viewAngle > minViewAngle)
-                {
-                    viewAngle -= angleChangeRate * Time.deltaTime;
-                    viewAngle = Mathf.Max(viewAngle, minViewAngle); // Clamp to min
-                }
-            } else {
-                spotlight.colorTemperature = 6000;
-                viewAngle = 30f; // reset to default value
+                // Narrow focus when targeting
+                spotlight.colorTemperature = Mathf.Lerp(spotlight.colorTemperature, 800, Time.deltaTime * 5f);
+                viewAngle = Mathf.Max(viewAngle - (viewAngleChangeAmount * Time.deltaTime), minViewAngle);
+            }
+            else
+            {
+                // Return to normal when scanning
+                spotlight.colorTemperature = Mathf.Lerp(spotlight.colorTemperature, 6000, Time.deltaTime * 5f);
+                viewAngle = Mathf.Lerp(viewAngle, 30f, Time.deltaTime * 5f);
             }
         }
     }
@@ -174,11 +227,12 @@ public class AIRoomScan : MonoBehaviour
         // if player is detected by one of the rays, shoot at player, else if there is an obstacle between player and ray, shoot but miss
         laserBuildupTime -= Time.deltaTime;
         // if timer runs out shoot at player
-        if(laserBuildupTime < 0f){
+        if (laserBuildupTime < 0f)
+        {
             Vector3 directionToTarget = (currentTarget.position - transform.position).normalized;
             float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
 
-           RaycastHit hit;
+            RaycastHit hit;
 
             if (!Physics.Raycast(transform.position, directionToTarget, out hit, distanceToTarget, obstacleMask))
             {
@@ -202,7 +256,7 @@ public class AIRoomScan : MonoBehaviour
             shotAtPlayer = true;
             laserBuildupTime = resetTimer;
             currentTarget = null; // reset target
-            
+
             LaserReflection laserReflection = GetComponent<LaserReflection>();
             laserReflection.ClearLaser(); // clear laser
         }
@@ -228,10 +282,10 @@ public class AIRoomScan : MonoBehaviour
         }
     }
 
-    public bool getStartScan => startScan;
     public bool getShotAtPlayer => shotAtPlayer;
     public bool getHitPlayer => hitPlayer;
     public bool getLaserEnabled => laserLine.enabled;
+    public bool getStartScan => startScan;
     public void setStartScan(bool startScan)
     {
         this.startScan = startScan;
