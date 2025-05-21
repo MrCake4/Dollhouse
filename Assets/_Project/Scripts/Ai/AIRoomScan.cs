@@ -120,6 +120,11 @@ public class AIRoomScan : MonoBehaviour
             DrawDetectionRays();
             ShootSequence();
         }
+        else
+        {
+            ReturnToCenterPosition();
+            isSweeping = false;
+        }
     }
 
 

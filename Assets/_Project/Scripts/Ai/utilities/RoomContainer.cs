@@ -26,6 +26,7 @@ public class RoomContainer : MonoBehaviour
             ai.eye.setStartScan(false);
             ai.isPatroling = false;
             ai.switchState(ai.huntState, false);
+            return;
         }
     }
 }

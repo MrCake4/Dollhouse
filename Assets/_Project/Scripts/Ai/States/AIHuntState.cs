@@ -12,7 +12,8 @@ public class AIHuntState : AIBaseState
         currentTargetRoom = ai.currentTargetRoom;
         
         // incase Null
-        if (currentTargetRoom == null) {
+        if (currentTargetRoom == null)
+        {
             Debug.LogWarning("HuntState: currentTargetRoom is null. Returning to patrol.");
             ai.switchState(ai.patrolState, false);
             return;

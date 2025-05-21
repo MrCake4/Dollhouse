@@ -46,13 +46,14 @@ public class AIScanState : AIBaseState
             if (ai.isPatroling && isDoneScanning)
             {
                 resetVariables(ai);
-                ai.scanDone = true;
                 ai.switchState(ai.getLastState, false);
                 return;
             }
-    
-            if (isDoneScanning) {
+
+            if (isDoneScanning)
+            {
                 ai.currentWindowIndex++;
+                scanStartet = false;
             }
 
             // if done with room
