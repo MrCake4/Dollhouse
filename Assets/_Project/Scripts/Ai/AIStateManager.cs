@@ -14,6 +14,7 @@ using UnityEngine.Rendering;
 * States change inside the State classes
 *
 * Some variables need to be reseted after switching a state, if not the variable will stay the same
+* do a return after switching a state if it's inside a normal if-statement in onUpdate() otherwise it will keep executing the code below
 */
 
 public class AIStateManager : MonoBehaviour
@@ -42,7 +43,6 @@ public class AIStateManager : MonoBehaviour
 
     [Header("AI Behaviour")]
     [SerializeField, Range(0,300)] private float idleTime;
-    //[SerializeField, Range(0,300)] private float checkRoomTime;
     [Range(0,10)] public float moveSpeed = 10;       // How fast AI goes from room to room
     [SerializeField, Range(1,100)] private int checkWindowsPerPatrol = 4;
     [HideInInspector] public int windowsPatrolled = 0;
@@ -107,7 +107,6 @@ public class AIStateManager : MonoBehaviour
 
     // Getter and Setter
     public float getIdleTime => idleTime;
-    //public float getCheckRoomTime => checkRoomTime;
     public int getCheckWindowPerPatrol => checkWindowsPerPatrol;
     public AIBaseState getLastState => lastState;
 }

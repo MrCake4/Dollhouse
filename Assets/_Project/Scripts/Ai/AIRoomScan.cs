@@ -55,7 +55,6 @@ public class AIRoomScan : MonoBehaviour
     private bool isSweeping = false;
     private float sweepStartTime;
     [SerializeField] float sweepDuration = 3f; // Dauer eines Sweeps in Sekunden
-    private bool isDoneScanning;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -81,14 +80,9 @@ public class AIRoomScan : MonoBehaviour
     {
         UpdateSpotlight();
         UpdateLaserLine();
-
-
-        Debug.Log("startScan: " + startScan);
         if (currentTarget == null && startScan)
         {
             DrawDetectionRays();
-            isDoneScanning = false;
-            Debug.Log("isDoneScanning: " + isDoneScanning);
             if (!isSweeping)
             {
                 // Starte Sweep
@@ -117,8 +111,6 @@ public class AIRoomScan : MonoBehaviour
                     // Nach Rückkehr: beende Scan
                     isSweeping = false;
                     startScan = false;
-                    isDoneScanning = true;
-                    Debug.Log("Done Resetting");
                 }
             }
         }
@@ -289,15 +281,8 @@ public class AIRoomScan : MonoBehaviour
     public bool getHitPlayer => hitPlayer;
     public bool getLaserEnabled => laserLine.enabled;
     public bool getStartScan => startScan;
-    public bool getIsDoneScanning => isDoneScanning;
-    public void setStartScan(bool on)
+    public void setStartScan(bool startScan)
     {
-        startScan = on;
+        this.startScan = startScan;
     }
-
-    public void setIsDoneScanning(bool done)
-    {
-        isDoneScanning = done;
-    }
-
 }

@@ -1,16 +1,19 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Animations;
 
 public class AIScanState : AIBaseState
 {
     RoomContainer currentTargetRoom;
-    public override void enterState(AIStateManager ai){
+    private bool isDoneScanning;
+    bool scanStartet;
+    public override void enterState(AIStateManager ai)
+    {
         Debug.Log("Dolly entered SCAN State");
         currentTargetRoom = ai.currentTargetRoom;
         ai.scanDone = false;
-
-        ai.eye.setIsDoneScanning(true);
-        
+        scanStartet = false;
         // incase of null
         if (currentTargetRoom == null || currentTargetRoom.windowAnchorPoints.Length == 0)
         {
@@ -24,40 +27,39 @@ public class AIScanState : AIBaseState
     }
     
     public override void onUpdate(AIStateManager ai){
-        
-        if (ai.currentTargetWindow == null) return;
+        if (ai.currentTargetWindow == null)
+        {
+            Debug.Log("No Target Window");
+            return;
+        } 
+
+
          // If reached current window
         if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
-            if (!ai.eye.getStartScan && ai.eye.getIsDoneScanning)
+            if (!scanStartet)
             {
                 ai.eye.setStartScan(true);
-                ai.eye.setIsDoneScanning(false); // <<< HINZUGEFÜGT!
-                Debug.Log("Started scan at window " + ai.currentWindowIndex);
+                scanStartet = true;
             }
-            bool isDoneScanning = ai.eye.getIsDoneScanning;
-            Debug.Log(isDoneScanning + "|" + ai.eye.getStartScan);
+            isDoneScanning = !ai.eye.getStartScan;
 
             if (ai.isPatroling && isDoneScanning)
             {
                 resetVariables(ai);
                 ai.scanDone = true;
-                ai.eye.setStartScan(false);
                 ai.switchState(ai.getLastState, false);
                 return;
             }
-
-            if (isDoneScanning)
-            {
+    
+            if (isDoneScanning) {
                 ai.currentWindowIndex++;
-                ai.eye.setStartScan(false);
             }
 
             // if done with room
             if(ai.currentWindowIndex >= currentTargetRoom.windowAnchorPoints.Length) {
                 // Reset window index for next room
                 resetVariables(ai);
-                ai.scanDone = true;
-                ai.eye.setStartScan(false);
+                ai.scanDone = true; 
                 ai.switchState(ai.getLastState, false);
                 return;
             }
