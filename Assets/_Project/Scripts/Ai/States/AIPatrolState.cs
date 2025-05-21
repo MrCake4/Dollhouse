@@ -24,14 +24,20 @@ public class AIPatrolState : AIBaseState
     }
 
     public override void onUpdate(AIStateManager ai) {
-        if (ai.currentTargetWindow == null) return;
+        if (ai.currentTargetWindow == null)
+        {
+            Debug.Log("Current Target is null");
+           return; 
+        }
 
-        if( ai.windowsPatrolled >= ai.getCheckWindowPerPatrol) exitState(ai);
+        if (ai.windowsPatrolled >= ai.getCheckWindowPerPatrol) exitState(ai);
         else {
             ai.setCurrentTargetRoom(randomRoom);
             ai.currentWindowIndex = randomWindow;
             ai.windowsPatrolled++;
+            Debug.Log("Windows Patroled: " + ai.windowsPatrolled);
             ai.switchState(ai.scanState, false);
+            return;
         }
         
     }
