@@ -12,7 +12,7 @@ public class PlayerItemHandler : MonoBehaviour
     {
         triggerCollider = GetComponent<BoxCollider>();
         //if (triggerCollider == null || !triggerCollider.isTrigger)
-            //Debug.LogError("❗ Spieler braucht einen BoxCollider mit isTrigger=true");
+        //Debug.LogError("❗ Spieler braucht einen BoxCollider mit isTrigger=true");
 
         //triggerCollider.enabled = false;
     }
@@ -95,5 +95,10 @@ public class PlayerItemHandler : MonoBehaviour
         if (rb) rb.isKinematic = false;
 
         carriedObject = null;
+    }
+    
+    public GameObject GetCarriedObject()
+    {
+        return carriedObject;
     }
 }
