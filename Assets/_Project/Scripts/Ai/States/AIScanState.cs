@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Animations;
 
 public class AIScanState : AIBaseState
@@ -25,17 +27,23 @@ public class AIScanState : AIBaseState
     }
     
     public override void onUpdate(AIStateManager ai){
-        if (ai.currentTargetWindow == null) return;
+        if (ai.currentTargetWindow == null)
+        {
+            Debug.Log("No Target Window");
+            return;
+        } 
 
 
          // If reached current window
         if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
             checkRoomTime -= Time.deltaTime;
 
-            if(ai.isPatroling && checkRoomTime <= 0.0f){
+            if (ai.isPatroling && checkRoomTime <= 0.0f)
+            {
                 resetVariables(ai);
                 ai.scanDone = true;
-                ai.switchState(ai.getLastState,false);
+                ai.switchState(ai.getLastState, false);
+                return;
             }
     
             if (checkRoomTime <= 0.0f) {

@@ -14,6 +14,7 @@ using UnityEngine.Rendering;
 * States change inside the State classes
 *
 * Some variables need to be reseted after switching a state, if not the variable will stay the same
+* do a return after switching a state if it's inside a normal if-statement in onUpdate() otherwise it will keep executing the code below
 */
 
 public class AIStateManager : MonoBehaviour
