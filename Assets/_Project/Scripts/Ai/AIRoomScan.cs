@@ -12,8 +12,8 @@ public class AIRoomScan : MonoBehaviour
     float viewRadius = 20f;
 
     float viewAngle = 30f; // changes how big the cone is
-    float minViewAngle = 8f;
-    float viewAngleChangeAmount = 10f;
+    float minViewAngle = 10f;
+    float viewAngleChangeAmount = 30f; // how fast the cone gets smaller
     [SerializeField] float rotationSpeed = 0.3f;
     [SerializeField] float maxRotationAngle = 90f;
     float returnToCenterSpeed = 3f;
@@ -46,7 +46,7 @@ public class AIRoomScan : MonoBehaviour
     // Laser settings
     // gets the laser from the object
     LineRenderer laserLine;
-    [SerializeField] float laserDrawResetTime = 5; // time in seconds for how long the laser is visible
+    [SerializeField] float laserDrawResetTime = 0.1f; // time in seconds for how long the laser is visible
     float laserDrawReset;
 
     private bool isReturningToCenter;
@@ -185,7 +185,7 @@ public class AIRoomScan : MonoBehaviour
             if (currentTarget != null)
             {
                 // Narrow focus when targeting
-                spotlight.colorTemperature = Mathf.Lerp(spotlight.colorTemperature, 15000, Time.deltaTime * 5f);
+                spotlight.colorTemperature = Mathf.Lerp(spotlight.colorTemperature, 800, Time.deltaTime * 5f);
                 viewAngle = Mathf.Max(viewAngle - (viewAngleChangeAmount * Time.deltaTime), minViewAngle);
             }
             else
