@@ -249,6 +249,9 @@ public class AIRoomScan : MonoBehaviour
                 laserLine.enabled = true;
                 shootLaser(transform.position, hit.point);
 
+                // if obstacle is tag "Destroyable" destroy it
+                if (hit.collider.CompareTag("Destroyable")) Destroy(hit.collider.gameObject);
+
                 hitPlayer = false;
                 Debug.Log("Shot at player but missed!");
             }
