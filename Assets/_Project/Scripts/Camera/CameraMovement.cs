@@ -70,8 +70,8 @@ public class CameraMovement : MonoBehaviour
         // TODO: IMPROVE THE FOLLOWING CODE
         
         // Camera stays at player position and adds it by the camera position
-        // Step 1: Get the desired position based on the player and offset
-        Vector3 desiredCameraPos = playerPosition + cameraPosition + new Vector3(0, (float) Mathf.Sin(Time.time * floatAmplitude) * floatFrequency,0);
+        // Step 1: Get the desired position based on the player and offset (without float yet)
+        Vector3 desiredCameraPos = playerPosition + cameraPosition;
 
         // Step 2: Blend between the room's anchor and the desired position
         float followStrength = currentRoom.getFollowStrength; // 0 = stick to room, 1 = stick to player
@@ -79,17 +79,19 @@ public class CameraMovement : MonoBehaviour
 
         // Step 3: Clamp the blended position inside the room bounds
         Bounds roomBounds = currentRoom.roomCollider.bounds;
-
         float clampedX = Mathf.Clamp(blendedTarget.x, roomBounds.min.x, roomBounds.max.x);
         float clampedY = Mathf.Clamp(blendedTarget.y, roomBounds.min.y, roomBounds.max.y);
         float clampedZ = Mathf.Clamp(blendedTarget.z, roomBounds.min.z, roomBounds.max.z);
+        Vector3 clampedTarget = new Vector3(clampedX, clampedY, clampedZ);
 
-        targetCameraPos = new Vector3(clampedX, clampedY, clampedZ);
+        // Step 4: Add floating effect AFTER clamping
+        float floatOffset = Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
+        clampedTarget.y += floatOffset;
 
-        // Step 4: Smooth camera move
-        transform.position = Vector3.Lerp(transform.position, cameraPosition + targetCameraPos, Time.deltaTime * cameraSpeed);
-        
-        // Step 5: Smooth camera look at
+        // Step 5: Smooth camera move
+        transform.position = Vector3.Lerp(transform.position, clampedTarget, Time.deltaTime * cameraSpeed);
+
+        // Step 6: Smooth camera look at
         currentLookAt = Vector3.Lerp(currentLookAt, cameraLookAt, Time.deltaTime * cameraSpeed);
         transform.LookAt(currentLookAt, Vector3.up);
     }
