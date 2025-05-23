@@ -13,7 +13,6 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
      public PushState pushState = new PushState();
      public CrouchState crouchState = new CrouchState();
     //private PlayerItemHandler PlayerItemHandler;                //CARRY
-    public HoldState holdState = new HoldState();
     public PullUpState pullUpState = new PullUpState();
     public HangState hangState = new HangState();
 
@@ -86,14 +85,31 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     // Update is called once per frame
     void Update()
     {
-        // Eingaben zentral erfassen
-        moveInput = Vector2.zero;
-        if (Input.GetKey(KeyCode.W)) moveInput.y = +1;
-        if (Input.GetKey(KeyCode.S)) moveInput.y = -1;
-        if (Input.GetKey(KeyCode.A)) moveInput.x = -1;
-        if (Input.GetKey(KeyCode.D)) moveInput.x = +1;
+        float inputX = Input.GetAxis("Horizontal"); // A/D oder Left Stick X
+        float inputY = Input.GetAxis("Vertical");   // W/S oder Left Stick Y
 
-        moveInput = moveInput.normalized;
+        // Eingaben zentral erfassen
+        Vector2 keyboardInput = Vector2.zero;       //für Keyboard-Eingabe
+        
+        if (Input.GetKey(KeyCode.W)) keyboardInput.y = +1;
+        if (Input.GetKey(KeyCode.S)) keyboardInput.y = -1;
+        if (Input.GetKey(KeyCode.A)) keyboardInput.x = -1;
+        if (Input.GetKey(KeyCode.D)) keyboardInput.x = +1;
+
+        
+        if (keyboardInput != Vector2.zero)                  // Normalisieren nur für Tastatur
+        {
+            moveInput = keyboardInput.normalized;
+        }
+        else
+        {
+            // Controller-Stick → analog übernehmen
+            float stickX = Input.GetAxis("Horizontal");     // Controller Left Stick X
+            float stickY = Input.GetAxis("Vertical");       // Controller Left Stick Y
+
+            moveInput = new Vector2(stickX, stickY);        // NICHT normalisieren!
+        }
+
         moveDir = new Vector3(moveInput.x, 0, moveInput.y);  // in Welt-Richtung
 
         if (is2DMode)
@@ -101,13 +117,13 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
             moveDir = new Vector3(moveDir.x, 0, 0); // kein Vor/zurück, nur links/rechts
         }
 
-        // andere Eingaben
-        jumpPressed = Input.GetKeyDown(KeyCode.Space);
-        isRunning = Input.GetKey(KeyCode.LeftShift);
-        isCrouching = Input.GetKey(KeyCode.LeftControl);
-        interactPressed = Input.GetKeyDown(KeyCode.E);
-        holdPressed = Input.GetMouseButtonDown(0);              //Trying to hold onto something?
-
+        // andere Eingaben  --> 0 = Viereck, 1 =
+        jumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1);     // X!!!
+        isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button10);          //Rennen mit reindrücken von L
+        isCrouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Joystick1Button4);      //L1
+        interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button0);        //Viereck   ???
+        holdPressed = Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.Joystick1Button5);            //Trying to hold onto something?        //R1    
+ 
         //Zustand updaten
         currentState.onUpdate(this);                //beim aktuellen State Update() aufrufen
 
@@ -238,6 +254,48 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         return false;
     }
+
+    public void TryGrab()
+    {
+        if (!holdPressed) return;
+
+        BoxCollider box = GetComponent<BoxCollider>();
+        if (box == null) return;
+
+        box.enabled = true;
+
+        Collider[] hits = Physics.OverlapBox(
+            box.bounds.center,
+            box.bounds.extents,
+            transform.rotation,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        box.enabled = false;
+
+        foreach (Collider col in hits)
+        {
+            if (col.CompareTag("Ledge"))
+            {
+                Vector3 closestPoint = col.ClosestPoint(transform.position);
+                pullUpState.SetLedgePosition(closestPoint);
+                SwitchState(pullUpState);
+                return;
+            }
+
+            if (col.CompareTag("HangOnto"))
+            {
+                Vector3 closestPoint = col.ClosestPoint(transform.position);
+                hangState.SetHangPosition(closestPoint);
+                SwitchState(hangState);
+                return;
+            }
+        }
+
+        // Kein passendes Ziel gefunden → nichts tun
+    }
+
 
 
     //FALL / JUMP

@@ -22,9 +22,9 @@ public class FallState : BasePlayerState                                //dann, 
             }
         }
 
-        if (player.holdPressed)                                             //SWITCH  HOLD
+        if (player.holdPressed)                                             //SWITCH PULLUP or HANG
         {
-            player.SwitchState(player.holdState);
+            player.TryGrab();
             return;
         }
         
