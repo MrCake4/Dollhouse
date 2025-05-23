@@ -28,8 +28,15 @@ public class AIPatrolState : AIBaseState
            return; 
         }
 
-        if (ai.windowsPatrolled >= ai.getCheckWindowPerPatrol) exitState(ai);
-        else {
+        if (ai.windowsPatrolled >= ai.getCheckWindowPerPatrol)
+        {
+            // exits patrol, moves to patrol spawn and goes into idle again
+            ai.transform.position = Vector3.MoveTowards(ai.transform.position, ai.patrolSpawn.position, Time.deltaTime * ai.moveSpeed);
+
+            if(Vector3.Distance(ai.transform.position, ai.patrolSpawn.position) < 0.1f) exitState(ai);
+        }
+        else
+        {
             ai.setCurrentTargetRoom(randomRoom);
             ai.currentWindowIndex = randomWindow;
             ai.windowsPatrolled++;
