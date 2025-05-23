@@ -45,9 +45,9 @@ public class IdleState : BasePlayerState
             //Debug.Log("Switcherooo");
         }
 
-        if (player.holdPressed)                                             //SWITCH  HOLD
+        if (player.holdPressed)                                             //SWITCH PULLUP or HANG
         {
-            player.SwitchState(player.holdState);
+            player.TryGrab();
             return;
         }
 

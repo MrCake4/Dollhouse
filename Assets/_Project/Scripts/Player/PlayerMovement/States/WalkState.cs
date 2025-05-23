@@ -24,9 +24,9 @@ public class WalkState : BasePlayerState
             return;
         }
         
-        if (player.holdPressed)                                 //SWITCH  HOLD
+        if (player.holdPressed)                             //SWITCH PULLUP or HANG
         {
-            player.SwitchState(player.holdState);
+            player.TryGrab();
             return;
         }
 
@@ -55,7 +55,6 @@ public class WalkState : BasePlayerState
             player.SwitchState(player.crouchState);
         }
 
-        //SWITCH Pull Up
 
     }
     public override void onFixedUpdate(PlayerStateManager player)          //Physik

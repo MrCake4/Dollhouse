@@ -26,7 +26,7 @@ public class HangState : BasePlayerState
 
     public override void onUpdate(PlayerStateManager player)
     {
-        if (player.holdPressed)
+        if (Input.GetKeyUp(KeyCode.Mouse0) || Input.GetKeyUp(KeyCode.Joystick1Button5))
         {
             Debug.Log("Losgelassen!");
             player.SwitchState(player.fallState);
