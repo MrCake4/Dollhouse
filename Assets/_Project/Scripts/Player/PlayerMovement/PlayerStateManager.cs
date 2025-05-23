@@ -41,6 +41,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public bool interactPressed;
     //[HideInInspector] public bool pullUpPressed;
     [HideInInspector] public bool holdPressed;      //Festhalten --> für PullUp, Hang, climb, etc
+    [HideInInspector] public bool is2DMode = false;         // 2.5D MOVEMENT
+
 
     //for the RayCasts
     public LayerMask bigObjectLayer;
@@ -94,6 +96,11 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         moveInput = moveInput.normalized;
         moveDir = new Vector3(moveInput.x, 0, moveInput.y);  // in Welt-Richtung
 
+        if (is2DMode)
+        {
+            moveDir = new Vector3(moveDir.x, 0, 0); // kein Vor/zurück, nur links/rechts
+        }
+
         // andere Eingaben
         jumpPressed = Input.GetKeyDown(KeyCode.Space);
         isRunning = Input.GetKey(KeyCode.LeftShift);
@@ -129,6 +136,12 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     {
         Vector3 velocity = moveDir * speed;
         velocity.y = rb.linearVelocity.y;           // Y-Achse (zB. durch Sprung) beibehalten
+
+        if (is2DMode)
+        {
+            velocity.z = 0f; // endgültig Z-Achse kappen
+        }
+
         rb.linearVelocity = velocity;
     }
 
