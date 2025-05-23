@@ -22,6 +22,7 @@ public class CameraMovement : MonoBehaviour
     private Vector3 cameraLookAt;                   // The position the camera should look at
     private Vector3 currentLookAt;                  // The current position the camera is looking at
     bool lookAtPlayer;                              // Whether the camera should look at the player or not
+    [SerializeField] float maxOffset = 3f;          // Maximum distance the camera can shift toward the mouse
 
     [Header("Room to room behaviour")]
     [SerializeField] Room[] rooms;
@@ -76,6 +77,23 @@ public class CameraMovement : MonoBehaviour
         // Step 2: Blend between the room's anchor and the desired position
         float followStrength = currentRoom.getFollowStrength; // 0 = stick to room, 1 = stick to player
         Vector3 blendedTarget = Vector3.Lerp(currentRoom.cameraAnchorPoint.position, desiredCameraPos, followStrength);
+
+        // Step 2.5: Slight camera follow towards mouse when right mouse button is held
+        if (Input.GetMouseButton(1)) // Right mouse button pressed
+        {
+            Vector3 mouseOffset = Input.mousePosition - new Vector3(Screen.width / 2f, Screen.height / 2f, 0);  // division by 2 so that the player does not have to move his mouse to the edge of the screen
+            
+            // Normalize and scale the offset (feel free to tweak the divisor for sensitivity)
+            Vector3 offsetDirection = new Vector3(mouseOffset.x, mouseOffset.y, 0).normalized;
+            Vector3 mouseCameraOffset = offsetDirection * Mathf.Min(mouseOffset.magnitude / 200f, maxOffset);
+
+            // Convert the offset to world space relative to the camera
+            Vector3 worldOffset = Camera.main.transform.right * mouseCameraOffset.x +
+                                Camera.main.transform.up * mouseCameraOffset.y;
+
+            // Add this small offset to the blended target
+            blendedTarget += worldOffset;
+        }
 
         // Step 3: Clamp the blended position inside the room bounds
         Bounds roomBounds = currentRoom.roomCollider.bounds;
