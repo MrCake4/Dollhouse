@@ -95,6 +95,8 @@ public class AIRoomScan : MonoBehaviour
                 sweepStartTime = Time.time;
             }
 
+            Scan();
+
             float elapsed = Time.time - sweepStartTime;
             if (elapsed <= sweepDuration)
             {
@@ -105,7 +107,7 @@ public class AIRoomScan : MonoBehaviour
                     Quaternion.Euler(orientation.x, targetRotationAngle, 0),
                     Time.deltaTime * rotationSpeed
                 );
-                Scan();
+                
             }
             else
             {
