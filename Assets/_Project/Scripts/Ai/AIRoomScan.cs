@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.UIElements;
 
 public class AIRoomScan : MonoBehaviour
 {
@@ -37,11 +38,13 @@ public class AIRoomScan : MonoBehaviour
 
     private float initialYRotation;
     private Transform currentTarget;
+    
 
     // Orientation of the eye, given in x y z coordinates
     // +x changes the view of the eye down, -x up
     // TODO: maybe change to a quaternion
     public Vector3 orientation;
+    Transform playerPosition;   // This variable is used to get the player position for the laser, so that the laser stays on the players positon
 
     // Laser settings
     // gets the laser from the object
@@ -73,6 +76,8 @@ public class AIRoomScan : MonoBehaviour
         laserDrawReset = laserDrawResetTime;
 
         centerRotation = Quaternion.Euler(orientation.x, initialYRotation, 0);
+
+        playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame
@@ -276,6 +281,9 @@ public class AIRoomScan : MonoBehaviour
     {
         if (laserLine.enabled)
         {
+            // if player is hit, draw laser to current player position, if not he will just hit the obstacle 
+            if (hitPlayer) shootLaser(transform.position, playerPosition.transform.position);
+
             laserDrawReset -= Time.deltaTime;
             if (laserDrawReset <= 0f)
             {
