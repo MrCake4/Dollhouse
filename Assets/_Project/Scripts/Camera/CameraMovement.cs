@@ -44,11 +44,11 @@ public class CameraMovement : MonoBehaviour
     void Update()
     {
         playerPosition = player.transform.position;
-        
 
-        foreach(Room room in rooms){
-            if(room.roomCollider.bounds.Contains(playerPosition)){
-                if (room != currentRoom){
+
+        foreach (Room room in rooms) {
+            if (room.roomCollider.bounds.Contains(playerPosition)) {
+                if (room != currentRoom) {
                     currentRoom = room;
                     targetCameraPos = room.cameraAnchorPoint.position;
                     lookAtPlayer = currentRoom.getLookAtPlayer;
@@ -62,14 +62,14 @@ public class CameraMovement : MonoBehaviour
 
         // Apply the smoothed camera angle to the player's Y-position
         playerPosition.y += currentCameraAngle; // Add the camera angle to the player position
-        
+
         if (lookAtPlayer)
             cameraLookAt = playerPosition;
         else
             cameraLookAt = new Vector3(currentRoom.transform.position.x, currentCameraAngle, 0);
 
         // TODO: IMPROVE THE FOLLOWING CODE
-        
+
         // Camera stays at player position and adds it by the camera position
         // Step 1: Get the desired position based on the player and offset (without float yet)
         Vector3 desiredCameraPos = playerPosition + cameraPosition;
@@ -81,22 +81,46 @@ public class CameraMovement : MonoBehaviour
         // Step 2.5: Slight camera follow towards mouse when right mouse button is held
 
         // Gamepad Support right here
-        
-        if (Input.GetMouseButton(1)) // Right mouse button pressed
+
+        // Gamepad-Support + Maussteuerung gemeinsam
+
+        // 1. Controller-Eingabe auslesen
+        Vector2 rightStickInput = new Vector2(
+            Input.GetAxis("HorizontalRightStick"),
+            Input.GetAxis("VerticalRightStick")
+        );
+
+        // 2. Entscheiden, ob Gamepad oder Maus genutzt wird
+        bool isUsingGamepad = rightStickInput.magnitude > 0.1f;
+        bool isUsingMouse = Input.GetMouseButton(1);
+
+        // 3. Wenn eine Eingabe vorhanden ist, Offset berechnen
+        if (isUsingMouse || isUsingGamepad)
         {
-            Vector3 mouseOffset = Input.mousePosition - new Vector3(Screen.width / 2f, Screen.height / 2f, 0);  // division by 2 so that the player does not have to move his mouse to the edge of the screen
+            Vector3 inputOffset;
 
-            // Normalize and scale the offset (feel free to tweak the divisor for sensitivity)
-            Vector3 offsetDirection = new Vector3(mouseOffset.x, mouseOffset.y, 0).normalized;
-            Vector3 mouseCameraOffset = offsetDirection * Mathf.Min(mouseOffset.magnitude / 200f, maxOffset);
+            if (isUsingMouse)
+            {
+                // Maus-Offset zur Bildschirmmitte
+                Vector3 mouseOffset = Input.mousePosition - new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+                Vector3 offsetDirection = new Vector3(mouseOffset.x, mouseOffset.y, 0).normalized;
+                inputOffset = offsetDirection * Mathf.Min(mouseOffset.magnitude / 200f, maxOffset);
+            }
+            else
+            {
+                // Gamepad-Offset mit fester Stärke
+                Vector3 stickDir = new Vector3(rightStickInput.x, rightStickInput.y, 0);
+                inputOffset = stickDir.normalized * maxOffset;
+            }
 
-            // Convert the offset to world space relative to the camera
-            Vector3 worldOffset = Camera.main.transform.right * mouseCameraOffset.x +
-                                Camera.main.transform.up * mouseCameraOffset.y;
+            // 4. In Weltkoordinaten umrechnen
+            Vector3 worldOffset = Camera.main.transform.right * inputOffset.x +
+                                Camera.main.transform.up * inputOffset.y;
 
-            // Add this small offset to the blended target
+            // 5. Zur Kamera-Position hinzufügen
             blendedTarget += worldOffset;
         }
+
 
         // Step 3: Clamp the blended position inside the room bounds
         Bounds roomBounds = currentRoom.roomCollider.bounds;
