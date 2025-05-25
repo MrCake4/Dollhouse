@@ -7,11 +7,13 @@ public class TriggerTV : MonoBehaviour
 
     public GameObject TVScreen;
     bool triggered = false;
-    [SerializeField] float countDown = 40f;
+    [SerializeField] float countDown;
+    float initialCountDown;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         TVScreen = GameObject.Find("TVScreen");
+        initialCountDown = countDown;
     }
 
     void OnTriggerEnter(Collider other)
@@ -37,7 +39,7 @@ public class TriggerTV : MonoBehaviour
         if (triggered && countDown > 0f)
         {
             // for some weird reson the screen first plays a random segment and then the real video
-            if (countDown > countDown-2 && countDown < countDown-1)
+            if (countDown > initialCountDown-1f && countDown < initialCountDown-0.3f)
             {
                 MeshRenderer screen = TVScreen.GetComponent<MeshRenderer>();
                 screen.enabled = true;
