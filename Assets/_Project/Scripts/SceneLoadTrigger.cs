@@ -8,10 +8,7 @@ public class SceneLoadTrigger : MonoBehaviour
     [SerializeField] private SceneField[] _scenesToLoad;
     [SerializeField] private SceneField[] _scenesToUnload;
 
-    [SerializeField] bool activateLoad;
-
     private GameObject _player;
-    bool startedLoading = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,7 +22,7 @@ public class SceneLoadTrigger : MonoBehaviour
     }
 
 
-
+    //Activates when an entity enters the collider
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject == _player)
