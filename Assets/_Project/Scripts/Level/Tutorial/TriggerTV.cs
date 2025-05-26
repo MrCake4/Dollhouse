@@ -9,19 +9,23 @@ public class TriggerTV : MonoBehaviour
     bool triggered = false;
     [SerializeField] float countDown;
     float initialCountDown;
+    Light TVLight;
+    VideoPlayer videoPlayer;
+    MeshRenderer screen;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         TVScreen = GameObject.Find("TVScreen");
         initialCountDown = countDown;
+        TVLight = GameObject.Find("TVLightRay").GetComponent<Light>();
+        videoPlayer = GameObject.Find("Video Player").GetComponent<VideoPlayer>();
+        screen = TVScreen.GetComponent<MeshRenderer>();
     }
 
     void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player") && !triggered)
         {
-            Light TVLight = GameObject.Find("TVRayLight").GetComponent<Light>();
-            VideoPlayer videoPlayer = GameObject.Find("Video Player").GetComponent<VideoPlayer>();
             if (TVScreen != null && TVLight != null)
             {
                 
@@ -41,7 +45,6 @@ public class TriggerTV : MonoBehaviour
             // for some weird reson the screen first plays a random segment and then the real video
             if (countDown > initialCountDown-1f && countDown < initialCountDown-0.3f)
             {
-                MeshRenderer screen = TVScreen.GetComponent<MeshRenderer>();
                 screen.enabled = true;
             }
 
@@ -49,13 +52,10 @@ public class TriggerTV : MonoBehaviour
         }
         else if (triggered && countDown <= 0f)
         {
-            Light TVLight = GameObject.Find("TVRayLight").GetComponent<Light>();
-            VideoPlayer videoPlayer = GameObject.Find("Video Player").GetComponent<VideoPlayer>();
             if (TVScreen != null && TVLight != null)
             {
                 TVLight.enabled = false;
                 videoPlayer.Stop();
-                MeshRenderer screen = TVScreen.GetComponent<MeshRenderer>();
                 screen.enabled = false;
                 triggered = false;
                 Destroy(this.gameObject);
