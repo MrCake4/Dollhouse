@@ -65,8 +65,8 @@ public class SceneLoadTrigger : MonoBehaviour
         {
             for (int j = 0; j < SceneManager.sceneCount; j++)
             {
-                Scene loadScene = SceneManager.GetSceneAt(j);
-                if (loadScene.name == _scenesToUnload[i].SceneName)
+                Scene loadedScene = SceneManager.GetSceneAt(j);
+                if (loadedScene.name == _scenesToUnload[i].SceneName)
                 {
                     SceneManager.UnloadSceneAsync(_scenesToUnload[i]);
                 }
