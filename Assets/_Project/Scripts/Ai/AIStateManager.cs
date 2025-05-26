@@ -65,6 +65,8 @@ public class AIStateManager : MonoBehaviour
         // initial state
         currentState = idleState;
         currentState.enterState(this);
+
+        rooms = getActiveRooms();
     }
 
     // Update is called once per frame
@@ -96,17 +98,27 @@ public class AIStateManager : MonoBehaviour
         this.currentTargetWindow = window;
     }
 
-    // debug stuff for debugging
-    public void drawDebugStuff(){
+    /*      DEBUGGING     */
+    
+    public void drawDebugStuff()
+    {
         // draw line to targeted ROOM
-        if(currentTargetRoom != null) Debug.DrawLine(this.transform.position, currentTargetRoom.transform.position, Color.green);
+        if (currentTargetRoom != null) Debug.DrawLine(this.transform.position, currentTargetRoom.transform.position, Color.green);
 
         // draw line to targeted WINDOW
-        if(currentTargetRoom != null && currentTargetWindow != null) Debug.DrawLine(this.transform.position, currentTargetWindow.transform.position, Color.red);
+        if (currentTargetRoom != null && currentTargetWindow != null) Debug.DrawLine(this.transform.position, currentTargetWindow.transform.position, Color.red);
     }
 
+    /*      SCENE TRANSITIONING     */
 
-    // Getter and Setter
+    // returns an array of all the rooms that are currently loaded in the scene
+    public RoomContainer[] getActiveRooms()
+    {
+        return FindObjectsByType<RoomContainer>(FindObjectsSortMode.None);
+    }
+
+    /*      GETTERS AND SETTERS     */
+
     public float getIdleTime => idleTime;
     public int getCheckWindowPerPatrol => checkWindowsPerPatrol;
     public AIBaseState getLastState => lastState;
