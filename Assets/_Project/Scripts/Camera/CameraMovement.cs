@@ -29,8 +29,8 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] Room currentRoom;
     Vector3 targetCameraPos;
     [SerializeField] float cameraSpeed = 3f;
-    private float currentCameraAngle; 
-    
+    private float currentCameraAngle;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,6 +38,7 @@ public class CameraMovement : MonoBehaviour
         currentCameraAngle = currentRoom.getCameraAngle;
         lookAtPlayer = currentRoom.getLookAtPlayer;
         currentLookAt = player.position;
+        rooms = getActiveRooms();
     }
 
     // Update is called once per frame
@@ -46,9 +47,12 @@ public class CameraMovement : MonoBehaviour
         playerPosition = player.transform.position;
 
 
-        foreach (Room room in rooms) {
-            if (room.roomCollider.bounds.Contains(playerPosition)) {
-                if (room != currentRoom) {
+        foreach (Room room in rooms)
+        {
+            if (room.roomCollider.bounds.Contains(playerPosition))
+            {
+                if (room != currentRoom)
+                {
                     currentRoom = room;
                     targetCameraPos = room.cameraAnchorPoint.position;
                     lookAtPlayer = currentRoom.getLookAtPlayer;
@@ -139,5 +143,12 @@ public class CameraMovement : MonoBehaviour
         // Step 6: Smooth camera look at
         currentLookAt = Vector3.Lerp(currentLookAt, cameraLookAt, Time.deltaTime * cameraSpeed);
         transform.LookAt(currentLookAt, Vector3.up);
+    }
+    
+    
+    // returns an array of all the rooms that are currently loaded in the scene
+    public Room[] getActiveRooms()
+    {
+        return FindObjectsByType<Room>(FindObjectsSortMode.None);
     }
 }
