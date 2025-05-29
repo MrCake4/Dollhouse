@@ -20,7 +20,7 @@ public class PlayerItemHandler : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button2))      //Für PS5 wäre es Button 0
         {
 
             if (carriedObject == null)          //kein Objekt tragen = versuchen aufzuheben
