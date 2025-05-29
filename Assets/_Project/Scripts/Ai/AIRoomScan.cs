@@ -136,26 +136,41 @@ public class AIRoomScan : MonoBehaviour
 
 
     void Scan()
+{
+    Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
+
+    foreach (Collider target in targetsInViewRadius)
     {
-        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
-        foreach (Collider target in targetsInViewRadius)
+        Vector3 directionToTarget = (target.bounds.center - transform.position).normalized;
+
+        // Checks if the target is inside the cone
+        if (Vector3.Angle(transform.forward, directionToTarget) < viewAngle / 2)
         {
-            Vector3 directionToTarget = (target.transform.position - transform.position).normalized;
+            float distanceToTarget = Vector3.Distance(transform.position, target.bounds.center);
 
-            // Filters if things are inside the cone
-            if (Vector3.Angle(transform.forward, directionToTarget) < viewAngle / 2)
+            // Offsets for different hights
+            Vector3[] heightOffsets = new Vector3[]
             {
-                float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+                Vector3.up * 0.5f,
+                Vector3.up * 1.0f,
+                Vector3.up * 1.5f
+            };
 
-                // Checks if there are obstacles
-                if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))
+            foreach (Vector3 offset in heightOffsets)
+            {
+                Vector3 rayOrigin = transform.position + offset;
+                Vector3 targetPoint = target.bounds.center + offset;
+                Vector3 rayDirection = (targetPoint - rayOrigin).normalized;
+
+                if (!Physics.Raycast(rayOrigin, rayDirection, distanceToTarget, obstacleMask))
                 {
                     currentTarget = target.transform;
-                    break;
+                    return;
                 }
             }
         }
     }
+}
 
     private void ReturnToCenterPosition()
     {
