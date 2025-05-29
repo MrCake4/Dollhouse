@@ -4,7 +4,6 @@ using UnityEngine.Animations;
 public class AIPatrolState : AIBaseState
 {
 // Removed unused variable 'currentTarget'
-    float checkTimer;      // How long does the ai check one window in seconds
    Transform lastWindow = null;
     RoomContainer randomRoom; 
     int randomWindow;
@@ -12,11 +11,10 @@ public class AIPatrolState : AIBaseState
     public override void enterState(AIStateManager ai) {
         Debug.Log("Dolly entered PATROL State");
 
-        checkTimer = ai.getCheckRoomTime;
-
         // Teleport to Patrol Spawn point
         if (!ai.isPatroling) {
-            ai.transform.position = new Vector3(ai.patrolSpawn.position.x, ai.patrolSpawn.position.y, ai.patrolSpawn.position.z);
+            if (!ai.isHunting) ai.transform.position = new Vector3(ai.patrolSpawn.position.x, ai.patrolSpawn.position.y, ai.patrolSpawn.position.z);
+            else ai.isHunting = false;      // This fixes the AI teleporting to patrol spawn after hunt
             ai.isPatroling = true;    
         }
         // Pick target
@@ -24,14 +22,27 @@ public class AIPatrolState : AIBaseState
     }
 
     public override void onUpdate(AIStateManager ai) {
-        if (ai.currentTargetWindow == null) return;
+        if (ai.currentTargetWindow == null)
+        {
+            Debug.Log("Current Target is null");
+           return; 
+        }
 
-        if( ai.windowsPatrolled >= ai.getCheckWindowPerPatrol) exitState(ai);
-        else {
+        if (ai.windowsPatrolled >= ai.getCheckWindowPerPatrol)
+        {
+            // exits patrol, moves to patrol spawn and goes into idle again
+            ai.transform.position = Vector3.MoveTowards(ai.transform.position, ai.patrolSpawn.position, Time.deltaTime * ai.moveSpeed);
+
+            if(Vector3.Distance(ai.transform.position, ai.patrolSpawn.position) < 0.1f) exitState(ai);
+        }
+        else
+        {
             ai.setCurrentTargetRoom(randomRoom);
             ai.currentWindowIndex = randomWindow;
             ai.windowsPatrolled++;
+            Debug.Log("Windows Patroled: " + ai.windowsPatrolled);
             ai.switchState(ai.scanState, false);
+            return;
         }
         
     }

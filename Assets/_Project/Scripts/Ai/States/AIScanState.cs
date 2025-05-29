@@ -1,46 +1,59 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Animations;
 
 public class AIScanState : AIBaseState
 {
     RoomContainer currentTargetRoom;
-    float checkRoomTime;
-    public override void enterState(AIStateManager ai){
-        Debug.Log("Dolly entered Scan State");
-        checkRoomTime = ai.getCheckRoomTime;
+    private bool isDoneScanning;
+    bool scanStartet;
+    public override void enterState(AIStateManager ai)
+    {
+        Debug.Log("Dolly entered SCAN State");
         currentTargetRoom = ai.currentTargetRoom;
         ai.scanDone = false;
-
+        scanStartet = false;
         // incase of null
-        if (currentTargetRoom == null || currentTargetRoom.windowAnchorPoints.Length == 0) {
+        if (currentTargetRoom == null || currentTargetRoom.windowAnchorPoints.Length == 0)
+        {
             ai.switchState(ai.patrolState, false);
             Debug.Log("Room is empty or has no windows");
             return;
         }
-
-        ai.eye.setStartScan(true);
 
         // Sets the first window as target
         ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[ai.currentWindowIndex]);
     }
     
     public override void onUpdate(AIStateManager ai){
-        if (ai.currentTargetWindow == null) return;
+        if (ai.currentTargetWindow == null)
+        {
+            Debug.Log("No Target Window");
+            return;
+        } 
 
 
          // If reached current window
         if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
-            checkRoomTime -= Time.deltaTime;
-
-            if(ai.isPatroling && checkRoomTime <= 0.0f){
-                resetVariables(ai);
-                ai.scanDone = true;
-                ai.switchState(ai.getLastState,false);
+            if (!scanStartet)
+            {
+                ai.eye.setStartScan(true);
+                scanStartet = true;
             }
-    
-            if (checkRoomTime <= 0.0f) {
+            isDoneScanning = !ai.eye.getStartScan;
+
+            if (ai.isPatroling && isDoneScanning)
+            {
+                resetVariables(ai);
+                ai.switchState(ai.getLastState, false);
+                return;
+            }
+
+            if (isDoneScanning)
+            {
                 ai.currentWindowIndex++;
-                checkRoomTime = ai.getCheckRoomTime;
+                scanStartet = false;
             }
 
             // if done with room

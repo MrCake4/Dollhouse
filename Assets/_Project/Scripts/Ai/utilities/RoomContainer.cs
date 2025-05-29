@@ -8,7 +8,6 @@ public class RoomContainer : MonoBehaviour
     [Header("AnkerPoints in Room")]
     public Transform[] windowAnchorPoints;
     public Boolean triggered = false;
-    public Boolean checkedRoom = false;
     [SerializeField] AIStateManager ai;
     public int windowCount => windowAnchorPoints.Length;
 
@@ -20,13 +19,14 @@ public class RoomContainer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (triggered && !checkedRoom)
+        if (triggered)
         {
             ai.setCurrentTargetRoom(this);
             ai.setLastKnownRoom(this);
             ai.eye.setStartScan(false);
             ai.isPatroling = false;
             ai.switchState(ai.huntState, false);
+            return;
         }
     }
 }
