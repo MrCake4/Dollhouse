@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerItemHandler : MonoBehaviour
+public class PlayerItemHandler : MonoBehaviour 
 {
     private bool wantsToPickup = false; // Nur true, wenn Spieler gerade E gedrückt hat
     private GameObject carriedObject = null;
     private BoxCollider triggerCollider;
     private Coroutine pickupWindowRoutine;
+    Interactable interactable;
 
     private void Start()
     {
@@ -21,16 +22,61 @@ public class PlayerItemHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button0))
         {
-            if (carriedObject == null)
+
+            if (carriedObject == null)          //kein Objekt tragen = versuchen aufzuheben
             {
-                TryStartPickupWindow();
+
+                if (!LookForInteractable())         //konnte nix aufheben, also Interactable suchen
+                {
+                    TryStartPickupWindow();
+                }
+                else
+                {
+                  interactable.interact();  
+                }
+                
             }
-            else
+            else if (LookForInteractable() && carriedObject != null)        //man trägt Objekt & interactable gefunden --> interactable nutzen
+            {
+                interactable.interact();
+            }
+            else                            // weder noch gefunden, also kann man Objekt fallen lassen
             {
                 DropItem();
             }
         }
     }
+
+    public bool GetWantsToPickup => wantsToPickup;          //Nur Getter für Interaction wenn man E drückt
+
+    private bool LookForInteractable() {                //Findet Box einen Interactable?
+
+        if (triggerCollider == null) return false;
+
+        triggerCollider.enabled = true;
+
+        Collider[] hits = Physics.OverlapBox(
+            triggerCollider.bounds.center,
+            triggerCollider.bounds.extents,
+            transform.rotation,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        foreach (Collider col in hits)
+        {
+            if (col.CompareTag("interactable"))
+            {
+                interactable = col.GetComponent<Interactable>();
+                triggerCollider.enabled = false;
+                return true;
+            }
+        }
+
+        triggerCollider.enabled = false;
+        return false;
+    }
+
 
     private void TryStartPickupWindow()
     {
