@@ -5,7 +5,7 @@ public class ButtonForSpotlight : Interactable
 
     [SerializeField] Light spotlight;
     private PlayerItemHandler player;
-    [SerializeField] float distanceToButton = 3f;
+    //[SerializeField] float distanceToButton = 3f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

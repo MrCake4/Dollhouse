@@ -1,55 +1,70 @@
 using UnityEngine;
+using static SpotlightRaycaster; // Damit du ColorChannel enum hier auch nutzen kannst
 
 public class ColorReceiver : MonoBehaviour
 {
-    private bool hitRed;
-    private bool hitGreen;
-    private bool hitBlue;
+    private float r, g, b;
+    private bool colorChanged = false;
 
     private Renderer rend;
-    private Color currentColor;
 
     void Start()
     {
         rend = GetComponent<Renderer>();
-        currentColor = rend.material.color;
+        rend.material.color = Color.black;
     }
 
-    public void RegisterSpotlight(GameObject spotlight)
+    public void SetChannelValue(ColorChannel channel, float value)
     {
-        // Setze anhand des Namens, welches Spotlight getroffen hat
-        bool changed = false;
+        value = Mathf.Clamp01(value); // sicherstellen, dass Wert zwischen 0–1 ist
 
-        if (spotlight.name == "RedSpotlight" && !hitRed)
+        switch (channel)
         {
-            hitRed = true;
-            changed = true;
-        }
-        else if (spotlight.name == "GreenSpotlight" && !hitGreen)
-        {
-            hitGreen = true;
-            changed = true;
-        }
-        else if (spotlight.name == "BlueSpotlight" && !hitBlue)
-        {
-            hitBlue = true;
-            changed = true;
-        }
-
-        if (changed)
-        {
-            UpdateColor();
+            case ColorChannel.Red:
+                if (!Mathf.Approximately(r, value))
+                {
+                    r = value;
+                    colorChanged = true;
+                }
+                break;
+            case ColorChannel.Green:
+                if (!Mathf.Approximately(g, value))
+                {
+                    g = value;
+                    colorChanged = true;
+                }
+                break;
+            case ColorChannel.Blue:
+                if (!Mathf.Approximately(b, value))
+                {
+                    b = value;
+                    colorChanged = true;
+                }
+                break;
         }
     }
 
-    private void UpdateColor()
+    void LateUpdate()
     {
-        currentColor = new Color(
-            hitRed ? 1f : 0f,
-            hitGreen ? 1f : 0f,
-            hitBlue ? 1f : 0f
-        );
+        if (colorChanged)
+        {
+            Color newColor = new Color(r, g, b);
+            rend.material.color = newColor;
 
-        rend.material.color = currentColor;
+            Debug.Log($"{gameObject.name} Farbe geändert zu: {ColorToString(newColor)}");
+
+            colorChanged = false;
+        }
     }
+
+    private string ColorToString(Color color)
+    {
+        return $"R:{color.r:F1} G:{color.g:F1} B:{color.b:F1}";
+    }
+
+    public Color GetCurrentColor()
+    {
+        return new Color(r, g, b);
+    }
+
 }
