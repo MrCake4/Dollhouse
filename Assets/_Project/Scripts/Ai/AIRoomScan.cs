@@ -8,6 +8,9 @@ public class AIRoomScan : MonoBehaviour
 {
     [SerializeField] Light spotlight;
 
+    // AI
+    private AIStateManager ai;
+    private RoomContainer currentRoom;
 
     // SCAN VALUES
     float viewRadius = 20f;
@@ -62,6 +65,9 @@ public class AIRoomScan : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // get AI State manager from parent object
+        ai = GetComponentInParent<AIStateManager>();
+
         // saves laser buildup time to reset it after shooting
         resetTimer = laserBuildupTime;
         // sets what the ray is looking for
@@ -85,6 +91,8 @@ public class AIRoomScan : MonoBehaviour
     {
         UpdateSpotlight();
         UpdateLaserLine();
+        UpdateOrientation();
+
         if (currentTarget == null && startScan)
         {
             DrawDetectionRays();
@@ -107,7 +115,7 @@ public class AIRoomScan : MonoBehaviour
                     Quaternion.Euler(orientation.x, targetRotationAngle, 0),
                     Time.deltaTime * rotationSpeed
                 );
-                
+
             }
             else
             {
@@ -134,6 +142,10 @@ public class AIRoomScan : MonoBehaviour
         }
     }
 
+    private void UpdateOrientation()
+    {
+        orientation = ai.currentTargetRoom.windowAnchorPoints[ai.currentWindowIndex].transform.rotation.eulerAngles;
+    }
 
     void Scan()
 {
