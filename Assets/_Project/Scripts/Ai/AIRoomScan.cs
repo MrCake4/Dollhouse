@@ -59,6 +59,9 @@ public class AIRoomScan : MonoBehaviour
     private float sweepStartTime;
     [SerializeField] float sweepDuration = 3f; // Dauer eines Sweeps in Sekunden
 
+    // MANAGERS
+    private PlayerStateManager player;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -78,6 +81,9 @@ public class AIRoomScan : MonoBehaviour
         centerRotation = Quaternion.Euler(orientation.x, initialYRotation, 0);
 
         playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
+
+        // get player state manager
+        player = FindFirstObjectByType<PlayerStateManager>();
     }
 
     // Update is called once per frame
@@ -256,6 +262,7 @@ public class AIRoomScan : MonoBehaviour
 
             RaycastHit hit;
 
+            // send the player into oblivion if there is no obstacle in the way
             if (!Physics.Raycast(transform.position, directionToTarget, out hit, distanceToTarget, obstacleMask))
             {
                 // No obstacle in the way — we can see the player
@@ -264,6 +271,7 @@ public class AIRoomScan : MonoBehaviour
 
                 hitPlayer = true;
                 Debug.Log("Shot at player and hit!");
+                player.SwitchState(player.deadState);
             }
             else
             {

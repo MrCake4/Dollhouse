@@ -15,6 +15,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     //private PlayerItemHandler PlayerItemHandler;                //CARRY
     public PullUpState pullUpState = new PullUpState();
     public HangState hangState = new HangState();
+    public DeadState deadState = new DeadState();               //für den Fall, dass der Spieler stirbt
 
 
         // important variables
