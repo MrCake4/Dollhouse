@@ -6,15 +6,11 @@ using UnityEngine;
 *
 */
 
-public class Checkpoint : MonoBehaviour
+public class CheckpointOldVersion : MonoBehaviour
 {
+    /*
     bool isActive = false;
-    CheckpointHandler checkpointHandler;
-
-    void Start()
-    {
-        checkpointHandler = FindFirstObjectByType<CheckpointHandler>();   
-    }
+    [SerializeField] CheckpointHandler checkpointHandler;
 
     // when player enters the trigger, activate the checkpoint
     void OnTriggerEnter(Collider other)
@@ -37,4 +33,5 @@ public class Checkpoint : MonoBehaviour
     {
         isActive = value;
     }
+    */
 }

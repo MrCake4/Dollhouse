@@ -38,7 +38,7 @@ public class AIRoomScan : MonoBehaviour
 
     private float initialYRotation;
     private Transform currentTarget;
-    
+
 
     // Orientation of the eye, given in x y z coordinates
     // +x changes the view of the eye down, -x up
@@ -113,7 +113,7 @@ public class AIRoomScan : MonoBehaviour
                     Quaternion.Euler(orientation.x, targetRotationAngle, 0),
                     Time.deltaTime * rotationSpeed
                 );
-                
+
             }
             else
             {
@@ -127,7 +127,7 @@ public class AIRoomScan : MonoBehaviour
                 }
             }
         }
-        else if (currentTarget != null)
+        else if (currentTarget != null && !hitPlayer)
         {
             FollowTarget();
             DrawDetectionRays();
@@ -142,41 +142,41 @@ public class AIRoomScan : MonoBehaviour
 
 
     void Scan()
-{
-    Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
-
-    foreach (Collider target in targetsInViewRadius)
     {
-        Vector3 directionToTarget = (target.bounds.center - transform.position).normalized;
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
-        // Checks if the target is inside the cone
-        if (Vector3.Angle(transform.forward, directionToTarget) < viewAngle / 2)
+        foreach (Collider target in targetsInViewRadius)
         {
-            float distanceToTarget = Vector3.Distance(transform.position, target.bounds.center);
+            Vector3 directionToTarget = (target.bounds.center - transform.position).normalized;
 
-            // Offsets for different hights
-            Vector3[] heightOffsets = new Vector3[]
+            // Checks if the target is inside the cone
+            if (Vector3.Angle(transform.forward, directionToTarget) < viewAngle / 2)
             {
+                float distanceToTarget = Vector3.Distance(transform.position, target.bounds.center);
+
+                // Offsets for different hights
+                Vector3[] heightOffsets = new Vector3[]
+                {
                 Vector3.up * 0.5f,
                 Vector3.up * 1.0f,
                 Vector3.up * 1.5f
-            };
+                };
 
-            foreach (Vector3 offset in heightOffsets)
-            {
-                Vector3 rayOrigin = transform.position + offset;
-                Vector3 targetPoint = target.bounds.center + offset;
-                Vector3 rayDirection = (targetPoint - rayOrigin).normalized;
-
-                if (!Physics.Raycast(rayOrigin, rayDirection, distanceToTarget, obstacleMask))
+                foreach (Vector3 offset in heightOffsets)
                 {
-                    currentTarget = target.transform;
-                    return;
+                    Vector3 rayOrigin = transform.position + offset;
+                    Vector3 targetPoint = target.bounds.center + offset;
+                    Vector3 rayDirection = (targetPoint - rayOrigin).normalized;
+
+                    if (!Physics.Raycast(rayOrigin, rayDirection, distanceToTarget, obstacleMask))
+                    {
+                        currentTarget = target.transform;
+                        return;
+                    }
                 }
             }
         }
     }
-}
 
     private void ReturnToCenterPosition()
     {
@@ -271,7 +271,7 @@ public class AIRoomScan : MonoBehaviour
 
                 hitPlayer = true;
                 Debug.Log("Shot at player and hit!");
-                player.SwitchState(player.deadState);
+                if (!player.isInvincible) player.SwitchState(player.deadState);
             }
             else
             {
@@ -325,5 +325,10 @@ public class AIRoomScan : MonoBehaviour
     public void setStartScan(bool startScan)
     {
         this.startScan = startScan;
+    }
+    
+    public void setHitPlayer(bool hitPlayer)
+    {
+        this.hitPlayer = hitPlayer;
     }
 }

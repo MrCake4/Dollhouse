@@ -25,6 +25,7 @@ public class DeadState : BasePlayerState
 
     public override void onExit(PlayerStateManager player)
     {
-
+        playerRigidbody.freezeRotation = true;
+        playerRigidbody.rotation = Quaternion.identity; // Reset rotation to prevent weird physics behavior
     }
 }
