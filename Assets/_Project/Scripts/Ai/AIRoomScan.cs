@@ -6,15 +6,16 @@ using UnityEngine.UIElements;
 
 public class AIRoomScan : MonoBehaviour
 {
+    // SPOTLIGHT
     [SerializeField] Light spotlight;
 
     // AI
     private AIStateManager ai;
-    private RoomContainer currentRoom;
+    private float initialYRotation;
+    private Transform currentTarget;
 
     // SCAN VALUES
     float viewRadius = 20f;
-
     float viewAngle = 30f; // changes how big the cone is
     float minViewAngle = 10f;
     float viewAngleChangeAmount = 30f; // how fast the cone gets smaller
@@ -28,33 +29,26 @@ public class AIRoomScan : MonoBehaviour
     [SerializeField] LayerMask obstacleMask;
     [SerializeField] bool startScan;
 
-
     // SHOOT SEQUENCE
-    bool shotAtPlayer = false;
-    bool hitPlayer = false;
-    [SerializeField] float laserBuildupTime = 1f;        // time in seconds for how long the laser needs to shoot at the player
-    float resetTimer;
-
+    bool shotAtPlayer = false;                          // Boolean to check if the laser has shot at the player
+    bool hitPlayer = false;                             // Boolean to check if the laser has hit the player     
+    [SerializeField] float laserBuildupTime = 1f;       // time in seconds for how long the laser needs to shoot at the player
+    float resetTimer;                                   // saves the laser buildup time to reset it after shooting  
 
     // DEBUG
     [SerializeField] int rayCount = 30;
 
-    private float initialYRotation;
-    private Transform currentTarget;
-    
 
-    // Orientation of the eye, given in x y z coordinates
-    // +x changes the view of the eye down, -x up
-    // TODO: maybe change to a quaternion
-    public Vector3 orientation;
+    public Vector3 orientation;                         // sets the normal eye orientation, however each Window Anchor point has its own orientation controlled with its x-rotation axis
     Transform playerPosition;   // This variable is used to get the player position for the laser, so that the laser stays on the players positon
 
-    // Laser settings
-    // gets the laser from the object
+    // LASER SETTINGS
+    // gets the laser from the laser Component
     LineRenderer laserLine;
     [SerializeField] float laserDrawResetTime = 0.1f; // time in seconds for how long the laser is visible
     float laserDrawReset;
 
+    // LASER SWEEP
     private bool isReturningToCenter;
     private Quaternion centerRotation;
 
