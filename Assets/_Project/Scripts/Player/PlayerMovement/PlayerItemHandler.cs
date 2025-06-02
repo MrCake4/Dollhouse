@@ -117,7 +117,7 @@ public class PlayerItemHandler : MonoBehaviour
     {
         carriedObject = item;
 
-        Vector3 offset = transform.TransformDirection(new Vector3(0, 0.5f, -0.6f));     // Objekt an Position hinter Spieler verschieben
+        Vector3 offset = transform.TransformDirection(new Vector3(0, 0.5f, -1f));     // Objekt an Position hinter Spieler verschieben
         carriedObject.transform.position = transform.position + offset;
 
         // Optional: leicht ausrichten
