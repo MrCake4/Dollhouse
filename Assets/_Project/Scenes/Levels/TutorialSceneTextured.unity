@@ -3448,7 +3448,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2396613308270423031, guid: 5def53eab3c684b90ab1d7cc67f35dea, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1028033168}
   m_SourcePrefab: {fileID: 100100000, guid: 5def53eab3c684b90ab1d7cc67f35dea, type: 3}
 --- !u!1001 &859822824
 PrefabInstance:
@@ -4145,6 +4148,32 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6157878320331060188, guid: d6eb0c5956c02d0468038d68530787bd, type: 3}
   m_PrefabInstance: {fileID: 498357148}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1028033167 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2396613308270423031, guid: 5def53eab3c684b90ab1d7cc67f35dea, type: 3}
+  m_PrefabInstance: {fileID: 853298084}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1028033168
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028033167}
+  m_Material: {fileID: 13400000, guid: dbdd02aca4a4bf249be55c0c6143e93b, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.39262715, y: 0.9495013, z: 0.9123344}
+  m_Center: {x: 0.21563351, y: -0.025249375, z: -0.043832883}
 --- !u!1 &1031004927
 GameObject:
   m_ObjectHideFlags: 0
@@ -5475,6 +5504,18 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 87d723e36ee76a14db68d6fe3c86e537, type: 2}
+    - target: {fileID: -266142844506002492, guid: f80646bdb9640f04cb5e29ddc6324e53, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.684
+      objectReference: {fileID: 0}
+    - target: {fileID: -266142844506002492, guid: f80646bdb9640f04cb5e29ddc6324e53, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.406
+      objectReference: {fileID: 0}
+    - target: {fileID: -266142844506002492, guid: f80646bdb9640f04cb5e29ddc6324e53, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 898321101538055182, guid: f80646bdb9640f04cb5e29ddc6324e53, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
