@@ -162,16 +162,18 @@ public class AIRoomScan : MonoBehaviour
                 // Offsets for different hights
                 Vector3[] heightOffsets = new Vector3[]
                 {
-                Vector3.up * 0.5f,
+                Vector3.up * -1f, // Center
+                Vector3.up * 0f,
                 Vector3.up * 1.0f,
-                Vector3.up * 1.5f
                 };
 
                 foreach (Vector3 offset in heightOffsets)
                 {
-                    Vector3 rayOrigin = transform.position + offset;
+                    Vector3 rayOrigin = transform.position;
                     Vector3 targetPoint = target.bounds.center + offset;
                     Vector3 rayDirection = (targetPoint - rayOrigin).normalized;
+
+                    Debug.DrawRay(rayOrigin, rayDirection * distanceToTarget, Color.red, 10f);
 
                     if (!Physics.Raycast(rayOrigin, rayDirection, distanceToTarget, obstacleMask))
                     {
