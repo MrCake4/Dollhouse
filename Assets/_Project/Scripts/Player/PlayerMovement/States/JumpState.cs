@@ -70,9 +70,9 @@ public class JumpState : BasePlayerState
             player.SwitchState(player.fallState);
         }
 
-        if (player.holdPressed)                                             //SWITCH  HOLD
+        if (player.holdPressed)                                             //SWITCH PULLUP or HANG
         {
-            player.SwitchState(player.holdState);
+            player.TryGrab();
             return;
         }
 
