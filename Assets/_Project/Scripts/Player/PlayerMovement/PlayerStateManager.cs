@@ -205,7 +205,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     public bool IsGrounded()                                                    //für Fall & Jump
     {
-        float rayLength = 0.05f;
+        /*float rayLength = 0.05f;
         Vector3 origin = transform.position + Vector3.up * 0.01f;
 
         Debug.DrawRay(origin, Vector3.down * rayLength, Color.green, 0.1f);     // Debug
@@ -216,7 +216,24 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
             rayLength,
             ~0,
             QueryTriggerInteraction.Ignore                                      //wieder ignorieren, wenn Triggerbox 
+        ); */
+        Vector3 boxCenter = transform.position + Vector3.up * 0.1f;
+        Vector3 boxHalfExtents = new Vector3(0.3f, 0.05f, 0.3f); // adjust to fit your player's footprint
+        float castDistance = 0.15f;
+
+        bool grounded = Physics.BoxCast(
+            boxCenter,
+            boxHalfExtents,
+            Vector3.down,
+            out RaycastHit hit,
+            Quaternion.identity,
+            castDistance,
+            ~0,
+            QueryTriggerInteraction.Ignore
         );
+
+        Debug.DrawRay(boxCenter, Vector3.down * castDistance, grounded ? Color.green : Color.red);
+        return grounded;
     }
 
 
