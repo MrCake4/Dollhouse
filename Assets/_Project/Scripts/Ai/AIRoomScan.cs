@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UIElements;
@@ -62,6 +63,8 @@ public class AIRoomScan : MonoBehaviour
     // MANAGERS
     private PlayerStateManager player;
 
+    Collider targetCollider;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -84,6 +87,8 @@ public class AIRoomScan : MonoBehaviour
 
         // get player state manager
         player = FindFirstObjectByType<PlayerStateManager>();
+
+        targetCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -192,7 +197,7 @@ public class AIRoomScan : MonoBehaviour
 
     void FollowTarget()
     {
-        Vector3 direction = (currentTarget.position - transform.position).normalized;
+        Vector3 direction = (targetCollider.bounds.center - transform.position).normalized;
 
         if (direction != Vector3.zero)
         {
@@ -252,13 +257,15 @@ public class AIRoomScan : MonoBehaviour
     // TODO: if the player is hit, player dies
     void ShootSequence()
     {
+        Vector3 offset = targetCollider.bounds.center; ;
         // if player is detected by one of the rays, shoot at player, else if there is an obstacle between player and ray, shoot but miss
         laserBuildupTime -= Time.deltaTime;
         // if timer runs out shoot at player
         if (laserBuildupTime < 0f)
         {
-            Vector3 directionToTarget = (currentTarget.position - transform.position).normalized;
-            float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
+            Vector3 targetCenter = targetCollider.bounds.center;
+            Vector3 directionToTarget = (targetCenter - transform.position).normalized;
+            float distanceToTarget = Vector3.Distance(transform.position, targetCenter);
 
             RaycastHit hit;
 
@@ -267,7 +274,7 @@ public class AIRoomScan : MonoBehaviour
             {
                 // No obstacle in the way — we can see the player
                 laserLine.enabled = true;
-                shootLaser(transform.position, currentTarget.position);
+                shootLaser(transform.position, targetCenter);
 
                 hitPlayer = true;
                 Debug.Log("Shot at player and hit!");
@@ -307,7 +314,7 @@ public class AIRoomScan : MonoBehaviour
         if (laserLine.enabled)
         {
             // if player is hit, draw laser to current player position, if not he will just hit the obstacle 
-            if (hitPlayer) shootLaser(transform.position, playerPosition.transform.position);
+            if (hitPlayer) shootLaser(transform.position, targetCollider.bounds.center);
 
             laserDrawReset -= Time.deltaTime;
             if (laserDrawReset <= 0f)
