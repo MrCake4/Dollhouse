@@ -4,20 +4,21 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 {
 
     // every state declared here
-     BasePlayerState currentState;
-     public IdleState idleState = new IdleState();
-     public WalkState walkState = new WalkState();
-     public RunState runState= new RunState();
-     public JumpState jumpState = new JumpState();
-     public FallState fallState = new FallState();
-     public PushState pushState = new PushState();
-     public CrouchState crouchState = new CrouchState();
+    BasePlayerState currentState;
+    public IdleState idleState = new IdleState();
+    public WalkState walkState = new WalkState();
+    public RunState runState = new RunState();
+    public JumpState jumpState = new JumpState();
+    public FallState fallState = new FallState();
+    public PushState pushState = new PushState();
+    public CrouchState crouchState = new CrouchState();
     //private PlayerItemHandler PlayerItemHandler;                //CARRY
     public PullUpState pullUpState = new PullUpState();
     public HangState hangState = new HangState();
+    public DeadState deadState = new DeadState();               //für den Fall, dass der Spieler stirbt
 
 
-        // important variables
+    // important variables
     //Eingaben - Bewegung + Ausrichtung
     [HideInInspector] public Vector2 moveInput;             // WASD als Vector2
     [HideInInspector] public Vector3 moveDir;               // Richtung im 3D-Raum
@@ -32,7 +33,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public CapsuleCollider capsuleCollider;
     [HideInInspector] public float originalHeight;
     [HideInInspector] public Vector3 originalCenter;
-    
+
     // Booleans
     [HideInInspector] public bool jumpPressed;
     [HideInInspector] public bool isRunning;
@@ -46,7 +47,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     //for the RayCasts
     public LayerMask bigObjectLayer;
     //public LayerMask smallObjectLayer;
-        
+
 
     //Speed
     public float walkSpeed = 2.5f;
@@ -58,11 +59,15 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public float verticalPullUp = 0.8f;
     public float horizontalPullUp = -0.3f;
 
-    //JUST DEBUGGING!!!!
-    
+    // Debugging
+    [Header("Debugging")]
+    public bool isInvincible = false; // Spieler ist unverwundbar, z.B. während des Respawns
 
-    
-    
+    //JUST DEBUGGING!!!!
+
+
+
+
 
 
 
@@ -90,13 +95,13 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         // Eingaben zentral erfassen
         Vector2 keyboardInput = Vector2.zero;       //für Keyboard-Eingabe
-        
+
         if (Input.GetKey(KeyCode.W)) keyboardInput.y = +1;
         if (Input.GetKey(KeyCode.S)) keyboardInput.y = -1;
         if (Input.GetKey(KeyCode.A)) keyboardInput.x = -1;
         if (Input.GetKey(KeyCode.D)) keyboardInput.x = +1;
 
-        
+
         if (keyboardInput != Vector2.zero)                  // Normalisieren nur für Tastatur
         {
             moveInput = keyboardInput.normalized;
@@ -136,14 +141,16 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
 
 
-    void FixedUpdate(){
+    void FixedUpdate()
+    {
         isRunning = Input.GetKey(KeyCode.LeftShift);        //Für JUMP & Fall --> damit man direkt weiterrennen kann
         currentState.onFixedUpdate(this);           //beim aktuellen State FixedUpdate() aufrufen
 
     }
 
 
-    public void SwitchState(BasePlayerState state){
+    public void SwitchState(BasePlayerState state)
+    {
         currentState.onExit(this);
         currentState = state;
         currentState.onEnter(this);                 //führt vom neuen State onEnter aus 
@@ -221,10 +228,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     public bool JumpAllowed()                                   //steht bei Idle, Walk und Run drinne!  --> damit man gleichzeitig Logik bearbeiten kann --> weniger copy paste
     {
-        return jumpPressed 
-        && IsGrounded() 
+        return jumpPressed
+        && IsGrounded()
         && !isCrouching
-        &&HasHeadroom(1.2f);            //1.2f damit der ray länger ist als der Ray der schaut, ob man grounded ist --> dann kann man eigenntlich immer den FallState erreichen
+        && HasHeadroom(1.2f);            //1.2f damit der ray länger ist als der Ray der schaut, ob man grounded ist --> dann kann man eigenntlich immer den FallState erreichen
     }
 
 
@@ -234,11 +241,11 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         Vector3 rayOrigin = transform.position + Vector3.up * (capsuleCollider.height / 3f); // Mitte der Figur
         Vector3 direction = transform.forward;
-         float rayLength = 0.6f;
+        float rayLength = 0.6f;
 
         // 🔧 Zeichne Ray zur visuellen Kontrolle
         Debug.DrawRay(rayOrigin, direction * rayLength, Color.blue, 0.1f);
-        
+
 
         if (Physics.Raycast(rayOrigin, direction, out RaycastHit hit, 0.6f, bigObjectLayer, QueryTriggerInteraction.Ignore))
         {
@@ -252,8 +259,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
                     pushTarget = hitRb;
                     Debug.Log("congratulations, you can push!");
                     return true;
-                } else{ Debug.Log("Hit, aber kein Rigidbody oder ist kinematic."); }
-            } else{ Debug.Log("Winkel zu steil: " + angle); }
+                }
+                else { Debug.Log("Hit, aber kein Rigidbody oder ist kinematic."); }
+            }
+            else { Debug.Log("Winkel zu steil: " + angle); }
         }
 
         return false;
@@ -314,15 +323,16 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     }
 
     public void ApplyAirControl(PlayerStateManager player)                                         //Damit man mit WASD noch leicht umlenken kann in der Luft. ohne den  Fall nach unten zu beeinflussen
-        {
-            Vector3 airMove = player.moveDir * player.maxSpeed * player.airControlMultiplier;
-            Vector3 currentVel = player.rb.linearVelocity;
+    {
+        Vector3 airMove = player.moveDir * player.maxSpeed * player.airControlMultiplier;
+        Vector3 currentVel = player.rb.linearVelocity;
 
-            currentVel.x = Mathf.Lerp(currentVel.x, airMove.x, Time.fixedDeltaTime * 2f);
-            currentVel.z = Mathf.Lerp(currentVel.z, airMove.z, Time.fixedDeltaTime * 2f);
+        currentVel.x = Mathf.Lerp(currentVel.x, airMove.x, Time.fixedDeltaTime * 2f);
+        currentVel.z = Mathf.Lerp(currentVel.z, airMove.z, Time.fixedDeltaTime * 2f);
 
-            player.rb.linearVelocity = currentVel;
-        }
+        player.rb.linearVelocity = currentVel;
+    }
 
+    public BasePlayerState getCurrentState => currentState;          //Getter für den aktuellen State
 
 }
