@@ -143,7 +143,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     void FixedUpdate()
     {
-        isRunning = Input.GetKey(KeyCode.LeftShift);        //Für JUMP & Fall --> damit man direkt weiterrennen kann
+        isRunning = Input.GetKey(KeyCode.LeftShift ) || Input.GetKey(KeyCode.Joystick1Button8);        //Für JUMP & Fall --> damit man direkt weiterrennen kann
         currentState.onFixedUpdate(this);           //beim aktuellen State FixedUpdate() aufrufen
 
     }
@@ -186,10 +186,30 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         rb.MoveRotation(Quaternion.LookRotation(direction));        //Drehung über rigid Body anwenden
     }
 
-    //um zu schauen, wie viel Platz an der Position vom Spieler ist --> z.B. bei crouch, ob man überhaupt aufstehen kann, oder ob da kein Platz mehr ist (oder maybe sogar bei jump anwenden)
+     //um zu schauen, wie viel Platz an der Position vom Spieler ist --> z.B. bei crouch, ob man überhaupt aufstehen kann, oder ob da kein Platz mehr ist (oder maybe sogar bei jump anwenden)
     public bool HasHeadroom(float requiredHeight)
     {
-        Vector3 rayOrigin = transform.position + Vector3.up * (capsuleCollider.height / 2f);
+        // Position der Box: etwas über dem Kopf
+        Vector3 boxOrigin = transform.position + Vector3.up * (capsuleCollider.height / 2f);
+        
+        // Box-Größe (halbiert = HalfExtents!)
+        Vector3 boxHalfExtents = new Vector3(0.3f, 0.1f, 0.3f); // breit genug für Kopf + leichte Toleranz
+
+        float castDistance = requiredHeight - (capsuleCollider.height / 2f);
+        
+        bool blocked = Physics.BoxCast(
+            boxOrigin,
+            boxHalfExtents,
+            Vector3.up,
+            out RaycastHit hit,
+            Quaternion.identity,
+            castDistance,
+            ~0,
+            QueryTriggerInteraction.Ignore
+        );
+
+        return !blocked;
+        /*Vector3 rayOrigin = transform.position + Vector3.up * (capsuleCollider.height / 2f);
         float rayLength = requiredHeight - (capsuleCollider.height / 2f);
 
         Debug.DrawRay(rayOrigin, Vector3.up * rayLength, Color.red, 0.2f); // Zum Debuggen
@@ -200,7 +220,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
             rayLength,
             ~0,                                 // = Alle Layer
             QueryTriggerInteraction.Ignore      // = Trigger-Collider werden ignoriert
-        );
+        );*/
     }
 
     public bool IsGrounded()                                                    //für Fall & Jump
