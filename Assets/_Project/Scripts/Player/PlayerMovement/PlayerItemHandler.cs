@@ -1,12 +1,15 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerItemHandler : MonoBehaviour
+public class PlayerItemHandler : MonoBehaviour 
 {
     private bool wantsToPickup = false; // Nur true, wenn Spieler gerade E gedrückt hat
     private GameObject carriedObject = null;
     private BoxCollider triggerCollider;
     private Coroutine pickupWindowRoutine;
+    Interactable interactable;
+
+    private PlayerStateManager player;
 
     private void Start()
     {
@@ -15,22 +18,75 @@ public class PlayerItemHandler : MonoBehaviour
         //Debug.LogError("❗ Spieler braucht einen BoxCollider mit isTrigger=true");
 
         //triggerCollider.enabled = false;
+
+        // get player state manager
+        player = GetComponent<PlayerStateManager>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+        if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button2)) && player.getCurrentState != player.deadState)      //Für PS5 wäre es Button 0
         {
-            if (carriedObject == null)
+
+            if (carriedObject == null)          //kein Objekt tragen = versuchen aufzuheben
             {
-                TryStartPickupWindow();
+
+                if (!LookForInteractable())         //konnte nix aufheben, also Interactable suchen
+                {
+                    TryStartPickupWindow();
+                }
+                else
+                {
+                    interactable.interact();
+                }
+
             }
-            else
+            else if (LookForInteractable() && carriedObject != null)        //man trägt Objekt & interactable gefunden --> interactable nutzen
+            {
+                interactable.interact();
+            }
+            else                            // weder noch gefunden, also kann man Objekt fallen lassen
             {
                 DropItem();
             }
+            
+            
         }
+
+        // This is called every frame, SOURCE FOR REFACTORING
+        if (player.getCurrentState == player.deadState) DropItem(); // Wenn Spieler tot ist, Objekt fallen lassen
     }
+
+    public bool GetWantsToPickup => wantsToPickup;          //Nur Getter für Interaction wenn man E drückt
+
+    private bool LookForInteractable() {                //Findet Box einen Interactable?
+
+        if (triggerCollider == null) return false;
+
+        triggerCollider.enabled = true;
+
+        Collider[] hits = Physics.OverlapBox(
+            triggerCollider.bounds.center,
+            triggerCollider.bounds.extents,
+            transform.rotation,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        foreach (Collider col in hits)
+        {
+            if (col.CompareTag("interactable"))
+            {
+                interactable = col.GetComponent<Interactable>();
+                triggerCollider.enabled = false;
+                return true;
+            }
+        }
+
+        triggerCollider.enabled = false;
+        return false;
+    }
+
 
     private void TryStartPickupWindow()
     {
@@ -61,7 +117,7 @@ public class PlayerItemHandler : MonoBehaviour
     {
         carriedObject = item;
 
-        Vector3 offset = transform.TransformDirection(new Vector3(0, 0.5f, -0.6f));     // Objekt an Position hinter Spieler verschieben
+        Vector3 offset = transform.TransformDirection(new Vector3(0, 0.5f, -1f));     // Objekt an Position hinter Spieler verschieben
         carriedObject.transform.position = transform.position + offset;
 
         // Optional: leicht ausrichten
@@ -86,6 +142,7 @@ public class PlayerItemHandler : MonoBehaviour
 
     private void DropItem()
     {
+        if (carriedObject == null) return; // Nichts zum Fallenlassen
         carriedObject.transform.SetParent(null);
 
         Collider col = carriedObject.GetComponent<Collider>();
