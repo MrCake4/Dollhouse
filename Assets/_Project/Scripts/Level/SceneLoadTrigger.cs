@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoadTrigger : MonoBehaviour
 {
     [SerializeField] private SceneField[] _scenesToLoad;
-    [SerializeField] private SceneField[] _scenesToUnload;
+    [SerializeField] private SceneField[] _scenesToUnload;        
 
     private GameObject _player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,7 +29,7 @@ public class SceneLoadTrigger : MonoBehaviour
         {
             LoadScenes();
             UnloadScenes();
-            _player.transform.position = new Vector3(0, 0, 0);
+            _player.transform.position = GameObject.FindGameObjectWithTag("SceneEntry").GetComponent<Collider>().bounds.center;
         }
     }
 
