@@ -305,6 +305,9 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         return false;
     }
 
+
+    //GRAB
+
     public void TryGrab()
     {
         if (!holdPressed) return;
@@ -326,10 +329,20 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         foreach (Collider col in hits)
         {
-            if (col.CompareTag("Ledge"))
+            if (col.CompareTag("mediumLedge"))
             {
                 Vector3 closestPoint = col.ClosestPoint(transform.position);
                 pullUpState.SetLedgePosition(closestPoint);
+                pullUpState.SetPullUpType(PullUpState.PullUpType.Medium);
+                SwitchState(pullUpState);
+                return;
+            }
+
+            if (col.CompareTag("highLedge"))
+            {
+                Vector3 closestPoint = col.ClosestPoint(transform.position);
+                pullUpState.SetLedgePosition(closestPoint);
+                pullUpState.SetPullUpType(PullUpState.PullUpType.High);
                 SwitchState(pullUpState);
                 return;
             }
@@ -343,8 +356,9 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
             }
         }
 
-        // Kein passendes Ziel gefunden → nichts tun
+        // Nichts gefunden
     }
+
 
 
 
