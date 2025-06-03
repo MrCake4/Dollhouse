@@ -12,7 +12,6 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject[] objectsToHide;
 
     private List<AsyncOperation> _scenesToLoad = new List<AsyncOperation>();
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

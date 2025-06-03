@@ -29,7 +29,6 @@ public class SceneLoadTrigger : MonoBehaviour
         {
             LoadScenes();
             UnloadScenes();
-            _player.transform.position = GameObject.FindGameObjectWithTag("SceneEntry").GetComponent<Collider>().bounds.center;
         }
     }
 
