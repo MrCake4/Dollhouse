@@ -29,6 +29,7 @@ public class SceneLoadTrigger : MonoBehaviour
         {
             LoadScenes();
             UnloadScenes();
+            _player.transform.position = new Vector3(0, 0, 0);
         }
     }
 
