@@ -13,7 +13,6 @@ public class SceneLoadTrigger : MonoBehaviour
     void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
-        
     }
 
     // Update is called once per frame
@@ -25,8 +24,9 @@ public class SceneLoadTrigger : MonoBehaviour
     //Activates when an entity enters the collider
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject == _player)
+        if (collision.gameObject == _player && _player.GetComponent<PlayerStateManager>().getCurrentState != _player.GetComponent<PlayerStateManager>().deadState)
         {
+            //_player.GetComponent<PlayerItemHandler>().DropItem();
             LoadScenes();
             UnloadScenes();
         }
