@@ -25,6 +25,7 @@ public class AIRoomScan : MonoBehaviour
     [SerializeField] LayerMask targetMask;
     [SerializeField] LayerMask obstacleMask;
     [SerializeField] bool startScan;
+    Vector3 targetOffset = Vector3.zero; // colliderOffset for the target position, so that the ray is not exactly at the center of the eye
 
 
     // SHOOT SEQUENCE
@@ -160,17 +161,18 @@ public class AIRoomScan : MonoBehaviour
                 float distanceToTarget = Vector3.Distance(transform.position, target.bounds.center);
 
                 // Offsets for different hights
+                // we have to keep these between -0.9 and 0.9, else the raycast will not hit the target 
                 Vector3[] heightOffsets = new Vector3[]
                 {
-                Vector3.up * -1f, // Center
-                Vector3.up * 0f,
-                Vector3.up * 1.0f,
+                //Vector3.up * 0f,// Center
+                Vector3.up * -0.9f, // feet
+                //Vector3.up * 0.9f,    // head
                 };
 
-                foreach (Vector3 offset in heightOffsets)
+                foreach (Vector3 colliderOffset in heightOffsets)
                 {
                     Vector3 rayOrigin = transform.position;
-                    Vector3 targetPoint = target.bounds.center + offset;
+                    Vector3 targetPoint = target.bounds.center + colliderOffset;
                     Vector3 rayDirection = (targetPoint - rayOrigin).normalized;
 
                     Debug.DrawRay(rayOrigin, rayDirection * distanceToTarget, Color.red, 10f);
@@ -178,6 +180,7 @@ public class AIRoomScan : MonoBehaviour
                     if (!Physics.Raycast(rayOrigin, rayDirection, distanceToTarget, obstacleMask))
                     {
                         currentTarget = target.transform;
+                        targetOffset = colliderOffset; // Save the colliderOffset for the target position
                         return;
                     }
                 }
@@ -255,28 +258,25 @@ public class AIRoomScan : MonoBehaviour
 
     // activates when the laser sees the player
     // hits the player if there is no obstacle in the way, else it misses and continues to scan
-    // TODO: Update scan state to stay om scan until shotAtPlayer is true
-    // TODO: if the player is hit, player dies
     void ShootSequence()
     {
-        Vector3 offset = targetCollider.bounds.center; ;
         // if player is detected by one of the rays, shoot at player, else if there is an obstacle between player and ray, shoot but miss
         laserBuildupTime -= Time.deltaTime;
         // if timer runs out shoot at player
         if (laserBuildupTime < 0f)
         {
-            Vector3 targetCenter = targetCollider.bounds.center;
-            Vector3 directionToTarget = (targetCenter - transform.position).normalized;
-            float distanceToTarget = Vector3.Distance(transform.position, targetCenter);
+            // Vector3 to target added with the targetOffset
+            Vector3 laserTarget = targetCollider.bounds.center + targetOffset;
+            Vector3 directionToTarget = (laserTarget - transform.position).normalized;
+            float distanceToTarget = Vector3.Distance(transform.position, laserTarget);
 
             RaycastHit hit;
 
             // send the player into oblivion if there is no obstacle in the way
             if (!Physics.Raycast(transform.position, directionToTarget, out hit, distanceToTarget, obstacleMask))
             {
-                // No obstacle in the way — we can see the player
                 laserLine.enabled = true;
-                shootLaser(transform.position, targetCenter);
+                shootLaser(transform.position, laserTarget);
 
                 hitPlayer = true;
                 Debug.Log("Shot at player and hit!");
@@ -316,7 +316,7 @@ public class AIRoomScan : MonoBehaviour
         if (laserLine.enabled)
         {
             // if player is hit, draw laser to current player position, if not he will just hit the obstacle 
-            if (hitPlayer) shootLaser(transform.position, targetCollider.bounds.center);
+            if (hitPlayer) shootLaser(transform.position, targetCollider.bounds.center + targetOffset);
 
             laserDrawReset -= Time.deltaTime;
             if (laserDrawReset <= 0f)
