@@ -25,6 +25,7 @@ public class AIRoomScan : MonoBehaviour
     [SerializeField] LayerMask targetMask;
     [SerializeField] LayerMask obstacleMask;
     [SerializeField] bool startScan;
+    Vector3 targetOffset = Vector3.zero; // offset for the target position, so that the ray is not exactly at the center of the eye
 
 
     // SHOOT SEQUENCE
@@ -178,6 +179,7 @@ public class AIRoomScan : MonoBehaviour
                     if (!Physics.Raycast(rayOrigin, rayDirection, distanceToTarget, obstacleMask))
                     {
                         currentTarget = target.transform;
+                        targetOffset = offset; // Save the offset for the target position
                         return;
                     }
                 }
@@ -259,7 +261,7 @@ public class AIRoomScan : MonoBehaviour
     // TODO: if the player is hit, player dies
     void ShootSequence()
     {
-        Vector3 offset = targetCollider.bounds.center; ;
+        Vector3 offset = targetCollider.bounds.center;
         // if player is detected by one of the rays, shoot at player, else if there is an obstacle between player and ray, shoot but miss
         laserBuildupTime -= Time.deltaTime;
         // if timer runs out shoot at player
@@ -267,7 +269,7 @@ public class AIRoomScan : MonoBehaviour
         {
             Vector3 targetCenter = targetCollider.bounds.center;
             Vector3 directionToTarget = (targetCenter - transform.position).normalized;
-            float distanceToTarget = Vector3.Distance(transform.position, targetCenter);
+            float distanceToTarget = Vector3.Distance(transform.position, targetCenter + targetOffset);
 
             RaycastHit hit;
 
@@ -276,7 +278,7 @@ public class AIRoomScan : MonoBehaviour
             {
                 // No obstacle in the way — we can see the player
                 laserLine.enabled = true;
-                shootLaser(transform.position, targetCenter);
+                shootLaser(transform.position, targetCenter + targetOffset);
 
                 hitPlayer = true;
                 Debug.Log("Shot at player and hit!");
