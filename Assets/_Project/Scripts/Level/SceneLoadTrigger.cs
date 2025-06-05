@@ -26,13 +26,25 @@ public class SceneLoadTrigger : MonoBehaviour
     {
         if (collision.gameObject == _player && _player.GetComponent<PlayerStateManager>().getCurrentState != _player.GetComponent<PlayerStateManager>().deadState)
         {
-            //_player.GetComponent<PlayerItemHandler>().DropItem();
+            DestroyAllInLayer(LayerMask.NameToLayer("smallObject"));
             LoadScenes();
             UnloadScenes();
         }
     }
 
-    
+    // Destroys all GameObjects in a specific layer
+    void DestroyAllInLayer(int layer)
+{
+    GameObject[] allObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+
+    foreach (GameObject obj in allObjects)
+    {
+        if (obj.layer == layer)
+        {
+            Destroy(obj);
+        }
+    }
+}
 
     private void LoadScenes()
     {
