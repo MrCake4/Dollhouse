@@ -25,7 +25,7 @@ public class AIRoomScan : MonoBehaviour
     [SerializeField] LayerMask targetMask;
     [SerializeField] LayerMask obstacleMask;
     [SerializeField] bool startScan;
-    Vector3 targetOffset = Vector3.zero; // offset for the target position, so that the ray is not exactly at the center of the eye
+    Vector3 targetOffset = Vector3.zero; // colliderOffset for the target position, so that the ray is not exactly at the center of the eye
 
 
     // SHOOT SEQUENCE
@@ -168,10 +168,10 @@ public class AIRoomScan : MonoBehaviour
                 Vector3.up * 1.0f,
                 };
 
-                foreach (Vector3 offset in heightOffsets)
+                foreach (Vector3 colliderOffset in heightOffsets)
                 {
                     Vector3 rayOrigin = transform.position;
-                    Vector3 targetPoint = target.bounds.center + offset;
+                    Vector3 targetPoint = target.bounds.center + colliderOffset;
                     Vector3 rayDirection = (targetPoint - rayOrigin).normalized;
 
                     Debug.DrawRay(rayOrigin, rayDirection * distanceToTarget, Color.red, 10f);
@@ -179,7 +179,7 @@ public class AIRoomScan : MonoBehaviour
                     if (!Physics.Raycast(rayOrigin, rayDirection, distanceToTarget, obstacleMask))
                     {
                         currentTarget = target.transform;
-                        targetOffset = offset; // Save the offset for the target position
+                        targetOffset = colliderOffset; // Save the colliderOffset for the target position
                         return;
                     }
                 }
@@ -257,11 +257,12 @@ public class AIRoomScan : MonoBehaviour
 
     // activates when the laser sees the player
     // hits the player if there is no obstacle in the way, else it misses and continues to scan
-    // TODO: Update scan state to stay om scan until shotAtPlayer is true
-    // TODO: if the player is hit, player dies
     void ShootSequence()
     {
-        Vector3 offset = targetCollider.bounds.center;
+        // Collider Offset, if not set Laser will shoot at feet
+        Vector3 colliderOffset = targetCollider.bounds.center;
+        // Laser Offset, calculated by global target- and local collider offset
+        Vector3 laserOffset = targetOffset + colliderOffset
         // if player is detected by one of the rays, shoot at player, else if there is an obstacle between player and ray, shoot but miss
         laserBuildupTime -= Time.deltaTime;
         // if timer runs out shoot at player
@@ -269,7 +270,7 @@ public class AIRoomScan : MonoBehaviour
         {
             Vector3 targetCenter = targetCollider.bounds.center;
             Vector3 directionToTarget = (targetCenter - transform.position).normalized;
-            float distanceToTarget = Vector3.Distance(transform.position, targetCenter + targetOffset);
+            float distanceToTarget = Vector3.Distance(transform.position, targetCenter + laserOffset);
 
             RaycastHit hit;
 
@@ -278,7 +279,7 @@ public class AIRoomScan : MonoBehaviour
             {
                 // No obstacle in the way — we can see the player
                 laserLine.enabled = true;
-                shootLaser(transform.position, targetCenter + targetOffset);
+                shootLaser(transform.position, targetCenter + laserOffset);
 
                 hitPlayer = true;
                 Debug.Log("Shot at player and hit!");
