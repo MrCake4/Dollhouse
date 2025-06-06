@@ -14,9 +14,6 @@ public class SceneFadeManager : MonoBehaviour
 
     public bool isFadingOut { get; private set; }
     public bool isFadingIn { get; private set; }
-
-    private Action onFadeOutComplete;
-
     void Start()
     {
         if (instance == null)
@@ -65,7 +62,10 @@ public class SceneFadeManager : MonoBehaviour
 
     public void StartFadeIn()
     {
-        fadeOutImage.color = fadeOutStartColor;
-        isFadingIn = true;
+        if (fadeOutImage.color.a >= 1f)
+        {
+            fadeOutImage.color = fadeOutStartColor;
+            isFadingIn = true;
+        } 
     }
 }
