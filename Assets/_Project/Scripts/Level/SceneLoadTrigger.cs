@@ -27,6 +27,8 @@ public class SceneLoadTrigger : MonoBehaviour
         if (collision.gameObject == _player && _player.GetComponent<PlayerStateManager>().getCurrentState != _player.GetComponent<PlayerStateManager>().deadState)
         {
             DestroyAllInLayer(LayerMask.NameToLayer("smallObject"));
+
+            SceneFadeManager.instance.StartFadeOut();
             LoadScenes();
             UnloadScenes();
         }
