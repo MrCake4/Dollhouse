@@ -61,5 +61,10 @@ namespace NavKeypad
 
             moving = false;
         }
+
+        public Keypad GetKeypad()
+        {
+            return keypad;
+        }
     }
 }

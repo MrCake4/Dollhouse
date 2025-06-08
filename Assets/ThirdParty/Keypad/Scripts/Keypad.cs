@@ -43,6 +43,10 @@ namespace NavKeypad
         private bool displayingResult = false;
         private bool accessWasGranted = false;
 
+        // Winstons modifications
+        public int litCandleCount = 0; // Count of lit candles
+        [SerializeField] Candle[] candles;
+
         private void Awake()
         {
             ClearInput();
@@ -95,7 +99,6 @@ namespace NavKeypad
 
             if (granted) AccessGranted();
             else AccessDenied();
-
             yield return new WaitForSeconds(displayResultTime);
             displayingResult = false;
             if (granted) yield break;
@@ -110,6 +113,15 @@ namespace NavKeypad
             onAccessDenied?.Invoke();
             panelMesh.material.SetVector("_EmissionColor", screenDeniedColor * screenIntensity);
             audioSource.PlayOneShot(accessDeniedSfx);
+            litCandleCount = 0; 
+
+            if(candles != null)
+            {
+                foreach (var candle in candles)
+                {
+                    candle.extinguishCandle();
+                }
+            }
         }
 
         private void ClearInput()
@@ -125,11 +137,27 @@ namespace NavKeypad
             onAccessGranted?.Invoke();
             panelMesh.material.SetVector("_EmissionColor", screenGrantedColor * screenIntensity);
             audioSource.PlayOneShot(accessGrantedSfx);
+
+            // light all candles
+            if (candles == null || candles.Length == 0) return;
+            
+            foreach (var candle in candles)
+            {
+                candle.lightCandle();
+            }
         }
 
         public void setKeyPadCombo(int newCombo)
         {
             keypadCombo = newCombo;
+        }
+
+        void Update()
+        {
+            if (litCandleCount >= 3 && !accessWasGranted)
+            {
+                CheckCombo();
+            }
         }
 
     }

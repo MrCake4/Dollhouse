@@ -1,8 +1,10 @@
+using NavKeypad;
 using UnityEngine;
 
 // Requieres PlayerItemHandler.cs to be attached to the player
 // Requieres a Light component as child of the candle object
 
+[RequireComponent(typeof(KeypadButton))]
 public class Candle : Interactable
 {
     PlayerItemHandler playerItemHandler;
@@ -16,6 +18,10 @@ public class Candle : Interactable
     float nextTargetTime;
     float targetChangeInterval = 0.5f; // How often to change the intensity target
 
+    // Password bindings
+    KeypadButton keypadButton;
+    [SerializeField]bool isNormalCandle = true; // If false, the candle will not trigger the keypad button
+
     void Start()
     {
         playerItemHandler = FindFirstObjectByType<PlayerItemHandler>();
@@ -28,6 +34,8 @@ public class Candle : Interactable
             maxIntensity = candleLight.intensity * 1.5f;
             currentTargetIntensity = candleLight.intensity;
         }
+
+        keypadButton = GetComponent<KeypadButton>();
     }
 
     public override void interact()
@@ -37,18 +45,35 @@ public class Candle : Interactable
             playerItemHandler.GetCarriedObject().CompareTag("Candle") &&
             !isLit)
         {
-            isLit = true;
-            candleLight.enabled = true;
-            currentTargetIntensity = Random.Range(minIntensity, maxIntensity);
-            nextTargetTime = Time.time + targetChangeInterval;
+            lightCandle();
+
+            // if candle is not a normal candle,
+            if (!isNormalCandle)
+            {
+                keypadButton.PressButton();
+                keypadButton.GetKeypad().litCandleCount++;
+            }
         }
     }
 
-    void Update()
+    public void lightCandle()
     {
-        if (isLit && candleLight != null)
-        {
-            // Smoothly interpolate intensity
+        isLit = true;
+        candleLight.enabled = true;
+        currentTargetIntensity = Random.Range(minIntensity, maxIntensity);
+        nextTargetTime = Time.time + targetChangeInterval;
+    }
+
+    public void extinguishCandle()
+    {
+        isLit = false;
+        candleLight.enabled = false;
+        currentTargetIntensity = 0f; // Reset intensity when extinguished
+    }
+
+    void updateCandleLight()
+    {
+        // Smoothly interpolate intensity
             candleLight.intensity = Mathf.Lerp(candleLight.intensity, currentTargetIntensity, Time.deltaTime * lerpSpeed);
 
             // Change target intensity periodically
@@ -57,6 +82,14 @@ public class Candle : Interactable
                 currentTargetIntensity = Random.Range(minIntensity, maxIntensity);
                 nextTargetTime = Time.time + targetChangeInterval;
             }
+    }
+
+    void Update()
+    {
+        // update the candle light if it is lit
+        if (isLit && candleLight != null)
+        {
+            updateCandleLight();
         }
     }
 }
