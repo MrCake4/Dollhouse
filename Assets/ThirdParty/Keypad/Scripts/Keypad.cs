@@ -34,8 +34,6 @@ namespace NavKeypad
         [SerializeField] private AudioClip accessDeniedSfx;
         [SerializeField] private AudioClip accessGrantedSfx;
         [Header("Component References")]
-        [SerializeField] private Renderer panelMesh;
-        [SerializeField] private TMP_Text keypadDisplayText;
         [SerializeField] private AudioSource audioSource;
 
 
@@ -45,12 +43,11 @@ namespace NavKeypad
 
         // Winstons modifications
         public int litCandleCount = 0; // Count of lit candles
-        [SerializeField] Candle[] candles;
+        [SerializeField] Candle[] candles;  // stores all candles in the scene that controll the keypad
 
         private void Awake()
         {
             ClearInput();
-            panelMesh.material.SetVector("_EmissionColor", screenNormalColor * screenIntensity);
         }
 
 
@@ -70,7 +67,6 @@ namespace NavKeypad
                         return;
                     }
                     currentInput += input;
-                    keypadDisplayText.text = currentInput;
                     break;
             }
 
@@ -103,15 +99,12 @@ namespace NavKeypad
             displayingResult = false;
             if (granted) yield break;
             ClearInput();
-            panelMesh.material.SetVector("_EmissionColor", screenNormalColor * screenIntensity);
 
         }
 
         private void AccessDenied()
         {
-            keypadDisplayText.text = accessDeniedText;
             onAccessDenied?.Invoke();
-            panelMesh.material.SetVector("_EmissionColor", screenDeniedColor * screenIntensity);
             audioSource.PlayOneShot(accessDeniedSfx);
             litCandleCount = 0; 
 
@@ -127,15 +120,12 @@ namespace NavKeypad
         private void ClearInput()
         {
             currentInput = "";
-            keypadDisplayText.text = currentInput;
         }
 
         private void AccessGranted()
         {
             accessWasGranted = true;
-            keypadDisplayText.text = accessGrantedText;
             onAccessGranted?.Invoke();
-            panelMesh.material.SetVector("_EmissionColor", screenGrantedColor * screenIntensity);
             audioSource.PlayOneShot(accessGrantedSfx);
 
             // light all candles
@@ -154,11 +144,11 @@ namespace NavKeypad
 
         void Update()
         {
+            // When there are 3 or more lit candles check if the current input matches the keypad combo
             if (litCandleCount >= 3 && !accessWasGranted)
             {
                 CheckCombo();
             }
         }
-
     }
 }

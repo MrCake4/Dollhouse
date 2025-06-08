@@ -6,10 +6,17 @@ public class PasswordHandler : MonoBehaviour
     int password;   // a pasword variable to store the generated password
     [SerializeField] Keypad keypad; // reference to the Keypad component
     [SerializeField] NumberRenderer[] numberQuads; // array of NumberRenderer components to display the digits
-    [SerializeField] Candle[] candles; // array of Candle components to interact with
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
+    {
+        generatePassword();
+        keypad.setKeyPadCombo(password); // Set the generated password in the Keypad component
+        setNumberQuads(password); // Set the password digits in the NumberRenderer components
+        keypad = GetComponentInChildren<Keypad>(); // Get the Keypad component from the child GameObject
+    }
+
+    void generatePassword()
     {
         // Generate a random 3-digit password with unique digits
         do
@@ -17,10 +24,7 @@ public class PasswordHandler : MonoBehaviour
             password = Random.Range(100, 1000);
         } while (!HasUniqueDigits(password));
 
-        Debug.Log("Generated Password: " + password);
-
-        keypad.setKeyPadCombo(password); // Set the generated password in the Keypad component
-        setNumberQuads(password); // Set the password digits in the NumberRenderer components
+        
     }
 
     void setNumberQuads(int password)
@@ -28,7 +32,6 @@ public class PasswordHandler : MonoBehaviour
         string passwordStr = password.ToString();
 
         // Extract digits
-        // int firstDigit = int.Parse(passwordStr[0].ToString());
         for (int i = 0; i < numberQuads.Length; i++)
         {
             numberQuads[i].UpdateUVs(int.Parse(passwordStr[i].ToString()));
