@@ -32,4 +32,10 @@ public class TrapDoor : MonoBehaviour
             doorPivot.localRotation = Quaternion.Lerp(closedRotation, openRotation, openProgress);
         }
     }
+
+    // if isOpen is set to true, the door will open
+    public void setIsOpen(bool open)
+    {
+        isOpen = open;
+    }
 }

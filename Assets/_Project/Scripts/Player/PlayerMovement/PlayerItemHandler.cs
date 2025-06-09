@@ -9,6 +9,8 @@ public class PlayerItemHandler : MonoBehaviour
     private Coroutine pickupWindowRoutine;
     Interactable interactable;
 
+    private PlayerStateManager player;
+
     private void Start()
     {
         triggerCollider = GetComponent<BoxCollider>();
@@ -16,11 +18,14 @@ public class PlayerItemHandler : MonoBehaviour
         //Debug.LogError("❗ Spieler braucht einen BoxCollider mit isTrigger=true");
 
         //triggerCollider.enabled = false;
+
+        // get player state manager
+        player = GetComponent<PlayerStateManager>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button2))      //Für PS5 wäre es Button 0
+        if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button2)) && player.getCurrentState != player.deadState)      //Für PS5 wäre es Button 0
         {
 
             if (carriedObject == null)          //kein Objekt tragen = versuchen aufzuheben
@@ -32,9 +37,9 @@ public class PlayerItemHandler : MonoBehaviour
                 }
                 else
                 {
-                  interactable.interact();  
+                    interactable.interact();
                 }
-                
+
             }
             else if (LookForInteractable() && carriedObject != null)        //man trägt Objekt & interactable gefunden --> interactable nutzen
             {
@@ -44,7 +49,12 @@ public class PlayerItemHandler : MonoBehaviour
             {
                 DropItem();
             }
+            
+            
         }
+
+        // This is called every frame, SOURCE FOR REFACTORING
+        if (player.getCurrentState == player.deadState) DropItem(); // Wenn Spieler tot ist, Objekt fallen lassen
     }
 
     public bool GetWantsToPickup => wantsToPickup;          //Nur Getter für Interaction wenn man E drückt
@@ -107,7 +117,7 @@ public class PlayerItemHandler : MonoBehaviour
     {
         carriedObject = item;
 
-        Vector3 offset = transform.TransformDirection(new Vector3(0, 0.5f, -0.6f));     // Objekt an Position hinter Spieler verschieben
+        Vector3 offset = transform.TransformDirection(new Vector3(0, 0.5f, -1f));     // Objekt an Position hinter Spieler verschieben
         carriedObject.transform.position = transform.position + offset;
 
         // Optional: leicht ausrichten
@@ -132,6 +142,7 @@ public class PlayerItemHandler : MonoBehaviour
 
     private void DropItem()
     {
+        if (carriedObject == null) return; // Nichts zum Fallenlassen
         carriedObject.transform.SetParent(null);
 
         Collider col = carriedObject.GetComponent<Collider>();
