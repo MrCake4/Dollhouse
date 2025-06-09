@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor.Search;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoadTrigger : MonoBehaviour
 {
     [SerializeField] private SceneField[] _scenesToLoad;
-    [SerializeField] private SceneField[] _scenesToUnload;        
+    [SerializeField] private SceneField[] _scenesToUnload;
 
     private GameObject _player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,24 +28,24 @@ public class SceneLoadTrigger : MonoBehaviour
         if (collision.gameObject == _player && _player.GetComponent<PlayerStateManager>().getCurrentState != _player.GetComponent<PlayerStateManager>().deadState)
         {
             DestroyAllInLayer(LayerMask.NameToLayer("smallObject"));
-            LoadScenes();
-            UnloadScenes();
+
+            StartCoroutine(HandleSceneTransition());
         }
     }
 
     // Destroys all GameObjects in a specific layer
     void DestroyAllInLayer(int layer)
-{
-    GameObject[] allObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
-
-    foreach (GameObject obj in allObjects)
     {
-        if (obj.layer == layer)
+        GameObject[] allObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+
+        foreach (GameObject obj in allObjects)
         {
-            Destroy(obj);
+            if (obj.layer == layer)
+            {
+                Destroy(obj);
+            }
         }
     }
-}
 
     private void LoadScenes()
     {
@@ -81,5 +82,15 @@ public class SceneLoadTrigger : MonoBehaviour
                 }
             }
         }
+    }
+    
+    private IEnumerator HandleSceneTransition()
+    {
+        SceneFadeManager.instance.StartFadeOut();
+
+        yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingOut);
+    
+        LoadScenes();
+        UnloadScenes();
     }
 }

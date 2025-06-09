@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class CheckpointHandler : MonoBehaviour
 {
@@ -25,7 +26,8 @@ public class CheckpointHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            RespawnPlayer(GameObject.FindGameObjectWithTag("Player").transform);
+
+            StartCoroutine(RespawnPlayer(GameObject.FindGameObjectWithTag("Player").transform));
 
             // reset AI state to idle
             AIStateManager ai = FindFirstObjectByType<AIStateManager>();
@@ -51,8 +53,12 @@ public class CheckpointHandler : MonoBehaviour
     }
 
     // "Respawns" aka. "teleports" the player to the last active checkpoint
-    public void RespawnPlayer(Transform playerObject)
+    public IEnumerator RespawnPlayer(Transform playerObject)
     {
+
+        SceneFadeManager.instance.StartFadeOut();
+
+        yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingOut);
         // Respawn the player at the last active checkpoint
         for (int i = checkpoints.Length - 1; i >= 0; i--)
         {
@@ -60,6 +66,7 @@ public class CheckpointHandler : MonoBehaviour
             {
                 // reset player position and state
                 playerObject.position = checkpoints[i].transform.position;
+                SceneFadeManager.instance.StartFadeIn();
                 this.player.SwitchState(player.idleState);
             }
         }

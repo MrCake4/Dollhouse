@@ -9,6 +9,7 @@ public class SceneEntry : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         player.transform.position = this.transform.position;
+        SceneFadeManager.instance.StartFadeIn();
     }
 
     // Update is called once per frame
