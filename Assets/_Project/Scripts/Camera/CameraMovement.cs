@@ -15,7 +15,6 @@ public class CameraMovement : MonoBehaviour
 
     [Header("Camera Settings")]
     [SerializeField] Vector3 cameraPosition;
-    [SerializeField] Transform player;
     [SerializeField] float floatAmplitude = 1f;
     [SerializeField] float floatFrequency = 0.2f;
     private Vector3 playerPosition;
@@ -31,13 +30,16 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] float cameraSpeed = 3f;
     private float currentCameraAngle;
 
+    private GameObject player;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         targetCameraPos = currentRoom.cameraAnchorPoint.position;
         currentCameraAngle = currentRoom.getCameraAngle;
         lookAtPlayer = currentRoom.getLookAtPlayer;
-        currentLookAt = player.position;
+        currentLookAt = player.transform.position;
         rooms = getActiveRooms();
     }
 
