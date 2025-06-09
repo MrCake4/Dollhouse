@@ -85,13 +85,12 @@ public class SceneLoadTrigger : MonoBehaviour
     }
     
     private IEnumerator HandleSceneTransition()
-{
-    SceneFadeManager.instance.StartFadeOut();
+    {
+        SceneFadeManager.instance.StartFadeOut();
 
-    yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingOut);
+        yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingOut);
     
-    LoadScenes();
-    UnloadScenes();
-}
-
+        LoadScenes();
+        UnloadScenes();
+    }
 }
