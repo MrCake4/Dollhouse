@@ -32,6 +32,9 @@ public class CameraMovement : MonoBehaviour
 
     private GameObject player;
 
+    // this camera
+    Camera cam;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -41,6 +44,7 @@ public class CameraMovement : MonoBehaviour
         lookAtPlayer = currentRoom.getLookAtPlayer;
         currentLookAt = player.transform.position;
         rooms = getActiveRooms();
+        cam = GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -120,8 +124,8 @@ public class CameraMovement : MonoBehaviour
             }
 
             // 4. In Weltkoordinaten umrechnen
-            Vector3 worldOffset = Camera.main.transform.right * inputOffset.x +
-                                Camera.main.transform.up * inputOffset.y;
+            Vector3 worldOffset = cam.transform.right * inputOffset.x +
+                                cam.transform.up * inputOffset.y;
 
             // 5. Zur Kamera-Position hinzufügen
             blendedTarget += worldOffset;

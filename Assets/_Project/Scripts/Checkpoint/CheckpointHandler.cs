@@ -27,7 +27,7 @@ public class CheckpointHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
 
-            StartCoroutine(RespawnPlayer(GameObject.FindGameObjectWithTag("Player").transform));
+            StartCoroutine(RespawnPlayer(GameObject.FindWithTag("Player").transform));
 
             // reset AI state to idle
             AIStateManager ai = FindFirstObjectByType<AIStateManager>();
