@@ -124,6 +124,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4363378872279545981, guid: 5def53eab3c684b90ab1d7cc67f35dea, type: 3}
   m_PrefabInstance: {fileID: 853298084}
   m_PrefabAsset: {fileID: 0}
+--- !u!108 &10000848 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 7643449504622564154, guid: 9bb074d4fd4cd48b7bf079de5d370163, type: 3}
+  m_PrefabInstance: {fileID: 1516756606}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &26179202
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,6 +1030,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4584e98d218184459ff42f439decd88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!108 &196969505 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 4105227550429815736, guid: 7c7a1ea081eee413d988c3ef5bec0e7d, type: 3}
+  m_PrefabInstance: {fileID: 1792635642}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &210568089
 GameObject:
   m_ObjectHideFlags: 0
@@ -5707,6 +5717,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 723030653}
     - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: roomLights.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: 'roomLights.Array.data[0]'
+      value: 
+      objectReference: {fileID: 196969505}
+    - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: 'roomLights.Array.data[1]'
+      value: 
+      objectReference: {fileID: 10000848}
+    - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: 'roomLights.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1590656009}
+    - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: 'roomLights.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2072325470}
+    - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: windowAnchorPoints.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -7070,6 +7100,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!108 &1590656009 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 4853003860890442119, guid: 2cb632f1d4637406c95da841d60f3416, type: 3}
+  m_PrefabInstance: {fileID: 60273791}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1595555138
 GameObject:
   m_ObjectHideFlags: 0
@@ -9138,6 +9173,11 @@ MeshCollider:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 47fdd68237f834241ae3194df39eeb88, type: 3}
   m_PrefabInstance: {fileID: 2066545410}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &2072325470 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 5459681240016105656, guid: 5def53eab3c684b90ab1d7cc67f35dea, type: 3}
+  m_PrefabInstance: {fileID: 853298084}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2077144561
 PrefabInstance:
