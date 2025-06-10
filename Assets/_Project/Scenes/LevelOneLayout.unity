@@ -609,16 +609,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3717969064546405146, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.16
+      value: 4.24
       objectReference: {fileID: 0}
     - target: {fileID: 3717969064546405146, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.33
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717969064546405146, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.391
       objectReference: {fileID: 0}
     - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: ai
       value: 
       objectReference: {fileID: 172779209}
+    - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: roomLights.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: 'roomLights.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1476056832}
     - target: {fileID: 7044445722555574157, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: m_LocalPosition.x
       value: 40.317272
@@ -661,11 +673,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7732016684837962909, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.81
+      value: -4.04
       objectReference: {fileID: 0}
     - target: {fileID: 7732016684837962909, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: m_LocalPosition.y
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7732016684837962909, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.391
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -688,6 +704,26 @@ PrefabInstance:
     - target: {fileID: 7372714776079444, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
       propertyPath: m_Name
       value: Dolly
+      objectReference: {fileID: 0}
+    - target: {fileID: 720355768212086563, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: rotationSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 720355768212086563, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: sweepDuration
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 720355768212086563, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: laserBuildupTime
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 720355768212086563, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: maxRotationAngle
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 720355768212086563, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: laserDrawResetTime
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1425301390770317657, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
       propertyPath: m_LocalPosition.x
@@ -765,6 +801,10 @@ PrefabInstance:
       propertyPath: 'rooms.Array.data[1]'
       value: 
       objectReference: {fileID: 384318159}
+    - target: {fileID: 8889679970781055578, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: checkWindowsPerPatrol
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4295,7 +4335,7 @@ Transform:
   m_GameObject: {fileID: 598973406}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.27, y: 5.75, z: 1.1499996}
+  m_LocalPosition: {x: -14.579, y: 5.75, z: 0.47499943}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6392,7 +6432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3717969064546405146, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.54
+      value: 13.072
       objectReference: {fileID: 0}
     - target: {fileID: 3717969064546405146, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6400,12 +6440,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3717969064546405146, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.5
+      value: -0.17500019
       objectReference: {fileID: 0}
     - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: ai
       value: 
       objectReference: {fileID: 172779209}
+    - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: roomLights.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: 'roomLights.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2071340329}
+    - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: 'roomLights.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1620890047}
+    - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: 'roomLights.Array.data[2]'
+      value: 
+      objectReference: {fileID: 825500126}
+    - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      propertyPath: 'roomLights.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1558607165}
     - target: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: windowAnchorPoints.Array.size
       value: 3
@@ -6464,7 +6524,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7732016684837962909, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.1499996
+      value: 0.47499943
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14959,7 +15019,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4908000166004069398, guid: d6eb0c5956c02d0468038d68530787bd, type: 3}
       propertyPath: cameraAngle
-      value: 1
+      value: 3.1
       objectReference: {fileID: 0}
     - target: {fileID: 4908000166004069398, guid: d6eb0c5956c02d0468038d68530787bd, type: 3}
       propertyPath: lookAtPlayer
@@ -14971,7 +15031,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6157878320331060188, guid: d6eb0c5956c02d0468038d68530787bd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.88
+      value: 0.757056
       objectReference: {fileID: 0}
     - target: {fileID: 6157878320331060188, guid: d6eb0c5956c02d0468038d68530787bd, type: 3}
       propertyPath: m_LocalPosition.z
