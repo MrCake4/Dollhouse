@@ -23,16 +23,21 @@ public class AIHuntTrigger : MonoBehaviour
             {
                 if (objectToCarry != null && playerItemHandler.GetCarriedObject() == objectToCarry)
                 {
+                    // enable ai when it is not already enabled
+                    if (!ai.enabled)
+                        ai.enabled = true;
                     triggered = true;
                     roomToTrigger.triggered = true;
                 }
             }
             // Trigger the hunt state in the AI
-             else
-                {
-                    triggered = true;
-                    roomToTrigger.triggered = true;
-                }
+            else
+            {
+                if (!ai.enabled)
+                        ai.enabled = true;
+                triggered = true;
+                roomToTrigger.triggered = true;
+            }
         }
     }
 
