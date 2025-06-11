@@ -68,6 +68,7 @@ public class CheckpointHandler : MonoBehaviour
                 playerObject.position = checkpoints[i].transform.position;
                 SceneFadeManager.instance.StartFadeIn();
                 this.player.SwitchState(player.idleState);
+                yield break;
             }
         }
     }

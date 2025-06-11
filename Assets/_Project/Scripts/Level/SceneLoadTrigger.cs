@@ -9,7 +9,7 @@ public class SceneLoadTrigger : MonoBehaviour
 
     private GameObject _player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
     }
