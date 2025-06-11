@@ -2,6 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Collections;
 
 /*
 *   How to use the camera:
@@ -43,13 +44,17 @@ public class CameraMovement : MonoBehaviour
         currentCameraAngle = currentRoom.getCameraAngle;
         lookAtPlayer = currentRoom.getLookAtPlayer;
         currentLookAt = player.transform.position;
-        rooms = getActiveRooms();
         cam = GetComponent<Camera>();
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (!SceneFadeManager.instance.isFadingIn)
+        {
+            rooms = getActiveRooms();
+        }
         playerPosition = player.transform.position;
 
 

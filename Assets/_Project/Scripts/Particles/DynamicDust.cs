@@ -19,6 +19,11 @@ public class DynamicDust : MonoBehaviour
 
     // LateUpdate is called after all Update functions have been called
     // This is where we will modify the particles' velocities
+
+    void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+    }
     void LateUpdate()
     {
         if (particles == null || particles.Length < particleSystem.main.maxParticles)
