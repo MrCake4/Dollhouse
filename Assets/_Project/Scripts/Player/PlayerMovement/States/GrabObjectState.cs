@@ -87,7 +87,14 @@ public class GrabObjectState : BasePlayerState
     public override void onExit(PlayerStateManager player)
     {
         Debug.Log("GrabObjectState → verlassen");
+
+        if (targetObject != null)
+        {
+            targetObject.ResetPhysics(); // <- HIER EINBAUEN!
+        }
+
         targetObject = null;
         grabPoint = null;
     }
+
 }

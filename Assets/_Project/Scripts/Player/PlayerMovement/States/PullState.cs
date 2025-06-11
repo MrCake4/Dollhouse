@@ -63,12 +63,20 @@ public class PullState : BasePlayerState
     public override void onExit(PlayerStateManager player)
     {
         Debug.Log("→ PULL ENDE");
+
         if (targetRb != null)
         {
             targetRb.linearVelocity = Vector3.zero;
+
+            PushableObject pushable = targetRb.GetComponent<PushableObject>();
+            if (pushable != null)
+            {
+                pushable.ResetPhysics(); // <- HIER EINBAUEN!
+            }
         }
 
         targetRb = null;
         grabPoint = null;
     }
+
 }

@@ -53,4 +53,13 @@ public class PushableObject : MonoBehaviour
     {
         return rb;
     }
+
+    public void ResetPhysics()
+    {
+        rb.isKinematic = true;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+    }
+
 }
