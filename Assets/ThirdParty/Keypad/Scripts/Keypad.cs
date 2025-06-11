@@ -73,19 +73,24 @@ namespace NavKeypad
         }
         public void CheckCombo()
         {
-            if (int.TryParse(currentInput, out var currentKombo))
+            if (currentInput == null || currentInput.Length != keypadCombo.ToString().Length)
             {
-                bool granted = currentKombo == keypadCombo;
-                if (!displayingResult)
-                {
-                    StartCoroutine(DisplayResultRoutine(granted));
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Couldn't process input for some reason..");
+                Debug.LogWarning("Input length does not match combo length.");
+                return;
             }
 
+            string comboStr = keypadCombo.ToString();
+            char[] comboChars = comboStr.ToCharArray();
+            char[] inputChars = currentInput.ToCharArray();
+            Array.Sort(comboChars);
+            Array.Sort(inputChars);
+
+            bool granted = new string(comboChars) == new string(inputChars);
+
+            if (!displayingResult)
+            {
+                StartCoroutine(DisplayResultRoutine(granted));
+            }
         }
 
         //mainly for animations 
