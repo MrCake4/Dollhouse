@@ -25,37 +25,58 @@ public class PlayerItemHandler : MonoBehaviour
 
     private void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button2)) && player.getCurrentState != player.deadState)      //Für PS5 wäre es Button 0
+        if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button2)) && player.getCurrentState != player.deadState)
         {
-
-            if (carriedObject == null)          //kein Objekt tragen = versuchen aufzuheben
+            if (carriedObject == null) // Try picking up
             {
+                if (LookForPickupItem()) return; // Prioritize item pickup
 
-                if (!LookForInteractable())         //konnte nix aufheben, also Interactable suchen
-                {
-                    TryStartPickupWindow();
-                }
-                else
+                if (LookForInteractable()) // Only interact if no item found
                 {
                     interactable.interact();
                 }
-
             }
-            else if (LookForInteractable() && carriedObject != null)        //man trägt Objekt & interactable gefunden --> interactable nutzen
+            else if (LookForInteractable()) // Interact while carrying something
             {
                 interactable.interact();
             }
-            else                            // weder noch gefunden, also kann man Objekt fallen lassen
+            else
             {
-                DropItem();
+                DropItem(); // Drop item if no interaction found
             }
-            
-            
         }
+
 
         // This is called every frame, SOURCE FOR REFACTORING
         if (player.getCurrentState == player.deadState) DropItem(); // Wenn Spieler tot ist, Objekt fallen lassen
     }
+
+    private bool LookForPickupItem()
+{
+    triggerCollider.enabled = true;
+
+    Collider[] hits = Physics.OverlapBox(
+        triggerCollider.bounds.center,
+        triggerCollider.bounds.extents,
+        transform.rotation,
+        ~0,
+        QueryTriggerInteraction.Collide
+    );
+
+    foreach (Collider col in hits)
+    {
+        if (col.gameObject.layer == LayerMask.NameToLayer("smallObject"))
+        {
+            PickupItem(col.gameObject);
+            triggerCollider.enabled = false;
+            return true;
+        }
+    }
+
+    triggerCollider.enabled = false;
+    return false;
+}
+
 
     public bool GetWantsToPickup => wantsToPickup;          //Nur Getter für Interaction wenn man E drückt
 
