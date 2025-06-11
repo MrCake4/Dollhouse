@@ -17,13 +17,20 @@ public class IdleState : BasePlayerState
             return; //retrun, damit Code direkt aufhört und zu JumpState switched
         }
 
-        if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
+        /*if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
         {
             player.pushState.SetTarget(pushTarget);
             player.SwitchState(player.pushState);
             return;
+        }*/
+
+        if (player.holdPressed)                                             //SWITCH PUSH/PULL
+        {
+            player.TryGrabObject(); // greift auf nahes pushableObject zu
+            
+            return;
         }
-        
+
         //wenn Crouching true
         else if (player.isCrouching)                                        //SWITCH Crouch
         {
@@ -45,11 +52,6 @@ public class IdleState : BasePlayerState
             //Debug.Log("Switcherooo");
         }
 
-        if (player.holdPressed)                                             //SWITCH PULLUP or HANG
-        {
-            player.TryGrab();
-            return;
-        }
 
 
         //SWITCH Pull Up
