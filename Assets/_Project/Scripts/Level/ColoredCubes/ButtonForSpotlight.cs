@@ -30,4 +30,12 @@ public class ButtonForSpotlight : Interactable
     {
         LightSwitch();
     }
+
+    public override void onPowerOn()
+    {
+    }
+
+    public override void onPowerOff()
+    {
+    }
 }
