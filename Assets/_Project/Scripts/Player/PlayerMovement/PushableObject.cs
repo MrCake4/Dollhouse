@@ -1,46 +1,49 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PushableObject : MonoBehaviour
 {
-    private Transform currentGrabPoint;
-    private bool grabBlocked = false;
+    private List<GrabPointTrigger> grabPoints = new List<GrabPointTrigger>();
     private Rigidbody rb;
-
-    public LayerMask playerOnlyLayer; // optional für Layer-Maskenlogik
+    private RigidbodyConstraints originalConstraints;
+    private bool originalKinematic;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        // Standardmäßig ist es unbeweglich
-        SetPhysicsActive(false);
+
+        // Ursprüngliche Werte sichern
+        originalConstraints = rb.constraints;
+        originalKinematic = rb.isKinematic;
+
+        //SetPhysicsActive(false);
     }
 
-    public void SetGrabPoint(Transform point)
-    {
-        currentGrabPoint = point;
-    }
 
-    public void ClearGrabPoint(Transform point)
+    public void RegisterGrabPoint(GrabPointTrigger point)
     {
-        if (currentGrabPoint == point)
+        if (!grabPoints.Contains(point))
         {
-            currentGrabPoint = null;
+            grabPoints.Add(point);
         }
     }
 
     public Transform GetGrabPoint()
     {
-        return currentGrabPoint;
+        foreach (GrabPointTrigger point in grabPoints)
+        {
+            if (point.IsAvailable)
+            {
+                return point.GetTransform();
+            }
+        }
+
+        return null;
     }
 
     public bool IsGrabAllowed()
     {
-        return currentGrabPoint != null && !grabBlocked;
-    }
-
-    public void SetGrabBlocked(bool blocked)
-    {
-        grabBlocked = blocked;
+        return GetGrabPoint() != null;
     }
 
     public void SetPhysicsActive(bool active)
@@ -49,17 +52,17 @@ public class PushableObject : MonoBehaviour
         rb.constraints = active ? RigidbodyConstraints.FreezeRotation : RigidbodyConstraints.FreezeAll;
     }
 
-    public Rigidbody GetRigidbody()
-    {
-        return rb;
-    }
-
     public void ResetPhysics()
     {
-        rb.isKinematic = true;
-        rb.constraints = RigidbodyConstraints.FreezeAll;
+        rb.isKinematic = originalKinematic;
+        rb.constraints = originalConstraints;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
     }
 
+
+    public Rigidbody GetRigidbody()
+    {
+        return rb;
+    }
 }

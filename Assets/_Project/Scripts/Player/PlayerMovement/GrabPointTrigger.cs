@@ -3,6 +3,10 @@ using UnityEngine;
 public class GrabPointTrigger : MonoBehaviour
 {
     private PushableObject pushable;
+    private bool isBlocked = false;
+    private bool playerInside = false;
+
+    public bool IsAvailable => playerInside && !isBlocked;
 
     void Awake()
     {
@@ -12,31 +16,39 @@ public class GrabPointTrigger : MonoBehaviour
             Debug.LogError("GrabPointTrigger hat kein PushableObject als Parent!");
             enabled = false;
         }
+        else
+        {
+            pushable.RegisterGrabPoint(this); // Neuer Schritt: Registrieren
+        }
     }
 
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            pushable.SetGrabPoint(transform);
+            playerInside = true;
         }
-        else if (!other.CompareTag("Player") && !other.isTrigger)
+        else if (!other.isTrigger && other.gameObject != pushable.gameObject)
         {
-            // blockiert nur bei echten Objekten
-            pushable.SetGrabBlocked(true);
+            isBlocked = true;
         }
+    
     }
-
 
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            pushable.ClearGrabPoint(transform);
+            playerInside = false;
         }
         else
         {
-            pushable.SetGrabBlocked(false);
+            isBlocked = false;
         }
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
     }
 }
