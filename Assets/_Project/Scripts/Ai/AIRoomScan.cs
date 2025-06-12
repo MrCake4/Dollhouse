@@ -290,6 +290,11 @@ public class AIRoomScan : MonoBehaviour
 
                 // if obstacle is tag "Destroyable" destroy it
                 if (hit.collider.CompareTag("Destroyable")) Destroy(hit.collider.gameObject);
+                // if obstacle has tag "Generator" call onHit method
+                else if (hit.collider.CompareTag("Generator"))
+                {
+                    hit.collider.GetComponent<HitableObject>().onHit();
+                }
 
                 hitPlayer = false;
                 Debug.Log("Shot at player but missed!");
