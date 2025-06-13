@@ -264,7 +264,7 @@ public class AIRoomScan : MonoBehaviour
     {
         if(laserBuildupTime <=1f && implosionParticles != null && !implosionParticles.isPlaying)
         {
-            implosionLight.enabled = true; // enable the implosion light
+            setImplosionLight(true); // enable the implosion light
             implosionParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // ensure it's reset
             implosionParticles.Play();
         }
@@ -321,11 +321,19 @@ public class AIRoomScan : MonoBehaviour
             shotAtPlayer = true;
             laserBuildupTime = resetTimer;
             currentTarget = null; // reset target
-            implosionLight.enabled = false; // disable the implosion light
+            setImplosionLight(false); // disable the implosion light
 
             LaserReflection laserReflection = GetComponent<LaserReflection>();
             laserReflection.ClearLaser(); // clear laser
             
+        }
+    }
+
+    void setImplosionLight(bool enable)
+    {
+        if (implosionLight != null)
+        {
+            implosionLight.enabled = enable;
         }
     }
 

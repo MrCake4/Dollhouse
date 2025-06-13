@@ -1824,6 +1824,11 @@ Transform:
   - {fileID: 1234345058}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!108 &327578246 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 6913599336309622917, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+  m_PrefabInstance: {fileID: 766653190}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &337710557
 GameObject:
   m_ObjectHideFlags: 0
@@ -3563,6 +3568,18 @@ PrefabInstance:
     - target: {fileID: 5583837177724126326, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: implosionLight
+      value: 
+      objectReference: {fileID: 327578246}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: laserBuildupTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: laserDrawResetTime
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8889679970781055578, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
       propertyPath: eye
