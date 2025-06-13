@@ -92,4 +92,14 @@ public class Candle : Interactable
             updateCandleLight();
         }
     }
+
+    public override void onPowerOn()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void onPowerOff()
+    {
+        throw new System.NotImplementedException();
+    }
 }
