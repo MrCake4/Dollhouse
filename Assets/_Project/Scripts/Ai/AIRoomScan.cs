@@ -34,6 +34,8 @@ public class AIRoomScan : MonoBehaviour
     [SerializeField] float laserBuildupTime = 1f;        // time in seconds for how long the laser needs to shoot at the player
     float resetTimer;
 
+    // Particles
+    [SerializeField] ParticleSystem implosionParticles; // particles that are spawned when the laser is shot
 
     // DEBUG
     [SerializeField] int rayCount = 30;
@@ -256,12 +258,26 @@ public class AIRoomScan : MonoBehaviour
         }
     }
 
+    // triggers the implosion particles right before  the laser is shot
+    void chargeSequence()
+    {
+        if(laserBuildupTime <=1f && implosionParticles != null && !implosionParticles.isPlaying)
+        {
+            implosionParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // ensure it's reset
+            implosionParticles.Play();
+        }
+    }
+
     // activates when the laser sees the player
     // hits the player if there is no obstacle in the way, else it misses and continues to scan
     void ShootSequence()
     {
         // if player is detected by one of the rays, shoot at player, else if there is an obstacle between player and ray, shoot but miss
         laserBuildupTime -= Time.deltaTime;
+
+        // play implosion particles when the laser is charging
+        chargeSequence();
+
         // if timer runs out shoot at player
         if (laserBuildupTime < 0f)
         {
