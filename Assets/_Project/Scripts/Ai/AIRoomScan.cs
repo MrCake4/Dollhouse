@@ -55,6 +55,7 @@ public class AIRoomScan : MonoBehaviour
     LineRenderer laserLine;
     [SerializeField] float laserDrawResetTime = 0.1f; // time in seconds for how long the laser is visible
     float laserDrawReset;
+    [SerializeField] Light implosionLight; // light that is spawned when the implosion particles are played
 
     private bool isReturningToCenter;
     private Quaternion centerRotation;
@@ -263,6 +264,7 @@ public class AIRoomScan : MonoBehaviour
     {
         if(laserBuildupTime <=1f && implosionParticles != null && !implosionParticles.isPlaying)
         {
+            implosionLight.enabled = true; // enable the implosion light
             implosionParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // ensure it's reset
             implosionParticles.Play();
         }
@@ -319,9 +321,11 @@ public class AIRoomScan : MonoBehaviour
             shotAtPlayer = true;
             laserBuildupTime = resetTimer;
             currentTarget = null; // reset target
+            implosionLight.enabled = false; // disable the implosion light
 
             LaserReflection laserReflection = GetComponent<LaserReflection>();
             laserReflection.ClearLaser(); // clear laser
+            
         }
     }
 
