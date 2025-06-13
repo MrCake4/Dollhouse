@@ -324,8 +324,11 @@ public class AIRoomScan : MonoBehaviour
             setImplosionLight(false); // disable the implosion light
 
             LaserReflection laserReflection = GetComponent<LaserReflection>();
-            laserReflection.ClearLaser(); // clear laser
-            
+            if (laserReflection != null)
+            {
+                // clear laser
+                laserReflection.ClearLaser();
+            }
         }
     }
 
