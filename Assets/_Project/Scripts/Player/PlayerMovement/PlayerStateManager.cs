@@ -61,6 +61,11 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public float verticalPullUp = 0.8f;
     public float horizontalPullUp = -0.3f;
 
+    //________________ANIMATION_________________
+    public Animator animator;
+
+
+
     // Debugging
     [Header("Debugging")]
     public bool isInvincible = false; // Spieler ist unverwundbar, z.B. während des Respawns
@@ -84,6 +89,9 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         currentState = idleState;
         currentState.onEnter(this);                 //this = alle Variablen/ Methoden aus dieser Klasse hier
+
+        animator = GetComponentInChildren<Animator>();
+
     }
 
 
@@ -389,6 +397,25 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         player.rb.linearVelocity = currentVel;
     }
+
+    //_____________________________ANIMATION___________________
+    public void ResetAllAnimationBools()
+    {
+        animator.SetBool("IsIdle", false);
+        animator.SetBool("IsWalking", false);
+        animator.SetBool("IsRunning", false);
+        animator.SetBool("IsCrouching", false);
+        animator.SetBool("IsJumping", false);
+        animator.SetBool("IsPushing", false);
+        animator.SetBool("IsPulling", false);
+        animator.SetBool("IsGrabbing", false);
+        animator.SetBool("IsHolding", false);
+        animator.SetBool("IsFalling", false);
+        animator.SetBool("IsPullingUp", false);
+
+        // füge hier alle deine Parameter ein
+    }
+
 
     public BasePlayerState getCurrentState => currentState;          //Getter für den aktuellen State
 

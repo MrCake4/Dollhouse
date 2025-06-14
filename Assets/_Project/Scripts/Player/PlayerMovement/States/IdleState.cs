@@ -6,6 +6,9 @@ public class IdleState : BasePlayerState
     public override void onEnter(PlayerStateManager player)
     {
         Debug.Log("not walking anymore");
+        player.ResetAllAnimationBools();
+        player.animator.SetBool("IsIdle", true);
+
     }
     public override void onUpdate(PlayerStateManager player) //pro Frame
     {
@@ -69,6 +72,6 @@ public class IdleState : BasePlayerState
     }
     public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
     {
-        
+        player.animator.SetBool("IsIdle", false);
     }
 }
