@@ -6,12 +6,12 @@ using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UIElements;
 using MilkShake;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class AIRoomScan : MonoBehaviour
 {
     // Spotlight
     [SerializeField] Light spotlight;
-
 
     // SCAN VALUES
     float viewRadius = 20f;
@@ -106,6 +106,7 @@ public class AIRoomScan : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         UpdateSpotlight();
         UpdateLaserLine();
         if (currentTarget == null && startScan)
@@ -281,11 +282,32 @@ public class AIRoomScan : MonoBehaviour
     {
         if(laserBuildupTime <=1f && implosionParticles != null && !implosionParticles.isPlaying)
         {
-            if(shaker != null && shakePreset != null) shaker.Shake(shakePreset); // trigger camera shake effect
+
+            // Trigger rumble effect on gamepad
+            rumbleController();
+
+            if (shaker != null && shakePreset != null) shaker.Shake(shakePreset); // trigger camera shake effect
             setImplosionLight(true); // enable the implosion light
             implosionParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // ensure it's reset
             implosionParticles.Play();
         }
+    }
+
+    // Rumbles the controller if a gamepad is connected
+    void rumbleController()
+    {
+        Gamepad gamepad = Gamepad.current;
+        if (gamepad != null)
+        {
+            gamepad.SetMotorSpeeds(0.75f, 1.0f); // Low and high frequency motors
+            StartCoroutine(StopRumbleAfterSeconds(1.5f)); // Stop after 1.5 seconds
+        }
+    }
+
+    private IEnumerator StopRumbleAfterSeconds(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        Gamepad.current?.SetMotorSpeeds(0f, 0f);
     }
 
     // activates when the laser sees the player
