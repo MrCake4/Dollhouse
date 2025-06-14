@@ -791,6 +791,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: shaker
+      value: 
+      objectReference: {fileID: 1401971812}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
       propertyPath: laserBuildupTime
       value: 4
       objectReference: {fileID: 0}
@@ -10825,12 +10829,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401971807}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: -13.47}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1870558530}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1401971812
 MonoBehaviour:
@@ -10841,21 +10845,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1401971807}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eaa89ae2a5739944dbd8303580cdfbd5, type: 3}
+  m_Script: {fileID: 11500000, guid: 1697a0132719bae458729c9e99c0c716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraPosition: {x: 0, y: 0, z: 0}
-  floatAmplitude: 0.5
-  floatFrequency: 0.1
-  maxOffset: 3
-  rooms:
-  - {fileID: 198034327}
-  - {fileID: 2075520666}
-  - {fileID: 1746452831}
-  - {fileID: 1227224292}
-  - {fileID: 1464275756}
-  currentRoom: {fileID: 2075520666}
-  cameraSpeed: 2
+  addToGlobalShakers: 0
 --- !u!1001 &1412001750
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14851,6 +14844,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 4ad36ef2bf03aac488ac776d33e9e147, type: 3}
   m_PrefabInstance: {fileID: 473516782}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1870558528
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1870558530}
+  - component: {fileID: 1870558529}
+  m_Layer: 0
+  m_Name: CameraContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1870558529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870558528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaa89ae2a5739944dbd8303580cdfbd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraPosition: {x: 0, y: 0, z: 0}
+  floatAmplitude: 0.5
+  floatFrequency: 0.1
+  maxOffset: 3
+  rooms:
+  - {fileID: 198034327}
+  - {fileID: 2075520666}
+  - {fileID: 1746452831}
+  - {fileID: 1227224292}
+  - {fileID: 1464275756}
+  currentRoom: {fileID: 2075520666}
+  cameraSpeed: 2
+--- !u!4 &1870558530
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870558528}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 3, z: -13.47}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1401971811}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1871195749
 GameObject:
   m_ObjectHideFlags: 0
@@ -17460,7 +17510,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1401971811}
+  - {fileID: 1870558530}
   - {fileID: 319657896}
   - {fileID: 587194554}
   - {fileID: 106478788}

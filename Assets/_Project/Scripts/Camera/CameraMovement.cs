@@ -44,7 +44,7 @@ public class CameraMovement : MonoBehaviour
         lookAtPlayer = currentRoom.getLookAtPlayer;
         currentLookAt = player.transform.position;
         rooms = getActiveRooms();
-        cam = GetComponent<Camera>();
+        cam = GetComponentInChildren<Camera>();
     }
 
     // Update is called once per frame

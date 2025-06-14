@@ -4,9 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UIElements;
+using MilkShake;
+using System.Collections;
 
 public class AIRoomScan : MonoBehaviour
 {
+    // Spotlight
     [SerializeField] Light spotlight;
 
 
@@ -69,6 +72,11 @@ public class AIRoomScan : MonoBehaviour
 
     Collider targetCollider;
 
+    // Camera Shake
+    [Header("Camera Shake Settings")]
+    public Shaker shaker; // Shaker for camera shake effect
+    public ShakePreset shakePreset; // Preset for the camera shake effect
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -130,7 +138,11 @@ public class AIRoomScan : MonoBehaviour
                 ReturnToCenterPosition();
                 if (!isReturningToCenter)
                 {
-                    // Nach Rückkehr: beende Scan
+                    // Nach Rückkehr: beende Scan, mache licht aus
+                    if (spotlight != null && spotlight.enabled)
+                    {
+                        spotlight.enabled = false; // Disable the spotlight if it's currently enabled
+                    }
                     isSweeping = false;
                     startScan = false;
                 }
@@ -152,6 +164,11 @@ public class AIRoomScan : MonoBehaviour
 
     void Scan()
     {
+        if (spotlight != null && !spotlight.enabled)
+        {
+            spotlight.enabled = true; // Enable the spotlight if it's not already enabled
+        }
+
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
         foreach (Collider target in targetsInViewRadius)
@@ -264,6 +281,7 @@ public class AIRoomScan : MonoBehaviour
     {
         if(laserBuildupTime <=1f && implosionParticles != null && !implosionParticles.isPlaying)
         {
+            if(shaker != null && shakePreset != null) shaker.Shake(shakePreset); // trigger camera shake effect
             setImplosionLight(true); // enable the implosion light
             implosionParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // ensure it's reset
             implosionParticles.Play();
