@@ -28,9 +28,11 @@ public class NumberRenderer : MonoBehaviour
 
     void SetupMaterial()
     {
-        // Create a unique material instance
-        numberMaterial = new Material(Shader.Find("Unlit/Texture"));
-        numberMaterial.mainTexture = numberTexture;
+        // Create a unique material instance with transparency support
+        numberMaterial = new Material(Shader.Find("Unlit/Transparent"))
+        {
+            mainTexture = numberTexture
+        };
         GetComponent<MeshRenderer>().material = numberMaterial;
     }
 
