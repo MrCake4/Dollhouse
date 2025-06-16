@@ -347,7 +347,13 @@ public class AIRoomScan : MonoBehaviour
                 shootLaser(transform.position, hit.point);
 
                 // if obstacle is tag "Destroyable" destroy it
-                if (hit.collider.CompareTag("Destroyable")) Destroy(hit.collider.gameObject);
+                if (hit.collider.CompareTag("Destroyable"))
+                {
+                    Destroy(hit.collider.gameObject); // destroy the obstacle
+                                                      // add this below if we give destructible meshes, please save for later
+
+                    //Destructible destructible = hit.collider.GetComponent<Destructible>(); destructible?.destroyObject(); 
+                }
                 // if obstacle has tag "Generator" call onHit method
                 else if (hit.collider.CompareTag("Generator"))
                 {
