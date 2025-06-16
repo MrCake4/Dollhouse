@@ -29,18 +29,18 @@ public class LaserReflection : MonoBehaviour
     }
 
     // Update is called once per frame
-    /**void Update()
+    void Update()
     {
         // Cast a ray from the laser
-        if(aiRoomScan.getLaserEnabled && laserLine.positionCount == 2){
+        if(aiRoomScan.IsLaserEnabled && laserLine.positionCount == 2){
             ReflectLaser(0);
         }
-        else if(!aiRoomScan.getLaserEnabled && laserLine.positionCount > 2){
+        else if(!aiRoomScan.IsLaserEnabled && laserLine.positionCount > 2){
             ClearLaser();
         }
 
         Debug.DrawRay(transform.position + transform.forward, transform.forward * 10f, Color.red);
-    }**/
+    }
 
     private void ReflectLaser(int i)
     {

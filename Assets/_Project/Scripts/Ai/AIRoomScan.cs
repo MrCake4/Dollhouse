@@ -34,7 +34,6 @@ public class AIRoomScan : MonoBehaviour
     public ShakePreset shakePreset;
 
     private LineRenderer laserLine;
-    private Transform playerTransform;
     private Collider playerCollider;
     private PlayerStateManager player;
 
@@ -54,7 +53,6 @@ public class AIRoomScan : MonoBehaviour
         laserLine = GetComponent<LineRenderer>();
         laserLine.enabled = false;
 
-        playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
         playerCollider = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Collider>();
         player = FindFirstObjectByType<PlayerStateManager>();
 
