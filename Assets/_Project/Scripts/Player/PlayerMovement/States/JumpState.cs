@@ -5,6 +5,7 @@ public class JumpState : BasePlayerState
     
     public override void onEnter(PlayerStateManager player)
     {
+        player.animator.SetBool("IsJumping", true);
         /*
         // Spieler kann aus Idle mit WASD schräg springen
         Vector3 direction = player.moveDir != Vector3.zero
@@ -26,7 +27,6 @@ public class JumpState : BasePlayerState
         player.rb.AddForce(jumpImpulse, ForceMode.VelocityChange); 
 
         Debug.Log($"Jumping | Direction: {direction} | Speed: {horizontalSpeed:F2} | Vertical: {baseY:F2}"); */
-
 
         // Vertikale Sprungkraft berechnen
         float baseY = Mathf.Sqrt(2f * Physics.gravity.magnitude * player.jumpHeight);
@@ -59,15 +59,24 @@ public class JumpState : BasePlayerState
     {
         if (player.IsGrounded())                                            // Wenn der Jump physisch nicht gezündet hat (z. B. wegen Blockade)
         {
+            Debug.Log("somehow I think I am grounded - lol");
             float speed = player.GetHorizontalSpeed();
             if (speed >= player.walkSpeed)
+            {
                 player.SwitchState(player.isRunning ? player.runState : player.walkState);
+                //return;
+            }
             else
+            {
                 player.SwitchState(player.idleState);                           // oder Run/Walk je nach Input, wenn gewünscht
+                //return;
+            }
+                
         }
         else if (player.IsFalling())                                        // Wenn man wirklich abspringt --> falling
         {
             player.SwitchState(player.fallState);
+            //return;
         }
 
         /*if (player.holdPressed)                                             //SWITCH PULLUP or HANG
@@ -92,6 +101,7 @@ public class JumpState : BasePlayerState
     public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
     {
         //nix weiter nötig lol
+        player.animator.SetBool("IsJumping", false);
     }
 
     

@@ -5,6 +5,7 @@ public class FallState : BasePlayerState                                //dann, 
     public override void onEnter(PlayerStateManager player)
     {
         Debug.Log("Falling");
+        player.animator.SetBool("IsFalling", true);
     }
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
@@ -15,10 +16,12 @@ public class FallState : BasePlayerState                                //dann, 
             if (speed >= player.walkSpeed)
             {
                 player.SwitchState(player.isRunning ? player.runState : player.walkState);      //SWITCH Run / Walk
+                return;
             }
             else
             {
                 player.SwitchState(player.idleState);                                           //SWITCH Idle
+                return;
             }
         }
 
@@ -54,6 +57,8 @@ public class FallState : BasePlayerState                                //dann, 
             vel.z = horizontal.z;
             player.rb.linearVelocity = vel;
         }
+
+        player.animator.SetBool("IsFalling", false);
     }
     
 }

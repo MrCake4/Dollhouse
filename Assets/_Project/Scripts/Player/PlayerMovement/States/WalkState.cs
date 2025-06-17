@@ -22,7 +22,7 @@ public class WalkState : BasePlayerState
         {
             player.jumpPressed = false;
             player.SwitchState(player.jumpState);
-            return;
+            //return;
         }
         
 

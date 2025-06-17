@@ -263,6 +263,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         );
 
         Debug.DrawRay(boxCenter, Vector3.down * castDistance, grounded ? Color.green : Color.red);
+        //if (grounded == true) { Debug.Log("I am Grounded!!!!"); };
         return grounded;
     }
 
