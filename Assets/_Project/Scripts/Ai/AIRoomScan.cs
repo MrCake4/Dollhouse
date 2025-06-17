@@ -48,6 +48,13 @@ public class AIRoomScan : MonoBehaviour
 
     public bool IsDoneSweeping { get; private set; }
 
+    /// Audio
+    [Header("Audio")]
+    [SerializeField] private AudioClip turnLightOnClip;
+    [SerializeField] private AudioClip turnLightOffClip;
+    [SerializeField] private AudioClip ScanSweepClip;
+
+
     private void Awake()
     {
         laserLine = GetComponent<LineRenderer>();
@@ -74,6 +81,10 @@ public class AIRoomScan : MonoBehaviour
     private IEnumerator SweepRoutine()
     {
         SetSpotlight(true);
+
+        if (ScanSweepClip != null)
+            SoundEffectsManager.instance.PlaySoundEffect(ScanSweepClip, transform, 1f);
+
         IsDoneSweeping = false;
 
         float sweepStart = Time.time;
@@ -275,6 +286,10 @@ public class AIRoomScan : MonoBehaviour
     {
         if (spotlight != null)
             spotlight.enabled = enabled;
+        if (enabled && turnLightOnClip != null)
+            SoundEffectsManager.instance.PlaySoundEffect(turnLightOnClip, transform, 1f);
+        else if (!enabled && turnLightOffClip != null)
+            SoundEffectsManager.instance.PlaySoundEffect(turnLightOffClip, transform, 1f);
     }
 
     public void SetHitPlayer(bool value)

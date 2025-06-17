@@ -536,12 +536,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 349842426}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 37.993595, y: -0.95659304, z: 19.7271}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 82.86381, y: 11.895733, z: -33.38376}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 412828813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &412828812
 GameObject:
@@ -577,6 +577,7 @@ Transform:
   - {fileID: 1283596160}
   - {fileID: 49387831}
   - {fileID: 1829970580}
+  - {fileID: 349842428}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &507708470
@@ -1023,9 +1024,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 1793903092}
     m_Modifications:
     - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: ScanSweepClip
+      value: 
+      objectReference: {fileID: 8300000, guid: c628c35525f19b147b4254f873422577, type: 3}
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
       propertyPath: orientation.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: turnLightOnClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 558eb424ee4722346af1e6acc7308b49, type: 3}
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: turnLightOffClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4331a8bde59f7804c86e0118e950e051, type: 3}
     - target: {fileID: 8399654959849500237, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
       propertyPath: m_Name
       value: eye (1)
@@ -2441,4 +2454,3 @@ SceneRoots:
   - {fileID: 1128963416}
   - {fileID: 1865168646}
   - {fileID: 1557464043}
-  - {fileID: 349842428}
