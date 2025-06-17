@@ -1,207 +1,122 @@
-using System;
-using NUnit.Framework;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.Rendering.HighDefinition;
-using UnityEngine.UIElements;
-using MilkShake;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using MilkShake;
 
+[RequireComponent(typeof(LineRenderer))]
 public class AIRoomScan : MonoBehaviour
 {
     // Spotlight
-    [SerializeField] Light spotlight;
+    [SerializeField] private Light spotlight;
 
-    // SCAN VALUES
-    float viewRadius = 20f;
+    // Scan and Sweep
+    [SerializeField] private float viewRadius = 20f;
+    [SerializeField] private float viewAngle = 30f;
+    [SerializeField] private float minViewAngle = 10f;
+    [SerializeField] private float viewAngleChangeAmount = 30f;
+    [SerializeField] private float rotationSpeed = 0.3f;
+    [SerializeField] private float sweepDuration = 3f;
+    [SerializeField] private float maxRotationAngle = 90f;
+    [SerializeField] private float returnToCenterSpeed = 3f;
 
-    float viewAngle = 30f; // changes how big the cone is
-    float minViewAngle = 10f;
-    float viewAngleChangeAmount = 30f; // how fast the cone gets smaller
-    [SerializeField] float rotationSpeed = 0.3f;
-    [SerializeField] float maxRotationAngle = 90f;
-    float returnToCenterSpeed = 3f;
+    [SerializeField] private LayerMask targetMask;
+    [SerializeField] private LayerMask obstacleMask;
 
+    [SerializeField] private ParticleSystem implosionParticles;
+    [SerializeField] private Light implosionLight;
 
-    // DETECTION 
-    [SerializeField] LayerMask targetMask;
-    [SerializeField] LayerMask obstacleMask;
-    [SerializeField] bool startScan;
-    Vector3 targetOffset = Vector3.zero; // colliderOffset for the target position, so that the ray is not exactly at the center of the eye
+    [Header("Laser Settings")]
+    [SerializeField] private float laserBuildupTime = 1f;
+    [SerializeField] private float laserDrawResetTime = 0.1f;
 
+    [Header("Camera Shake")]
+    public Shaker shaker;
+    public ShakePreset shakePreset;
 
-    // SHOOT SEQUENCE
-    bool shotAtPlayer = false;
-    bool hitPlayer = false;
-    [SerializeField] float laserBuildupTime = 1f;        // time in seconds for how long the laser needs to shoot at the player
-    float resetTimer;
-
-    // Particles
-    [SerializeField] ParticleSystem implosionParticles; // particles that are spawned when the laser is shot
-
-    // DEBUG
-    [SerializeField] int rayCount = 30;
-
-    private float initialYRotation;
-    private Transform currentTarget;
-
-
-    // Orientation of the eye, given in x y z coordinates
-    // +x changes the view of the eye down, -x up
-    // TODO: maybe change to a quaternion
-    public Vector3 orientation;
-    Transform playerPosition;   // This variable is used to get the player position for the laser, so that the laser stays on the players positon
-
-    // Laser settings
-    // gets the laser from the object
-    LineRenderer laserLine;
-    [SerializeField] float laserDrawResetTime = 0.1f; // time in seconds for how long the laser is visible
-    float laserDrawReset;
-    [SerializeField] Light implosionLight; // light that is spawned when the implosion particles are played
-
-    private bool isReturningToCenter;
-    private Quaternion centerRotation;
-
-    private bool isSweeping = false;
-    private float sweepStartTime;
-    [SerializeField] float sweepDuration = 3f; // Dauer eines Sweeps in Sekunden
-
-    // MANAGERS
+    private LineRenderer laserLine;
+    private Collider playerCollider;
     private PlayerStateManager player;
 
-    Collider targetCollider;
+    private Quaternion centerRotation;
+    private float initialYRotation;
 
-    // Camera Shake
-    [Header("Camera Shake Settings")]
-    public Shaker shaker; // Shaker for camera shake effect
-    public ShakePreset shakePreset; // Preset for the camera shake effect
+    private Transform currentTarget;
+    private Vector3 targetOffset;
+    private float laserTimer;
+    private float laserDrawTimer;
+    private bool hitPlayer;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public bool IsDoneSweeping { get; private set; }
+
+    private void Awake()
     {
-        // saves laser buildup time to reset it after shooting
-        resetTimer = laserBuildupTime;
-        // sets what the ray is looking for
-        targetMask = LayerMask.GetMask("Player");
-        // sets what blocks the ray
-        obstacleMask = LayerMask.GetMask("Obstacle", "Ground");
-        initialYRotation = transform.eulerAngles.y;
-
-        // make laser invisible at start
         laserLine = GetComponent<LineRenderer>();
         laserLine.enabled = false;
-        laserDrawReset = laserDrawResetTime;
 
-        centerRotation = Quaternion.Euler(orientation.x, initialYRotation, 0);
-
-        playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
-
-        // get player state manager
+        playerCollider = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Collider>();
         player = FindFirstObjectByType<PlayerStateManager>();
 
-        targetCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider>();
+        centerRotation = Quaternion.Euler(Vector3.right * transform.eulerAngles.x + Vector3.up * transform.eulerAngles.y);
+        initialYRotation = transform.eulerAngles.y;
+
+        laserTimer = laserBuildupTime;
+        laserDrawTimer = laserDrawResetTime;
+
+        if (spotlight != null)
+            spotlight.enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void BeginScanSweep()
     {
-        
-        UpdateSpotlight();
-        UpdateLaserLine();
-        if (currentTarget == null && startScan)
-        {
-            DrawDetectionRays();
-            if (!isSweeping)
-            {
-                // Starte Sweep
-                isSweeping = true;
-                sweepStartTime = Time.time;
-            }
-
-            Scan();
-
-            float elapsed = Time.time - sweepStartTime;
-            if (elapsed <= sweepDuration)
-            {
-                // Aktiver Sweep
-                float targetRotationAngle = initialYRotation + Mathf.Sin(elapsed * rotationSpeed * Mathf.PI * 2f / sweepDuration) * maxRotationAngle;
-                transform.rotation = Quaternion.Slerp(
-                    transform.rotation,
-                    Quaternion.Euler(orientation.x, targetRotationAngle, 0),
-                    Time.deltaTime * rotationSpeed
-                );
-
-            }
-            else
-            {
-                // Sweep vorbei → zurück zur Mittelposition
-                ReturnToCenterPosition();
-                if (!isReturningToCenter)
-                {
-                    // Nach Rückkehr: beende Scan, mache licht aus
-                    if (spotlight != null && spotlight.enabled)
-                    {
-                        spotlight.enabled = false; // Disable the spotlight if it's currently enabled
-                    }
-                    isSweeping = false;
-                    startScan = false;
-                }
-            }
-        }
-        else if (currentTarget != null && !hitPlayer)
-        {
-            FollowTarget();
-            DrawDetectionRays();
-            ShootSequence();
-        }
-        else
-        {
-            ReturnToCenterPosition();
-            isSweeping = false;
-        }
+        StartCoroutine(SweepRoutine());
     }
 
-
-    void Scan()
+    private IEnumerator SweepRoutine()
     {
-        if (spotlight != null && !spotlight.enabled)
+        SetSpotlight(true);
+        IsDoneSweeping = false;
+
+        float sweepStart = Time.time;
+        while (Time.time - sweepStart < sweepDuration && currentTarget == null)
         {
-            spotlight.enabled = true; // Enable the spotlight if it's not already enabled
+            float t = (Time.time - sweepStart) * rotationSpeed * Mathf.PI * 2f / sweepDuration;
+            float angle = initialYRotation + Mathf.Sin(t) * maxRotationAngle;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(transform.eulerAngles.x, angle, 0), Time.deltaTime * rotationSpeed);
+
+            ScanForPlayer();
+            UpdateSpotlight();
+            yield return null;
         }
 
-        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
+        yield return ReturnToCenter();
+        SetSpotlight(false);
+        IsDoneSweeping = true;
+    }
 
-        foreach (Collider target in targetsInViewRadius)
+    public void ScanForPlayer()
+    {
+        Collider[] targets = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
+
+        foreach (var target in targets)
         {
-            Vector3 directionToTarget = (target.bounds.center - transform.position).normalized;
+            Vector3 dirToTarget = (target.bounds.center - transform.position).normalized;
 
-            // Checks if the target is inside the cone
-            if (Vector3.Angle(transform.forward, directionToTarget) < viewAngle / 2)
+            if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2f)
             {
-                float distanceToTarget = Vector3.Distance(transform.position, target.bounds.center);
+                float distance = Vector3.Distance(transform.position, target.bounds.center);
 
-                // Offsets for different hights
-                // we have to keep these between -0.9 and 0.9, else the raycast will not hit the target 
-                Vector3[] heightOffsets = new Vector3[]
-                {
-                //Vector3.up * 0f,// Center
-                Vector3.up * -0.9f, // feet
-                //Vector3.up * 0.9f,    // head
-                };
+                Vector3[] offsets = { Vector3.up * -0.9f };
 
-                foreach (Vector3 colliderOffset in heightOffsets)
+                foreach (var offset in offsets)
                 {
                     Vector3 rayOrigin = transform.position;
-                    Vector3 targetPoint = target.bounds.center + colliderOffset;
-                    Vector3 rayDirection = (targetPoint - rayOrigin).normalized;
+                    Vector3 rayTarget = target.bounds.center + offset;
+                    Vector3 rayDir = (rayTarget - rayOrigin).normalized;
 
-                    Debug.DrawRay(rayOrigin, rayDirection * distanceToTarget, Color.red, 10f);
-
-                    if (!Physics.Raycast(rayOrigin, rayDirection, distanceToTarget, obstacleMask))
+                    if (!Physics.Raycast(rayOrigin, rayDir, distance, obstacleMask))
                     {
                         currentTarget = target.transform;
-                        targetOffset = colliderOffset; // Save the colliderOffset for the target position
+                        targetOffset = offset;
                         return;
                     }
                 }
@@ -209,217 +124,167 @@ public class AIRoomScan : MonoBehaviour
         }
     }
 
-    private void ReturnToCenterPosition()
+    public void FollowAndShoot()
     {
-        isReturningToCenter = true;
-        transform.rotation = Quaternion.Slerp(transform.rotation, centerRotation, Time.deltaTime * returnToCenterSpeed);
+        if (currentTarget == null) return;
 
-        if (Quaternion.Angle(transform.rotation, centerRotation) < 0.5f)
+        Vector3 direction = (playerCollider.bounds.center - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
+
+        laserTimer -= Time.deltaTime;
+        ChargeSequence();
+
+        if (laserTimer <= 0f)
         {
-            transform.rotation = centerRotation;
-            isReturningToCenter = false;
+            ShootLaser();
+            ResetScan();
+        }
+
+        UpdateLaserLine();
+        UpdateSpotlight();
+    }
+
+    private void ShootLaser()
+    {
+        Vector3 laserTarget = playerCollider.bounds.center + targetOffset;
+        Vector3 direction = (laserTarget - transform.position).normalized;
+        float distance = Vector3.Distance(transform.position, laserTarget);
+
+        if (!Physics.Raycast(transform.position, direction, out RaycastHit hit, distance, obstacleMask))
+        {
+            laserLine.enabled = true;
+            SetLaser(transform.position, laserTarget);
+            hitPlayer = true;
+
+            if (!player.isInvincible)
+                player.SwitchState(player.deadState);
+        }
+        else
+        {
+            laserLine.enabled = true;
+            SetLaser(transform.position, hit.point);
+            hitPlayer = false;
+
+            if (hit.collider.CompareTag("Destroyable"))
+                Destroy(hit.collider.gameObject);
+            else if (hit.collider.CompareTag("Generator"))
+                hit.collider.GetComponent<HitableObject>()?.onHit();
+        }
+
+        if (GetComponent<LaserReflection>() is LaserReflection reflect)
+            reflect.ClearLaser();
+
+        setImplosionLight(false);
+    }
+
+    private void ResetScan()
+    {
+        currentTarget = null;
+        laserTimer = laserBuildupTime;
+    }
+
+    private void UpdateLaserLine()
+    {
+        if (!laserLine.enabled) return;
+
+        if (hitPlayer && currentTarget != null)
+            SetLaser(transform.position, playerCollider.bounds.center + targetOffset);
+
+        laserDrawTimer -= Time.deltaTime;
+        if (laserDrawTimer <= 0f)
+        {
+            laserLine.enabled = false;
+            laserDrawTimer = laserDrawResetTime;
         }
     }
 
-    void FollowTarget()
+    private IEnumerator ReturnToCenter()
     {
-        Vector3 direction = (targetCollider.bounds.center - transform.position).normalized;
-
-        if (direction != Vector3.zero)
+        Quaternion target = centerRotation;
+        while (Quaternion.Angle(transform.rotation, target) > 0.5f)
         {
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * returnToCenterSpeed);
+            yield return null;
         }
-
+        transform.rotation = target;
     }
 
-    void UpdateSpotlight()
+    private void ChargeSequence()
     {
-        if (spotlight != null)
+        if (laserTimer <= 1f && implosionParticles != null && !implosionParticles.isPlaying)
         {
-            spotlight.type = LightType.Spot;
-            spotlight.spotAngle = viewAngle;
-            spotlight.range = viewRadius;
-            spotlight.intensity = 40000;
-            if (currentTarget != null)
-            {
-                // Narrow focus when targeting
-                spotlight.colorTemperature = Mathf.Lerp(spotlight.colorTemperature, 800, Time.deltaTime * 5f);
-                viewAngle = Mathf.Max(viewAngle - (viewAngleChangeAmount * Time.deltaTime), minViewAngle);
-            }
-            else
-            {
-                // Return to normal when scanning
-                spotlight.colorTemperature = Mathf.Lerp(spotlight.colorTemperature, 6000, Time.deltaTime * 5f);
-                viewAngle = Mathf.Lerp(viewAngle, 30f, Time.deltaTime * 5f);
-            }
-        }
-    }
-
-    void DrawDetectionRays()
-    {
-        float halfAngle = viewAngle / 2f;
-
-        for (int i = 0; i < rayCount; i++)
-        {
-            float angle = -halfAngle + (viewAngle / (rayCount - 1)) * i;
-
-            Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
-
-            if (Physics.Raycast(transform.position, direction, out RaycastHit hit, viewRadius, targetMask | obstacleMask))
-            {
-                Debug.DrawLine(transform.position, hit.point, Color.red);
-            }
-            else
-            {
-                Debug.DrawRay(transform.position, direction * viewRadius, Color.green);
-            }
-        }
-    }
-
-    // triggers the implosion particles right before  the laser is shot
-    void chargeSequence()
-    {
-        if(laserBuildupTime <=1f && implosionParticles != null && !implosionParticles.isPlaying)
-        {
-
-            // Trigger rumble effect on gamepad
             rumbleController();
+            shaker?.Shake(shakePreset);
 
-            if (shaker != null && shakePreset != null) shaker.Shake(shakePreset); // trigger camera shake effect
-            setImplosionLight(true); // enable the implosion light
-            implosionParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // ensure it's reset
-            implosionParticles.Play();
+            setImplosionLight(true);
+            implosionParticles.Play(true);
         }
     }
 
-    // Rumbles the controller if a gamepad is connected
-    void rumbleController()
+    private void rumbleController()
     {
-        Gamepad gamepad = Gamepad.current;
-        if (gamepad != null)
+        if (Gamepad.current != null)
         {
-            gamepad.SetMotorSpeeds(0.75f, 1.0f); // Low and high frequency motors
-            StartCoroutine(StopRumbleAfterSeconds(1.5f)); // Stop after 1.5 seconds
+            Gamepad.current.SetMotorSpeeds(0.75f, 1.0f);
+            StartCoroutine(StopRumbleAfterSeconds(1.5f));
         }
     }
 
-    private IEnumerator StopRumbleAfterSeconds(float duration)
+    private IEnumerator StopRumbleAfterSeconds(float seconds)
     {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(seconds);
         Gamepad.current?.SetMotorSpeeds(0f, 0f);
     }
 
-    // activates when the laser sees the player
-    // hits the player if there is no obstacle in the way, else it misses and continues to scan
-    void ShootSequence()
+    private void UpdateSpotlight()
     {
-        // if player is detected by one of the rays, shoot at player, else if there is an obstacle between player and ray, shoot but miss
-        laserBuildupTime -= Time.deltaTime;
+        if (spotlight == null) return;
 
-        // play implosion particles when the laser is charging
-        chargeSequence();
+        spotlight.type = LightType.Spot;
+        spotlight.range = viewRadius;
+        spotlight.intensity = 40000;
+        spotlight.spotAngle = viewAngle;
 
-        // if timer runs out shoot at player
-        if (laserBuildupTime < 0f)
+        if (currentTarget != null)
         {
-            // Vector3 to target added with the targetOffset
-            Vector3 laserTarget = targetCollider.bounds.center + targetOffset;
-            Vector3 directionToTarget = (laserTarget - transform.position).normalized;
-            float distanceToTarget = Vector3.Distance(transform.position, laserTarget);
-
-            RaycastHit hit;
-
-            // send the player into oblivion if there is no obstacle in the way
-            if (!Physics.Raycast(transform.position, directionToTarget, out hit, distanceToTarget, obstacleMask))
-            {
-                laserLine.enabled = true;
-                shootLaser(transform.position, laserTarget);
-
-                hitPlayer = true;
-                Debug.Log("Shot at player and hit!");
-                if (!player.isInvincible) player.SwitchState(player.deadState);
-            }
-            else
-            {
-                // Obstacle in the way — we hit something in the obstacleMask, uses hit point to get obstacle position
-                laserLine.enabled = true;
-                shootLaser(transform.position, hit.point);
-
-                // if obstacle is tag "Destroyable" destroy it
-                if (hit.collider.CompareTag("Destroyable"))
-                {
-                    Destroy(hit.collider.gameObject); // destroy the obstacle
-                                                      // add this below if we give destructible meshes, please save for later
-
-                    //Destructible destructible = hit.collider.GetComponent<Destructible>(); destructible?.destroyObject(); 
-                }
-                // if obstacle has tag "Generator" call onHit method
-                else if (hit.collider.CompareTag("Generator"))
-                {
-                    hit.collider.GetComponent<HitableObject>().onHit();
-                }
-
-                hitPlayer = false;
-                Debug.Log("Shot at player but missed!");
-            }
-            // reset timer
-            shotAtPlayer = true;
-            laserBuildupTime = resetTimer;
-            currentTarget = null; // reset target
-            setImplosionLight(false); // disable the implosion light
-
-            LaserReflection laserReflection = GetComponent<LaserReflection>();
-            if (laserReflection != null)
-            {
-                // clear laser
-                laserReflection.ClearLaser();
-            }
+            spotlight.colorTemperature = Mathf.Lerp(spotlight.colorTemperature, 800, Time.deltaTime * 5f);
+            viewAngle = Mathf.Max(viewAngle - viewAngleChangeAmount * Time.deltaTime, minViewAngle);
+        }
+        else
+        {
+            spotlight.colorTemperature = Mathf.Lerp(spotlight.colorTemperature, 6000, Time.deltaTime * 5f);
+            viewAngle = Mathf.Lerp(viewAngle, 30f, Time.deltaTime * 5f);
         }
     }
 
-    void setImplosionLight(bool enable)
+    private void setImplosionLight(bool on)
     {
         if (implosionLight != null)
-        {
-            implosionLight.enabled = enable;
-        }
+            implosionLight.enabled = on;
     }
 
-    private void shootLaser(Vector3 start, Vector3 end)
+    private void SetLaser(Vector3 start, Vector3 end)
     {
         laserLine.SetPosition(0, start);
         laserLine.SetPosition(1, end);
     }
 
-    // resets the laser after a certain time
-    private void UpdateLaserLine()
+    // Enables/Disable Spotlight
+    public void SetSpotlight(bool enabled)
     {
-        if (laserLine.enabled)
-        {
-            // if player is hit, draw laser to current player position, if not he will just hit the obstacle 
-            if (hitPlayer) shootLaser(transform.position, targetCollider.bounds.center + targetOffset);
-
-            laserDrawReset -= Time.deltaTime;
-            if (laserDrawReset <= 0f)
-            {
-                laserLine.enabled = false;
-                laserDrawReset = laserDrawResetTime; // reset time
-            }
-        }
+        if (spotlight != null)
+            spotlight.enabled = enabled;
     }
 
-    public bool getShotAtPlayer => shotAtPlayer;
-    public bool getHitPlayer => hitPlayer;
-    public bool getLaserEnabled => laserLine.enabled;
-    public bool getStartScan => startScan;
-    public void setStartScan(bool startScan)
+    public void SetHitPlayer(bool value)
     {
-        this.startScan = startScan;
+        hitPlayer = value;
     }
-    
-    public void setHitPlayer(bool hitPlayer)
-    {
-        this.hitPlayer = hitPlayer;
-    }
+
+    // Public access for state machine
+    public bool TargetAcquired => currentTarget != null;
+    public bool IsLaserEnabled => laserLine.enabled;
+    public bool PlayerWasHit => hitPlayer;
+    public void UpdateLaser() => UpdateLaserLine();
 }

@@ -32,10 +32,10 @@ public class LaserReflection : MonoBehaviour
     void Update()
     {
         // Cast a ray from the laser
-        if(aiRoomScan.getLaserEnabled && laserLine.positionCount == 2){
+        if(aiRoomScan.IsLaserEnabled && laserLine.positionCount == 2){
             ReflectLaser(0);
         }
-        else if(!aiRoomScan.getLaserEnabled && laserLine.positionCount > 2){
+        else if(!aiRoomScan.IsLaserEnabled && laserLine.positionCount > 2){
             ClearLaser();
         }
 

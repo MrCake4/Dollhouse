@@ -67,7 +67,7 @@ public class CheckpointHandler : MonoBehaviour
                 // reset player position and state
                 playerObject.position = checkpoints[i].transform.position;
                 SceneFadeManager.instance.StartFadeIn();
-                this.player.SwitchState(player.idleState);
+                player.SwitchState(player.idleState);
             }
         }
     }
@@ -76,6 +76,6 @@ public class CheckpointHandler : MonoBehaviour
     public void ResetAI(AIStateManager ai)
     {
         ai.switchState(ai.idleState, false);
-        eye.setHitPlayer(false);
+        eye.SetHitPlayer(false);
     }
 }
