@@ -31,6 +31,9 @@ public class SoundEffectsManager : MonoBehaviour
             AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
             audioSource.clip = clip;
             audioSource.volume = volume;
+            audioSource.spatialBlend = 1f;      // <-- Important: make it 3D
+            audioSource.minDistance = 1f;
+            audioSource.maxDistance = 15f;
             audioSource.Play();
 
             activeAudioSources.Add(audioSource);
@@ -50,6 +53,9 @@ public class SoundEffectsManager : MonoBehaviour
             AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
             audioSource.clip = clips[randomIndex];
             audioSource.volume = volume;
+            audioSource.spatialBlend = 1f;      // <-- Important: make it 3D
+            audioSource.minDistance = 1f;
+            audioSource.maxDistance = 15f;
             audioSource.Play();
 
             activeAudioSources.Add(audioSource);
