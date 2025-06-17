@@ -1831,6 +1831,27 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2774220344278030320, guid: 6c24cc33f2144fd4cbfd9a1a548e13b5, type: 3}
   m_PrefabInstance: {fileID: 61968337}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &64473405 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4159528425985699580, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
+  m_PrefabInstance: {fileID: 1243083170}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &64473409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64473405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 062e16eea1eee4e25a21c2a9c8ee7d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flickerLight: {fileID: 0}
+  minIntensity: 0.5
+  maxIntensity: 2
+  flickerSpeed: 0.1
 --- !u!1001 &66569375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24530,6 +24551,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 245238578564541998, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
+      propertyPath: m_Intensity
+      value: 11.94662
+      objectReference: {fileID: 0}
+    - target: {fileID: 245238578564541998, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
+      propertyPath: m_LightUnit
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 245238578564541998, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
       propertyPath: m_Shadows.m_Type
       value: 1
       objectReference: {fileID: 0}
@@ -24564,6 +24593,22 @@ PrefabInstance:
     - target: {fileID: 811737503059148814, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
       propertyPath: m_LocalPosition.z
       value: 8.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 1009062015953271392, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
+      propertyPath: m_Intensity
+      value: 11.94662
+      objectReference: {fileID: 0}
+    - target: {fileID: 1009062015953271392, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
+      propertyPath: m_LightUnit
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1009062015953271392, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112576765664100837, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.57
       objectReference: {fileID: 0}
     - target: {fileID: 1192126792547277246, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -24797,6 +24842,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 3.74
       objectReference: {fileID: 0}
+    - target: {fileID: 6794817194891960838, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
+      propertyPath: m_VolumetricDimmer
+      value: 8.54
+      objectReference: {fileID: 0}
     - target: {fileID: 7049455024248606383, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
       propertyPath: m_Name
       value: PasswordHandler
@@ -24866,6 +24915,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1785232805699430456, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1740742530}
+    - targetCorrespondingSourceObject: {fileID: 6337466498778765105, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2094589133}
+    - targetCorrespondingSourceObject: {fileID: 4159528425985699580, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 64473409}
   m_SourcePrefab: {fileID: 100100000, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
 --- !u!4 &1244377597 stripped
 Transform:
@@ -38512,6 +38567,27 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7fbd0069186135846b617fd7eab3a03c, type: 3}
   m_PrefabInstance: {fileID: 2089193424}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2094589129 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6337466498778765105, guid: de5c5d3426a70d14ea96af7a32cc6ae1, type: 3}
+  m_PrefabInstance: {fileID: 1243083170}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2094589133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094589129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 062e16eea1eee4e25a21c2a9c8ee7d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flickerLight: {fileID: 0}
+  minIntensity: 8
+  maxIntensity: 11
+  flickerSpeed: 0.1
 --- !u!1 &2099564707 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6689036041284674117, guid: aea89289e7a122b49b1fac95ff018984, type: 3}
