@@ -384,6 +384,46 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3147297558764252419}
     m_Modifications:
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: ScanSweepClip
+      value: 
+      objectReference: {fileID: 8300000, guid: c628c35525f19b147b4254f873422577, type: 3}
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: laserBuildupTime
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: targetMask.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: laserDrawResetTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: obstacleMask.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: turnLightOnOffClip.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: 'turnLightOnOffClip.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 558eb424ee4722346af1e6acc7308b49, type: 3}
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: 'turnLightOnOffClip.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 6c187a1094fb3e54c89092d48cf0244d, type: 3}
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: 'turnLightOnOffClip.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 4331a8bde59f7804c86e0118e950e051, type: 3}
+    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+      propertyPath: 'turnLightOnOffClip.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: a4e86b2871dc16f4c8d95e52f84b2751, type: 3}
     - target: {fileID: 8399654959849500237, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
       propertyPath: m_Name
       value: eye
