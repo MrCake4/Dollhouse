@@ -50,9 +50,9 @@ public class AIRoomScan : MonoBehaviour
 
     /// Audio
     [Header("Audio")]
-    [SerializeField] private AudioClip turnLightOnClip;
-    [SerializeField] private AudioClip turnLightOffClip;
+    [SerializeField] private AudioClip[] turnLightOnOffClip;
     [SerializeField] private AudioClip ScanSweepClip;
+    AudioSource sweepAudioSource;
 
 
     private void Awake()
@@ -83,7 +83,7 @@ public class AIRoomScan : MonoBehaviour
         SetSpotlight(true);
 
         if (ScanSweepClip != null)
-            SoundEffectsManager.instance.PlaySoundEffect(ScanSweepClip, transform, 1f);
+            sweepAudioSource = SoundEffectsManager.instance.PlaySoundEffect(ScanSweepClip, transform, 1f);
 
         IsDoneSweeping = false;
 
@@ -286,10 +286,16 @@ public class AIRoomScan : MonoBehaviour
     {
         if (spotlight != null)
             spotlight.enabled = enabled;
-        if (enabled && turnLightOnClip != null)
-            SoundEffectsManager.instance.PlaySoundEffect(turnLightOnClip, transform, 1f);
-        else if (!enabled && turnLightOffClip != null)
-            SoundEffectsManager.instance.PlaySoundEffect(turnLightOffClip, transform, 1f);
+        if (enabled && turnLightOnOffClip != null)
+            SoundEffectsManager.instance.PlayRandomSoundEffect(turnLightOnOffClip, transform, 1f);
+        else if (!enabled && turnLightOnOffClip != null)
+        {
+            SoundEffectsManager.instance.PlayRandomSoundEffect(turnLightOnOffClip, transform, 1f);
+            if (sweepAudioSource != null)
+            {
+                SoundEffectsManager.instance.StopSoundEffect(sweepAudioSource);
+            }
+        }
     }
 
     public void SetHitPlayer(bool value)

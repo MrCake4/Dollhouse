@@ -1015,79 +1015,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 754704055}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &923104221
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1793903092}
-    m_Modifications:
-    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: ScanSweepClip
-      value: 
-      objectReference: {fileID: 8300000, guid: c628c35525f19b147b4254f873422577, type: 3}
-    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: orientation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: turnLightOnClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 558eb424ee4722346af1e6acc7308b49, type: 3}
-    - target: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: turnLightOffClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 4331a8bde59f7804c86e0118e950e051, type: 3}
-    - target: {fileID: 8399654959849500237, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: m_Name
-      value: eye (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014126684008393137, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014126684008393137, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014126684008393137, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.751
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014126684008393137, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014126684008393137, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014126684008393137, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014126684008393137, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014126684008393137, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014126684008393137, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014126684008393137, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
+--- !u!114 &962690902 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+  m_PrefabInstance: {fileID: 1554486896}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0367232f67bc7ee418e74b42f6fd4d7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &985016079 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
@@ -1530,10 +1468,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: ScanSweepClip
+      value: 
+      objectReference: {fileID: 8300000, guid: c628c35525f19b147b4254f873422577, type: 3}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: turnLightOnClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 558eb424ee4722346af1e6acc7308b49, type: 3}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: laserBuildupTime
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: turnLightOffClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4331a8bde59f7804c86e0118e950e051, type: 3}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: targetMask.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: laserDrawResetTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: obstacleMask.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: turnLightOnOffClip.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: 'turnLightOnOffClip.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 558eb424ee4722346af1e6acc7308b49, type: 3}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: 'turnLightOnOffClip.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 6c187a1094fb3e54c89092d48cf0244d, type: 3}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: 'turnLightOnOffClip.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 4331a8bde59f7804c86e0118e950e051, type: 3}
     - target: {fileID: 8889679970781055578, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
       propertyPath: eye
       value: 
-      objectReference: {fileID: 1651233069}
+      objectReference: {fileID: 962690902}
     - target: {fileID: 8889679970781055578, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
       propertyPath: rooms.Array.size
       value: 1
@@ -1553,10 +1535,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3646029080905562520, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 3147297558764252419, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 1651233067}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
 --- !u!1 &1557464040
@@ -1799,22 +1778,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!4 &1651233067 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9014126684008393137, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-  m_PrefabInstance: {fileID: 923104221}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1651233069 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5762331870475618550, guid: 59845b77d838d62489f564c0843fa5f5, type: 3}
-  m_PrefabInstance: {fileID: 923104221}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0367232f67bc7ee418e74b42f6fd4d7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1656985524 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
@@ -1990,11 +1953,6 @@ MonoBehaviour:
   loosesPowerOverTime: 1
   maxPower: 100
   lossOverTime: 1
---- !u!4 &1793903092 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3147297558764252419, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
-  m_PrefabInstance: {fileID: 1554486896}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1829970579
 GameObject:
   m_ObjectHideFlags: 0
