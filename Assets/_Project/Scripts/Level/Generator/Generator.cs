@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Generator : HitableObject
@@ -11,6 +12,7 @@ public class Generator : HitableObject
     [SerializeField] bool loosesPowerOverTime = true;   // if true, the generator will lose power over time
     [SerializeField] float maxPower = 100f;
     [SerializeField] int lossOverTime = 1;
+    [SerializeField] GameObject antenna;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,7 +41,46 @@ public class Generator : HitableObject
     void Update()
     {
         updatePower();
+        updateAntenna();
     }
+
+    // rotate antenna if the generator is charged, 
+    // and flicker the light intensity based on the current power level
+   void updateAntenna()
+{
+    if (antenna == null) return;
+
+    Light antennaLight = antenna.GetComponentInChildren<Light>();
+
+    if (charged)
+    {
+        // Rotate antenna visually
+        antenna.transform.Rotate(Vector3.up, 100 * Time.deltaTime);
+
+        if (antennaLight != null)
+        {
+            antennaLight.enabled = true;
+
+            // Flicker speed increases as power decreases
+            float normalizedPower = Mathf.Clamp01(currentPower / maxPower);
+            float flickerSpeed = Mathf.Lerp(8f, 2f, normalizedPower); // 8 = fast, 2 = slow
+
+            // Flicker intensity (sin wave)
+            float baseIntensity = 500f;
+            float flickerAmount = Mathf.Sin(Time.time * flickerSpeed) * 300f; // subtle wobble
+
+            antennaLight.intensity = baseIntensity + flickerAmount;
+        }
+    }
+    else
+    {
+        if (antennaLight != null)
+        {
+            antennaLight.enabled = false;
+        }
+    }
+}
+
 
     // turn power on for a specific object
     void powerObject(Interactable o)
