@@ -23,6 +23,7 @@ public class AIScanState : AIBaseState
 
         // Set first window as scanning target
         ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[ai.currentWindowIndex]);
+        ai.eye.ApplyAnchorOverride(ai.currentTargetWindow);
     }
 
     public override void onUpdate(AIStateManager ai)
@@ -89,6 +90,7 @@ public class AIScanState : AIBaseState
 
         // Otherwise, proceed to next window
         ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[ai.currentWindowIndex]);
+        ai.eye.ApplyAnchorOverride(ai.currentTargetWindow);
     }
 
     public override void resetVariables(AIStateManager ai)

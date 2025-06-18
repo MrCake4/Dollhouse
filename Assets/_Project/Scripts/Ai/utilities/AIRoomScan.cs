@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using MilkShake;
+using UnityEditor.Experimental.GraphView;
+using Unity.Mathematics;
 
 [RequireComponent(typeof(LineRenderer))]
 public class AIRoomScan : MonoBehaviour
@@ -10,6 +12,7 @@ public class AIRoomScan : MonoBehaviour
     [SerializeField] private Light spotlight;
 
     // Scan and Sweep
+    [Header("Scan and Sweep")]
     [SerializeField] private float viewRadius = 20f;
     [SerializeField] private float viewAngle = 30f;
     [SerializeField] private float minViewAngle = 10f;
@@ -53,6 +56,15 @@ public class AIRoomScan : MonoBehaviour
     [SerializeField] private AudioClip[] turnLightOnOffClip;
     [SerializeField] private AudioClip ScanSweepClip;
     AudioSource sweepAudioSource;
+    private float defaultViewRadius;
+    private float defaultSweepDuration;
+
+    private float defaultMaxRotationAngle;
+
+    private float defaultXRotation;
+
+    private Vector3 orientation = Vector3.zero;
+
 
 
     private void Awake()
@@ -71,6 +83,14 @@ public class AIRoomScan : MonoBehaviour
 
         if (spotlight != null)
             spotlight.enabled = false;
+    }
+
+    private void Start()
+    {
+        defaultViewRadius = viewRadius;
+        defaultSweepDuration = sweepDuration;
+        defaultMaxRotationAngle = maxRotationAngle;
+        defaultXRotation = orientation.x;
     }
 
     public void BeginScanSweep()
@@ -92,7 +112,10 @@ public class AIRoomScan : MonoBehaviour
         {
             float t = (Time.time - sweepStart) * rotationSpeed * Mathf.PI * 2f / sweepDuration;
             float angle = initialYRotation + Mathf.Sin(t) * maxRotationAngle;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(transform.eulerAngles.x, angle, 0), Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+            Quaternion.Euler(orientation.x, angle, 0),
+            Time.deltaTime * rotationSpeed
+            );
 
             ScanForPlayer();
             UpdateSpotlight();
@@ -107,6 +130,8 @@ public class AIRoomScan : MonoBehaviour
     public void ScanForPlayer()
     {
         Collider[] targets = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
+
+
 
         foreach (var target in targets)
         {
@@ -259,12 +284,10 @@ public class AIRoomScan : MonoBehaviour
 
         if (currentTarget != null)
         {
-            spotlight.colorTemperature = Mathf.Lerp(spotlight.colorTemperature, 800, Time.deltaTime * 5f);
-            viewAngle = Mathf.Max(viewAngle - viewAngleChangeAmount * Time.deltaTime, minViewAngle);
+            viewAngle = Mathf.Max(viewAngle - (viewAngleChangeAmount * Time.deltaTime), minViewAngle);
         }
         else
         {
-            spotlight.colorTemperature = Mathf.Lerp(spotlight.colorTemperature, 6000, Time.deltaTime * 5f);
             viewAngle = Mathf.Lerp(viewAngle, 30f, Time.deltaTime * 5f);
         }
     }
@@ -274,6 +297,31 @@ public class AIRoomScan : MonoBehaviour
         if (implosionLight != null)
             implosionLight.enabled = on;
     }
+
+    public void ApplyAnchorOverride(Transform anchor)
+    {
+        AnchorPoints ap = anchor.GetComponent<AnchorPoints>();
+
+        if (ap != null && ap.HasOverride)
+        {
+            viewRadius = ap.customViewRadius;
+            sweepDuration = ap.customSweepDuration;
+            maxRotationAngle = ap.customRotationAngle;
+            orientation.x = ap.customRotationAngle;
+
+            centerRotation = Quaternion.Euler(orientation.x, initialYRotation, 0);
+        }
+        else
+        {
+            viewRadius = defaultViewRadius;
+            sweepDuration = defaultSweepDuration;
+            maxRotationAngle = defaultMaxRotationAngle;
+            orientation.x = defaultXRotation;
+
+            centerRotation = Quaternion.Euler(orientation.x, initialYRotation, 0);
+        }
+    }
+
 
     private void SetLaser(Vector3 start, Vector3 end)
     {

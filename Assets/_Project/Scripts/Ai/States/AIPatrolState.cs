@@ -47,23 +47,48 @@ public class AIPatrolState : AIBaseState
         
     }
 
-    private void PickNewTarget(AIStateManager ai) {
-        // Pick a random room
-        randomRoom = ai.rooms[Random.Range(0, ai.rooms.Length)];
+    private void PickNewTarget(AIStateManager ai)
+    {
+        // Flatten all windows across all rooms
+        var validWindows = new System.Collections.Generic.List<(RoomContainer room, int index, Transform window)>();
 
-        // Pick a random window in that room
-        if (randomRoom.windowCount > 0) {
-            Transform newWindow;
-            int safety = 0;
-            do {
-                randomWindow = Random.Range(0, randomRoom.windowAnchorPoints.Length);
-                newWindow = randomRoom.windowAnchorPoints[randomWindow];
-                safety++;
-            } while (newWindow == lastWindow && safety < 10);
-        ai.currentTargetWindow = newWindow;
-        lastWindow = newWindow;
+        foreach (var room in ai.rooms)
+        {
+            for (int i = 0; i < room.windowAnchorPoints.Length; i++)
+            {
+                var window = room.windowAnchorPoints[i];
+                if (window != null)
+                {
+                    validWindows.Add((room, i, window));
+                }
+            }
         }
+
+        if (validWindows.Count == 0)
+        {
+            Debug.LogWarning("No valid windows found for patrol.");
+            return;
+        }
+
+        // Pick a random window
+        (RoomContainer selectedRoom, int windowIndex, Transform selectedWindow) =
+            validWindows[Random.Range(0, validWindows.Count)];
+
+        // Avoid repeating the same window
+        int safety = 0;
+        while (selectedWindow == lastWindow && safety < 10)
+        {
+            (selectedRoom, windowIndex, selectedWindow) = validWindows[Random.Range(0, validWindows.Count)];
+            safety++;
+        }
+
+        // Set the patrol target
+        randomRoom = selectedRoom;
+        randomWindow = windowIndex;
+        ai.currentTargetWindow = selectedWindow;
+        lastWindow = selectedWindow;
     }
+
 
     public override void resetVariables(AIStateManager ai)
     {
