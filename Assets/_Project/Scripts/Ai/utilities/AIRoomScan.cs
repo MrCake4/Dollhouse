@@ -307,7 +307,7 @@ public class AIRoomScan : MonoBehaviour
             viewRadius = ap.customViewRadius;
             sweepDuration = ap.customSweepDuration;
             maxRotationAngle = ap.customRotationAngle;
-            orientation.x = ap.customRotationAngle;
+            orientation.x = ap.customXRotation;
 
             centerRotation = Quaternion.Euler(orientation.x, initialYRotation, 0);
         }
