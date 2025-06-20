@@ -56,6 +56,7 @@ public class AIRoomScan : MonoBehaviour
     [SerializeField] private AudioClip[] turnLightOnOffClip;
     [SerializeField] private AudioClip ScanSweepClip;
     AudioSource sweepAudioSource;
+    [SerializeField] private AudioClip[] SpotSoundEffects;
     private float defaultViewRadius;
     private float defaultSweepDuration;
 
@@ -151,6 +152,10 @@ public class AIRoomScan : MonoBehaviour
 
                     if (!Physics.Raycast(rayOrigin, rayDir, distance, obstacleMask))
                     {
+                        if(SpotSoundEffects.Length > 0)
+                        {
+                            SoundEffectsManager.instance.PlayRandomSoundEffect(SpotSoundEffects, target.transform, 1f);
+                        }
                         currentTarget = target.transform;
                         targetOffset = offset;
                         return;
