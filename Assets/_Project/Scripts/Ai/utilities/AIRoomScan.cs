@@ -57,6 +57,7 @@ public class AIRoomScan : MonoBehaviour
     [SerializeField] private AudioClip ScanSweepClip;
     AudioSource sweepAudioSource;
     [SerializeField] private AudioClip[] SpotSoundEffects;
+    [SerializeField] private AudioClip LaserSoundEffect;
     private float defaultViewRadius;
     private float defaultSweepDuration;
 
@@ -188,6 +189,8 @@ public class AIRoomScan : MonoBehaviour
 
     private void ShootLaser()
     {
+        SoundEffectsManager.instance.PlaySoundEffect(LaserSoundEffect, transform, 1f);
+
         Vector3 laserTarget = playerCollider.bounds.center + targetOffset;
         Vector3 direction = (laserTarget - transform.position).normalized;
         float distance = Vector3.Distance(transform.position, laserTarget);
