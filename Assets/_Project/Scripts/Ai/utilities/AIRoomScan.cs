@@ -153,7 +153,7 @@ public class AIRoomScan : MonoBehaviour
 
                     if (!Physics.Raycast(rayOrigin, rayDir, distance, obstacleMask))
                     {
-                        if(SpotSoundEffects.Length > 0)
+                        if (SpotSoundEffects.Length > 0)
                         {
                             SoundEffectsManager.instance.PlayRandomSoundEffect(SpotSoundEffects, target.transform, 1f);
                         }
@@ -226,6 +226,7 @@ public class AIRoomScan : MonoBehaviour
     {
         currentTarget = null;
         laserTimer = laserBuildupTime;
+        ReturnToCenter();
     }
 
     private void UpdateLaserLine()
@@ -364,4 +365,5 @@ public class AIRoomScan : MonoBehaviour
     public bool IsLaserEnabled => laserLine.enabled;
     public bool PlayerWasHit => hitPlayer;
     public void UpdateLaser() => UpdateLaserLine();
+    public void ResetEyeScan() => ResetScan();
 }

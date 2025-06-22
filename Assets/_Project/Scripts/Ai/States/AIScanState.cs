@@ -56,8 +56,8 @@ public class AIScanState : AIBaseState
         // If target acquired, follow and shoot
         if (ai.eye.TargetAcquired)
         {
-            ai.eye.FollowAndShoot();
-            currentTargetRoom.triggered = true;
+            resetVariables(ai);
+            ai.switchState(ai.attackState, false);
             return;
         }
 

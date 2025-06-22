@@ -84,14 +84,16 @@ public class AIStateManager : MonoBehaviour
     public void setCurrentTargetRoom(RoomContainer room){
         this.currentTargetRoom = room;
     }
-
+    
     // if a player triggers a room this method sets the last known position of the player
-    public void setLastKnownRoom(RoomContainer room) {
+    public void setLastKnownRoom(RoomContainer room)
+    {
         this.lastKnownRoom = room;
     }
 
     // this sets the current target window to wich the ai is going to in the current target room
-    public void setCurrentTargetWindow(Transform window){
+    public void setCurrentTargetWindow(Transform window)
+    {
         this.currentTargetWindow = window;
     }
 
