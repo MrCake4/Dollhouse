@@ -51,6 +51,13 @@ public class AIRoomScan : MonoBehaviour
 
     public bool IsDoneSweeping { get; private set; }
 
+    /// Audio
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] turnLightOnOffClip;
+    [SerializeField] private AudioClip ScanSweepClip;
+    AudioSource sweepAudioSource;
+    [SerializeField] private AudioClip[] SpotSoundEffects;
+    [SerializeField] private AudioClip LaserSoundEffect;
     private float defaultViewRadius;
     private float defaultSweepDuration;
 
@@ -96,6 +103,10 @@ public class AIRoomScan : MonoBehaviour
     private IEnumerator SweepRoutine()
     {
         SetSpotlight(true);
+
+        if (ScanSweepClip != null)
+            sweepAudioSource = SoundEffectsManager.instance.PlaySoundEffect(ScanSweepClip, transform, 1f);
+
         IsDoneSweeping = false;
 
         float sweepStart = Time.time;
@@ -142,6 +153,10 @@ public class AIRoomScan : MonoBehaviour
 
                     if (!Physics.Raycast(rayOrigin, rayDir, distance, obstacleMask))
                     {
+                        if(SpotSoundEffects.Length > 0)
+                        {
+                            SoundEffectsManager.instance.PlayRandomSoundEffect(SpotSoundEffects, target.transform, 1f);
+                        }
                         currentTarget = target.transform;
                         targetOffset = offset;
                         return;
@@ -174,6 +189,8 @@ public class AIRoomScan : MonoBehaviour
 
     private void ShootLaser()
     {
+        SoundEffectsManager.instance.PlaySoundEffect(LaserSoundEffect, transform, 1f);
+
         Vector3 laserTarget = playerCollider.bounds.center + targetOffset;
         Vector3 direction = (laserTarget - transform.position).normalized;
         float distance = Vector3.Distance(transform.position, laserTarget);
@@ -298,7 +315,7 @@ public class AIRoomScan : MonoBehaviour
             viewRadius = ap.customViewRadius;
             sweepDuration = ap.customSweepDuration;
             maxRotationAngle = ap.customRotationAngle;
-            orientation.x = ap.customRotationAngle;
+            orientation.x = ap.customXRotation;
 
             centerRotation = Quaternion.Euler(orientation.x, initialYRotation, 0);
         }
@@ -325,6 +342,16 @@ public class AIRoomScan : MonoBehaviour
     {
         if (spotlight != null)
             spotlight.enabled = enabled;
+        if (enabled && turnLightOnOffClip != null)
+            SoundEffectsManager.instance.PlayRandomSoundEffect(turnLightOnOffClip, transform, 1f);
+        else if (!enabled && turnLightOnOffClip != null)
+        {
+            SoundEffectsManager.instance.PlayRandomSoundEffect(turnLightOnOffClip, transform, 1f);
+            if (sweepAudioSource != null)
+            {
+                SoundEffectsManager.instance.StopSoundEffect(sweepAudioSource);
+            }
+        }
     }
 
     public void SetHitPlayer(bool value)
