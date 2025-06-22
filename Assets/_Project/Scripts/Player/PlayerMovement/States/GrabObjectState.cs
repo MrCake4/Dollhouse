@@ -21,6 +21,7 @@ public class GrabObjectState : BasePlayerState
         }
 
         Debug.Log("GrabObjectState → Spieler hält Objekt fest");
+        player.animator.SetBool("IsGrabbing", true);
 
         // Fixe Position einnehmen
         Vector3 targetPos = grabPoint.position;
@@ -87,6 +88,7 @@ public class GrabObjectState : BasePlayerState
     public override void onExit(PlayerStateManager player)
     {
         Debug.Log("GrabObjectState → verlassen");
+        player.animator.SetBool("IsGrabbing", false);
 
         if (targetObject != null)
         {

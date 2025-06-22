@@ -15,6 +15,7 @@ public class PushState : BasePlayerState
     public override void onEnter(PlayerStateManager player)
     {
         Debug.Log("→ PUSH START");
+        player.animator.SetBool("IsPushing", true);
 
         if (targetRb != null)
         {
@@ -42,6 +43,18 @@ public class PushState : BasePlayerState
             return;
         }
 
+        if (player.moveInput == Vector2.zero)
+        {
+            player.grabObjectState.SetTarget(
+                targetRb.GetComponent<PushableObject>(),
+                grabPoint
+            );
+            player.SwitchState(player.grabObjectState);
+            return;
+        }
+
+
+
         Vector3 input = new Vector3(player.moveInput.x, 0f, player.moveInput.y);
         float dot = Vector3.Dot(player.transform.forward, input);
 
@@ -67,6 +80,7 @@ public class PushState : BasePlayerState
     public override void onExit(PlayerStateManager player)
     {
         Debug.Log("→ PUSH ENDE");
+        player.animator.SetBool("IsPushing", false);
 
         if (targetRb != null)
         {

@@ -15,6 +15,7 @@ public class PullState : BasePlayerState
     public override void onEnter(PlayerStateManager player)
     {
         Debug.Log("→ PULL START");
+        player.animator.SetBool("IsPulling", true);
 
         if (targetRb != null)
         {
@@ -41,6 +42,18 @@ public class PullState : BasePlayerState
             return;
         }
 
+
+        if (player.moveInput == Vector2.zero)
+        {
+            player.grabObjectState.SetTarget(
+                targetRb.GetComponent<PushableObject>(),
+                grabPoint
+            );
+            player.SwitchState(player.grabObjectState);
+            return;
+        }
+
+
         Vector3 input = new Vector3(player.moveInput.x, 0f, player.moveInput.y);
         float dot = Vector3.Dot(player.transform.forward, input);
 
@@ -63,6 +76,7 @@ public class PullState : BasePlayerState
     public override void onExit(PlayerStateManager player)
     {
         Debug.Log("→ PULL ENDE");
+        player.animator.SetBool("IsPulling", false);
 
         if (targetRb != null)
         {
