@@ -57,6 +57,7 @@ public class AIScanState : AIBaseState
         if (ai.eye.TargetAcquired)
         {
             ai.eye.FollowAndShoot();
+            currentTargetRoom.triggered = true;
             return;
         }
 
