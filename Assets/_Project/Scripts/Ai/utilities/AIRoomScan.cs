@@ -293,7 +293,7 @@ public class AIRoomScan : MonoBehaviour
         spotlight.range = viewRadius;
         spotlight.intensity = 40000;
         spotlight.spotAngle = viewAngle;
-        spotlight.colorTemperature = currentTarget != null ? idleSpotlightIntensity : spottedSpotlightIntensity;    // Adjust intensity based on target presence
+        spotlight.colorTemperature = currentTarget != null ? spottedSpotlightIntensity : idleSpotlightIntensity;    // Adjust intensity based on target presence
 
         if (currentTarget != null)
         {
