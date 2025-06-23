@@ -309,6 +309,15 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         foreach (Collider col in hits)
         {
+            /*if (col.CompareTag("lowLedge"))
+            {
+                Vector3 closestPoint = col.ClosestPoint(transform.position);
+                pullUpState.SetLedgePosition(closestPoint);
+                pullUpState.SetPullUpType(PullUpState.PullUpType.Low);
+                SwitchState(pullUpState);
+                return;
+            }*/
+
             if (col.CompareTag("mediumLedge"))
             {
                 Vector3 closestPoint = col.ClosestPoint(transform.position);
