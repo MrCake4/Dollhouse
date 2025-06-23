@@ -104,9 +104,6 @@ public class RoomContainer : MonoBehaviour
         while (!ai.eye.IsDoneSweeping)
             yield return null;
 
-        // Give ReturnToCenter time to complete
-        yield return new WaitForSeconds(0.2f); // optional buffer
-
         ai.switchState(ai.huntState);
         ai.huntState.enterState(ai);
     }
