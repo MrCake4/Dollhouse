@@ -2,25 +2,41 @@ using UnityEngine;
 
 public class AIAttackState : AIBaseState
 {
+    private bool waitingToSwitch = false;
+    private float postShotTimer = 0f;
+    private const float postShotDelay = 1.5f;
+
     public override void enterState(AIStateManager ai)
     {
         Debug.Log("Dolly entered state ATTACK");
-
-        // Reset laser buildup timer
         ai.eye.SetHitPlayer(false);
+        waitingToSwitch = false;
     }
 
     public override void onUpdate(AIStateManager ai)
     {
-        // Actively aim and shoot at player
-        ai.eye.FollowAndShoot();
-
-        // Once shot fired (hit or miss), transition to HuntState
-        if (ai.eye.PlayerWasHit || !ai.eye.TargetAcquired)
+        if (!waitingToSwitch)
         {
-            exitState(ai);
-            ai.switchState(ai.huntState);
-            return;
+            ai.eye.FollowAndShoot();
+
+            if (ai.eye.PlayerWasHit || !ai.eye.TargetAcquired)
+            {
+                ai.eye.SetSpotlight(false);
+                ai.scanDone = false; // ensures hunt doesn't skip scan
+                postShotTimer = postShotDelay;
+                waitingToSwitch = true;
+                Debug.Log("Post-shot delay started...");
+            }
+        }
+        else
+        {
+            postShotTimer -= Time.deltaTime;
+            if (postShotTimer <= 0f)
+            {
+                exitState(ai);
+                ai.switchState(ai.huntState);
+                ai.huntState.enterState(ai); // Ensure hunt reinitializes
+            }
         }
     }
 

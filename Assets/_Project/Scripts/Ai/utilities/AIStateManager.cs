@@ -39,9 +39,9 @@ public class AIStateManager : MonoBehaviour
     public AIRoomScan eye;
 
     [Header("AI Behaviour")]
-    [SerializeField, Range(0,300)] private float idleTime;
-    [Range(0,10)] public float moveSpeed = 10;       // How fast AI goes from room to room
-    [SerializeField, Range(1,100)] private int checkWindowsPerPatrol = 4;
+    [SerializeField, Range(0, 300)] private float idleTime;
+    [Range(0, 10)] public float moveSpeed = 10;       // How fast AI goes from room to room
+    [SerializeField, Range(1, 100)] private int checkWindowsPerPatrol = 4;
     [HideInInspector] public int windowsPatrolled = 0;
     [HideInInspector] public RoomContainer currentTargetRoom = null;
     [HideInInspector] public RoomContainer lastKnownRoom = null;
@@ -82,10 +82,11 @@ public class AIStateManager : MonoBehaviour
     }
 
     // this sets the current target room to where the ai is going to
-    public void setCurrentTargetRoom(RoomContainer room){
+    public void setCurrentTargetRoom(RoomContainer room)
+    {
         this.currentTargetRoom = room;
     }
-    
+
     // if a player triggers a room this method sets the last known position of the player
     public void setLastKnownRoom(RoomContainer room)
     {
@@ -99,7 +100,7 @@ public class AIStateManager : MonoBehaviour
     }
 
     /*      DEBUGGING     */
-    
+
     public void drawDebugStuff()
     {
         // draw line to targeted ROOM
@@ -122,4 +123,5 @@ public class AIStateManager : MonoBehaviour
     public float getIdleTime => idleTime;
     public int getCheckWindowPerPatrol => checkWindowsPerPatrol;
     public AIBaseState getLastState => lastState;
+    public AIBaseState getCurrentState => currentState;
 }

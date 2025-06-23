@@ -28,6 +28,7 @@ public class AIHuntState : AIBaseState
     public override void onUpdate(AIStateManager ai) {
         if (ai.scanDone)
         {
+            ai.scanDone = false;
             resetVariables(ai);
             ai.switchState(ai.seekState);
             return;

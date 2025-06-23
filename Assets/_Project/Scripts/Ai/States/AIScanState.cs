@@ -57,6 +57,7 @@ public class AIScanState : AIBaseState
         if (ai.eye.TargetAcquired)
         {
             resetVariables(ai);
+            ai.scanDone = false;
             ai.switchState(ai.attackState);
             return;
         }
