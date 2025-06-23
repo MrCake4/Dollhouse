@@ -61,6 +61,7 @@ public class RoomContainer : MonoBehaviour
         bool aiNearWindow = false;
         foreach (Transform window in windowAnchorPoints)
         {
+            if( window == null) continue; // Skip if no window is assigned
             if (Vector3.Distance(window.position, ai.transform.position) < 5f)
             {
                 aiNearWindow = true;
