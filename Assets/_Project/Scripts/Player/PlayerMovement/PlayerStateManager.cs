@@ -11,6 +11,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public JumpState jumpState = new JumpState();
     public FallState fallState = new FallState();
     public PushState pushState = new PushState();
+    public PullState pullState = new PullState();
+    public GrabObjectState grabObjectState = new GrabObjectState();
     public CrouchState crouchState = new CrouchState();
     //private PlayerItemHandler PlayerItemHandler;                //CARRY
     public PullUpState pullUpState = new PullUpState();
@@ -48,7 +50,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public LayerMask bigObjectLayer;
     //public LayerMask smallObjectLayer;
 
-
+    [Header("Player Speed")]
     //Speed
     public float walkSpeed = 2.5f;
     public float maxSpeed = 5f;
@@ -131,7 +133,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         //interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button0);        //Viereck
         interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button2);
         //holdPressed = Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.Joystick1Button5);            //Trying to hold onto something?        //R1    
-        holdPressed = Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.Joystick1Button5);            //oben rechts R1
+        holdPressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Joystick1Button5);            //oben rechts R1
 
         //Zustand updaten
         currentState.onUpdate(this);                //beim aktuellen State Update() aufrufen
@@ -272,40 +274,12 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     }
 
 
-    public bool PushAllowed(out Rigidbody pushTarget)
-    {
-        pushTarget = null;
-
-        Vector3 rayOrigin = transform.position + Vector3.up * (capsuleCollider.height / 3f); // Mitte der Figur
-        Vector3 direction = transform.forward;
-        float rayLength = 0.6f;
-
-        // 🔧 Zeichne Ray zur visuellen Kontrolle
-        Debug.DrawRay(rayOrigin, direction * rayLength, Color.blue, 0.1f);
 
 
-        if (Physics.Raycast(rayOrigin, direction, out RaycastHit hit, 0.6f, bigObjectLayer, QueryTriggerInteraction.Ignore))
-        {
-            // Prüfe Winkel der Normale
-            float angle = Vector3.Angle(-hit.normal, direction);
-            if (angle < 25f) // ± einstellbarer Toleranzwinkel
-            {
-                Rigidbody hitRb = hit.collider.attachedRigidbody;
-                if (hitRb != null && !hitRb.isKinematic)
-                {
-                    pushTarget = hitRb;
-                    Debug.Log("congratulations, you can push!");
-                    return true;
-                }
-                else { Debug.Log("Hit, aber kein Rigidbody oder ist kinematic."); }
-            }
-            else { Debug.Log("Winkel zu steil: " + angle); }
-        }
+    //GRAB
 
-        return false;
-    }
 
-    public void TryGrab()
+    public void TryGrab()                   //nur für hochziehen und ranhängen für Dinge in der Luft --> nur beim SPRINGEN oder FALLEN
     {
         if (!holdPressed) return;
 
@@ -326,10 +300,20 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         foreach (Collider col in hits)
         {
-            if (col.CompareTag("Ledge"))
+            if (col.CompareTag("mediumLedge"))
             {
                 Vector3 closestPoint = col.ClosestPoint(transform.position);
                 pullUpState.SetLedgePosition(closestPoint);
+                pullUpState.SetPullUpType(PullUpState.PullUpType.Medium);
+                SwitchState(pullUpState);
+                return;
+            }
+
+            if (col.CompareTag("highLedge"))
+            {
+                Vector3 closestPoint = col.ClosestPoint(transform.position);
+                pullUpState.SetLedgePosition(closestPoint);
+                pullUpState.SetPullUpType(PullUpState.PullUpType.High);
                 SwitchState(pullUpState);
                 return;
             }
@@ -343,8 +327,44 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
             }
         }
 
-        // Kein passendes Ziel gefunden → nichts tun
+        // Nichts gefunden
     }
+
+
+    public void TryGrabObject()
+    {
+        if (!holdPressed) return;
+
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
+        float rayLength = 0.6f;
+
+        if (Physics.Raycast(origin, transform.forward, out RaycastHit hit, rayLength, bigObjectLayer))
+        {
+            PushableObject pushable = hit.collider.GetComponentInParent<PushableObject>();
+            if (pushable != null && pushable.IsGrabAllowed())
+            {
+                Transform grabPoint = pushable.GetGrabPoint();
+                if (grabPoint != null)
+                {
+                    grabObjectState.SetTarget(pushable, grabPoint);
+                    //Debug.Log("cannot switch m´lady");
+                    SwitchState(grabObjectState); // später kannst du auch direkt holdState nutzen
+                    return;
+                }
+            }
+        }
+    }
+
+    // ============================ FOR ANIMATION ONLY ============================ 
+
+    // Platzhalter für spätere Animationen
+    public void SetPushPullAnimationSpeed(float speed)
+    {
+        // Beispiel: Animator.SetFloat("PushSpeed", speed);
+        // Noch nicht implementiert
+    }
+
+
 
 
 

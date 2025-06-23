@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class PullUpState : BasePlayerState
 {
+    public enum PullUpType
+    {
+        Medium,
+        High
+    }
+
+    private PullUpType pullUpType = PullUpType.Medium;
     private float pullSpeed = 3f;
     private Vector3 ledgePosition;
     private Vector3 finalStandPosition;
@@ -11,18 +18,35 @@ public class PullUpState : BasePlayerState
         ledgePosition = ledgePos;
     }
 
+    public void SetPullUpType(PullUpType type)
+    {
+        pullUpType = type;
+    }
+
     public override void onEnter(PlayerStateManager player)
     {
         player.rb.useGravity = false;
         player.rb.linearVelocity = Vector3.zero;
 
-        // Offset dynamisch zur aktuellen Blickrichtung
         float verticalOffset = player.verticalPullUp;
         float backOffset = player.horizontalPullUp;
 
+        // Offsets je nach Typ anpassen
+        switch (pullUpType)
+        {
+            case PullUpType.Medium:
+                verticalOffset = 0.8f;
+                backOffset = -0.3f;
+                break;
+            case PullUpType.High:
+                verticalOffset = 1.2f;
+                backOffset = -0.4f;
+                break;
+        }
+
         finalStandPosition = ledgePosition + Vector3.up * verticalOffset - player.transform.forward * backOffset;
 
-        Debug.Log("PullUp → Zielposition dynamisch gesetzt: " + finalStandPosition.ToString("F2"));
+        Debug.Log($"PullUp → Typ: {pullUpType} | Zielposition: {finalStandPosition:F2}");
     }
 
     public override void onFixedUpdate(PlayerStateManager player)

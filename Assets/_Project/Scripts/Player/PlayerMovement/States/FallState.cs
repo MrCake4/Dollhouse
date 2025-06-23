@@ -22,7 +22,12 @@ public class FallState : BasePlayerState                                //dann, 
             }
         }
 
-        if (player.holdPressed)                                             //SWITCH PULLUP or HANG
+        /*if (player.holdPressed)                                             //SWITCH PULLUP or HANG
+        {
+            player.TryGrab();
+            return;
+        }*/
+        if (player.holdPressed)
         {
             player.TryGrab();
             return;

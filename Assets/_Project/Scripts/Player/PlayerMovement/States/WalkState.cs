@@ -24,16 +24,16 @@ public class WalkState : BasePlayerState
             return;
         }
         
-        if (player.holdPressed)                             //SWITCH PULLUP or HANG
-        {
-            player.TryGrab();
-            return;
-        }
 
-        if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
+        /*if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
         {
             player.pushState.SetTarget(pushTarget);
             player.SwitchState(player.pushState);
+            return;
+        }*/
+        if (player.holdPressed)                                             //SWITCH PUSH/PULL
+        {
+            player.TryGrabObject(); // greift auf nahes pushableObject zu
             return;
         }
 

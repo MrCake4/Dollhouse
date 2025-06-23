@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class PushState : BasePlayerState
+public class PullState : BasePlayerState
 {
     private Rigidbody targetRb;
     private Transform grabPoint;
-    private float pushSpeed = 1.5f; // Einfluss durch Masse später skalierbar
+    private float pullSpeed = 1.5f;
 
     public void SetTarget(Rigidbody rb, Transform point)
     {
@@ -14,7 +14,7 @@ public class PushState : BasePlayerState
 
     public override void onEnter(PlayerStateManager player)
     {
-        Debug.Log("→ PUSH START");
+        Debug.Log("→ PULL START");
 
         if (targetRb != null)
         {
@@ -27,7 +27,6 @@ public class PushState : BasePlayerState
     {
         if (targetRb == null || grabPoint == null) return;
 
-        // Spieler bleibt exakt am GrabPoint
         Vector3 targetPos = grabPoint.position;
         targetPos.y = player.transform.position.y;
         player.transform.position = targetPos;
@@ -45,17 +44,14 @@ public class PushState : BasePlayerState
         Vector3 input = new Vector3(player.moveInput.x, 0f, player.moveInput.y);
         float dot = Vector3.Dot(player.transform.forward, input);
 
-        if (dot < -0.1f)
+        if (dot > 0.1f)
         {
-            player.pullState.SetTarget(targetRb, grabPoint);
-            player.SwitchState(player.pullState);
+            player.pushState.SetTarget(targetRb, grabPoint);
+            player.SwitchState(player.pushState);
             return;
         }
 
-        // Richtung des Push
-        Vector3 moveDir = player.transform.forward * dot * pushSpeed;
-
-        // Nur XZ behalten, Y nicht anfassen
+        Vector3 moveDir = -player.transform.forward * Mathf.Abs(dot) * pullSpeed;
         Vector3 newVelocity = new Vector3(moveDir.x, targetRb.linearVelocity.y, moveDir.z);
         targetRb.linearVelocity = newVelocity;
 
@@ -66,7 +62,7 @@ public class PushState : BasePlayerState
 
     public override void onExit(PlayerStateManager player)
     {
-        Debug.Log("→ PUSH ENDE");
+        Debug.Log("→ PULL ENDE");
 
         if (targetRb != null)
         {
