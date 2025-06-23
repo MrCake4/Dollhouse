@@ -20,6 +20,7 @@ public class AIAttackState : AIBaseState
         {
             exitState(ai);
             ai.switchState(ai.huntState);
+            return;
         }
     }
 

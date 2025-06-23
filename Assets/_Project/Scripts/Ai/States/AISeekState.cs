@@ -66,6 +66,7 @@ public class AISeekState : AIBaseState
         }
         resetVariables(ai);
         ai.switchState(ai.patrolState);
+        return;
     }
 
 

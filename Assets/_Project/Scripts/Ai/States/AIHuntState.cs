@@ -17,7 +17,7 @@ public class AIHuntState : AIBaseState
         if (currentTargetRoom == null)
         {
             Debug.LogWarning("HuntState: currentTargetRoom is null. Returning to patrol.");
-            ai.switchState(ai.patrolState, false);
+            ai.switchState(ai.patrolState);
             return;
         }
 
@@ -29,7 +29,7 @@ public class AIHuntState : AIBaseState
         if (ai.scanDone)
         {
             resetVariables(ai);
-            ai.switchState(ai.seekState, false);
+            ai.switchState(ai.seekState);
             return;
         }
         else
@@ -37,7 +37,7 @@ public class AIHuntState : AIBaseState
             ai.seekIncrement = 1;
             resetVariables(ai);
             ai.eye.ResetEyeScan();
-            ai.switchState(ai.scanState, false);
+            ai.switchState(ai.scanState);
             return;
         }
     }

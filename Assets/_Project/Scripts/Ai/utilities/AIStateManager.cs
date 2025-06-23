@@ -74,9 +74,11 @@ public class AIStateManager : MonoBehaviour
     }
 
     // switches the state, called by other states
-    public void switchState(AIBaseState state) {
+    public void switchState(AIBaseState state)
+    {
         lastState = currentState;
         currentState = state;
+        currentState.enterState(this);
     }
 
     // this sets the current target room to where the ai is going to

@@ -77,12 +77,12 @@ public class RoomContainer : MonoBehaviour
 
     // Activates the AI hunt state and sets the current target room
     void activicateAIHuntState()
-        {
-            ai.setCurrentTargetRoom(this);
-            ai.setLastKnownRoom(this);
-            ai.isPatroling = false;
-            ai.switchState(ai.huntState, false);
-        }
+    {
+        ai.setCurrentTargetRoom(this);
+        ai.setLastKnownRoom(this);
+        ai.isPatroling = false;
+        ai.switchState(ai.huntState);
+    }
 
     // Resets the lights to their base intensities
     void resetLights()

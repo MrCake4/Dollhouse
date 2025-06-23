@@ -31,7 +31,7 @@ public class CheckpointHandler : MonoBehaviour
 
             // reset AI state to idle
             AIStateManager ai = FindFirstObjectByType<AIStateManager>();
-            if (ai != null) ResetAI(ai);
+            if (ai != null) ResetAI(ai); return;
         }
     }
 
@@ -75,7 +75,7 @@ public class CheckpointHandler : MonoBehaviour
     // resets the AI to the idle state
     public void ResetAI(AIStateManager ai)
     {
-        ai.switchState(ai.idleState, false);
+        ai.switchState(ai.idleState);
         eye.SetHitPlayer(false);
     }
 }
