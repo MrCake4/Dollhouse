@@ -14,9 +14,14 @@ public class AmbienceSound : MonoBehaviour
 {
     [Tooltip("Area of the sound to be in")]
     public Collider Area;
-    [Tooltip("Character to track")]
-    public GameObject Player;
 
+    // Character to track
+    GameObject Player;
+
+    void Awake()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
+    }
     void Update()
     {
         // Locate closest point on the collider to the player
