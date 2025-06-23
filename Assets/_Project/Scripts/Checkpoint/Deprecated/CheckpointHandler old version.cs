@@ -80,6 +80,6 @@ public class CheckpointHandlerOldVersion : MonoBehaviour
 
     // resets the AI to the idle state
     public void ResetAI(AIStateManager ai){
-        ai.switchState(ai.idleState, false);
+        ai.switchState(ai.idleState);
     }
 }

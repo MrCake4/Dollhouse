@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.Animations;
+using System.Collections;
+using Unity.VisualScripting.Antlr3.Runtime;
 
 public class RoomContainer : MonoBehaviour
 {
@@ -77,12 +79,35 @@ public class RoomContainer : MonoBehaviour
 
     // Activates the AI hunt state and sets the current target room
     void activicateAIHuntState()
+    {
+        triggered = false;
+        ai.setCurrentTargetRoom(this);
+        ai.setLastKnownRoom(this);
+        ai.isPatroling = false;
+
+        if (ai.getCurrentState == ai.scanState)
         {
-            ai.setCurrentTargetRoom(this);
-            ai.setLastKnownRoom(this);
-            ai.isPatroling = false;
-            ai.switchState(ai.huntState, false);
+            Debug.Log("Scan in progress – queuing hunt.");
+            ai.StartCoroutine(DeferHuntAfterScan(ai));
+            return;
         }
+        else
+        {
+            ai.switchState(ai.huntState);
+            ai.huntState.enterState(ai);
+        }
+    }
+
+    private IEnumerator DeferHuntAfterScan(AIStateManager ai)
+    {
+        // Wait until scan sweep finishes
+        while (!ai.eye.IsDoneSweeping)
+            yield return null;
+
+        ai.switchState(ai.huntState);
+        ai.huntState.enterState(ai);
+    }
+
 
     // Resets the lights to their base intensities
     void resetLights()
