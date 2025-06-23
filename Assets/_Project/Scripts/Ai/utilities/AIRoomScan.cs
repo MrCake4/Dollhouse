@@ -28,6 +28,7 @@ public class AIRoomScan : MonoBehaviour
     [Header("Laser Settings")]
     [SerializeField] private float laserBuildupTime = 1f;
     [SerializeField] private float laserDrawResetTime = 0.1f;
+    bool laserCharging = false;
 
     [Header("Spotlight Settings")]
         // Spotlight
@@ -127,8 +128,12 @@ public class AIRoomScan : MonoBehaviour
             yield return null;
         }
 
+
         yield return ReturnToCenter();
-        SetSpotlight(false);
+
+        if(currentTarget == null){SetSpotlight(false);}
+
+        
         IsDoneSweeping = true;
     }
 
@@ -229,6 +234,7 @@ public class AIRoomScan : MonoBehaviour
     {
         currentTarget = null;
         laserTimer = laserBuildupTime;
+        laserCharging = false;
         ReturnToCenter();
     }
 
@@ -260,8 +266,10 @@ public class AIRoomScan : MonoBehaviour
 
     private void ChargeSequence()
     {
-        if (laserTimer <= 1f && implosionParticles != null && !implosionParticles.isPlaying)
+        if (laserTimer <= 1f && implosionParticles != null && !implosionParticles.isPlaying && !laserCharging)
         {
+            laserCharging = true;
+            Debug.Log("Starting implosion sequence");
             rumbleController();
             shaker?.Shake(shakePreset);
 
