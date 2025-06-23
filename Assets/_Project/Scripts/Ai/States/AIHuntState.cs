@@ -11,12 +11,13 @@ public class AIHuntState : AIBaseState
         Debug.Log("Dolly entered HUNT state");
         currentTargetRoom = ai.currentTargetRoom;
         ai.isHunting = true;
+        ai.isPatroling = false;
         
         // incase Null
         if (currentTargetRoom == null)
         {
             Debug.LogWarning("HuntState: currentTargetRoom is null. Returning to patrol.");
-            ai.switchState(ai.patrolState, false);
+            ai.switchState(ai.patrolState);
             return;
         }
 
@@ -25,13 +26,20 @@ public class AIHuntState : AIBaseState
     }
 
     public override void onUpdate(AIStateManager ai) {
-        if(ai.scanDone){
+        if (ai.scanDone)
+        {
+            ai.scanDone = false;
             resetVariables(ai);
-            ai.switchState(ai.seekState, false);
-        } else{
+            ai.switchState(ai.seekState);
+            return;
+        }
+        else
+        {
             ai.seekIncrement = 1;
             resetVariables(ai);
-            ai.switchState(ai.scanState, false);
+            ai.eye.ResetEyeScan();
+            ai.switchState(ai.scanState);
+            return;
         }
     }
 

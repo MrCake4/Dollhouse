@@ -1,76 +1,102 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Analytics;
-using UnityEngine.Animations;
 
 public class AIScanState : AIBaseState
 {
-    RoomContainer currentTargetRoom;
-    private bool isDoneScanning;
-    bool scanStartet;
+    private RoomContainer currentTargetRoom;
+    private bool scanStarted;
+
     public override void enterState(AIStateManager ai)
     {
         Debug.Log("Dolly entered SCAN State");
+
         currentTargetRoom = ai.currentTargetRoom;
         ai.scanDone = false;
-        scanStartet = false;
-        // incase of null
+        scanStarted = false;
+
+        // Fail-safe check
         if (currentTargetRoom == null || currentTargetRoom.windowAnchorPoints.Length == 0)
         {
-            ai.switchState(ai.patrolState, false);
-            Debug.Log("Room is empty or has no windows");
+            Debug.LogWarning("No windows found in room — reverting to patrol.");
+            ai.switchState(ai.patrolState);
             return;
         }
 
-        // Sets the first window as target
+        // Set first window as scanning target
         ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[ai.currentWindowIndex]);
+        ai.eye.ApplyAnchorOverride(ai.currentTargetWindow);
     }
-    
-    public override void onUpdate(AIStateManager ai){
+
+    public override void onUpdate(AIStateManager ai)
+    {
         if (ai.currentTargetWindow == null)
         {
-            Debug.Log("No Target Window");
+            Debug.LogWarning("No current target window set.");
             return;
-        } 
+        }
 
+        // Move to current window anchor
+        if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) > 0.1f)
+        {
+            ai.transform.position = Vector3.MoveTowards(
+                ai.transform.position,
+                ai.currentTargetWindow.position,
+                Time.deltaTime * ai.moveSpeed
+            );
+            return;
+        }
 
-         // If reached current window
-        if (Vector3.Distance(ai.transform.position, ai.currentTargetWindow.position) < 0.1f) {
-            if (!scanStartet)
-            {
-                ai.eye.setStartScan(true);
-                scanStartet = true;
-            }
-            isDoneScanning = !ai.eye.getStartScan;
+        // Begin scanning if not already started
+        if (!scanStarted)
+        {
+            ai.eye.BeginScanSweep();
+            scanStarted = true;
+            return;
+        }
 
-            if (ai.isPatroling && isDoneScanning)
-            {
-                resetVariables(ai);
-                ai.switchState(ai.getLastState, false);
-                return;
-            }
+        // If target acquired, follow and shoot
+        if (ai.eye.TargetAcquired)
+        {
+            resetVariables(ai);
+            ai.scanDone = false;
+            ai.switchState(ai.attackState);
+            return;
+        }
 
-            if (isDoneScanning)
-            {
-                ai.currentWindowIndex++;
-                scanStartet = false;
-            }
+        // Wait until scan sweep finishes
+        if (!ai.eye.IsDoneSweeping)
+        {
+            ai.eye.UpdateLaser(); // Optional visual update while scanning
+            return;
+        }
 
-            // if done with room
-            if(ai.currentWindowIndex >= currentTargetRoom.windowAnchorPoints.Length) {
-                // Reset window index for next room
-                resetVariables(ai);
-                ai.scanDone = true; 
-                ai.switchState(ai.getLastState, false);
-                return;
-            }
-            ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[ai.currentWindowIndex]);
+        // if he is currently Patroling 
+        if (ai.isPatroling && ai.eye.IsDoneSweeping)
+        {
+            resetVariables(ai);
+            ai.switchState(ai.getLastState);
+            return;
+        }
 
-             // Move toward current window
-        } else {ai.transform.position = Vector3.MoveTowards(ai.transform.position,ai.currentTargetWindow.position,Time.deltaTime * ai.moveSpeed);}
+        // Done scanning current window
+        ai.currentWindowIndex++;
+        scanStarted = false;
+
+        // If all windows done
+        if (ai.currentWindowIndex >= currentTargetRoom.windowAnchorPoints.Length)
+        {
+            resetVariables(ai);
+            ai.scanDone = true;
+            ai.switchState(ai.getLastState);
+            return;
+        }
+
+        // Otherwise, proceed to next window
+        ai.setCurrentTargetWindow(currentTargetRoom.windowAnchorPoints[ai.currentWindowIndex]);
+        ai.eye.ApplyAnchorOverride(ai.currentTargetWindow);
     }
 
-    public override void resetVariables(AIStateManager ai){
+    public override void resetVariables(AIStateManager ai)
+    {
         ai.currentWindowIndex = 0;
     }
 

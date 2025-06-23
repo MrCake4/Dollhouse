@@ -1095,6 +1095,9 @@ MonoBehaviour:
   - {fileID: 1884049708}
   triggered: 0
   ai: {fileID: 358709971}
+  roomLights: []
+  flickerSpeed: 8
+  flickerAmount: 10
 --- !u!4 &1633437888
 Transform:
   m_ObjectHideFlags: 0
@@ -1456,6 +1459,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2033213238 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+  m_PrefabInstance: {fileID: 5718982464971908062}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0367232f67bc7ee418e74b42f6fd4d7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2052154294
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,6 +1535,9 @@ MonoBehaviour:
   - {fileID: 24982128}
   triggered: 0
   ai: {fileID: 358709971}
+  roomLights: []
+  flickerSpeed: 8
+  flickerAmount: 10
 --- !u!4 &2085015474
 Transform:
   m_ObjectHideFlags: 0
@@ -1597,8 +1614,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7907533964422409099, guid: e33c14c218941e64086945d91d77f258, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4282766609741710131}
   m_SourcePrefab: {fileID: 100100000, guid: e33c14c218941e64086945d91d77f258, type: 3}
+--- !u!1 &4282766609741710130 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7907533964422409099, guid: e33c14c218941e64086945d91d77f258, type: 3}
+  m_PrefabInstance: {fileID: 4282766609741710129}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4282766609741710131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4282766609741710130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b584396613c1434c8a80d4babc355d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overrideScanSettings: 1
+  customViewRadius: 10
+  customViewAngle: 30
+  customSweepDuration: 3
 --- !u!1001 &5718982464971908062
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1654,6 +1695,10 @@ PrefabInstance:
     - target: {fileID: 8889679970781055578, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
       propertyPath: eye
       value: 
+      objectReference: {fileID: 2033213238}
+    - target: {fileID: 8889679970781055578, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: rooms.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8889679970781055578, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
       propertyPath: 'rooms.Array.data[0]'

@@ -22,6 +22,9 @@ public class Candle : Interactable
     KeypadButton keypadButton;
     [SerializeField]bool isNormalCandle = true; // If false, the candle will not trigger the keypad button
 
+    [Header("Sound Effects")]
+    [SerializeField] AudioClip candleLightEffect; // Sound effect when the candle is lit
+
     void Start()
     {
         playerItemHandler = FindFirstObjectByType<PlayerItemHandler>();
@@ -46,6 +49,8 @@ public class Candle : Interactable
             !isLit)
         {
             lightCandle();
+            // Play sound effect if it is a normal candle
+            if (isNormalCandle && candleLightEffect != null) SoundEffectsManager.instance.PlaySoundEffect(candleLightEffect, transform, 1f);
 
             // if candle is not a normal candle,
             if (!isNormalCandle)
