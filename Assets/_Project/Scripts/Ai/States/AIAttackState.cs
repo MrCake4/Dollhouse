@@ -19,7 +19,7 @@ public class AIAttackState : AIBaseState
         if (ai.eye.PlayerWasHit || !ai.eye.TargetAcquired)
         {
             exitState(ai);
-            ai.switchState(ai.huntState, false);
+            ai.switchState(ai.huntState);
         }
     }
 

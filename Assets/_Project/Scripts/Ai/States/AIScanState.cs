@@ -17,7 +17,7 @@ public class AIScanState : AIBaseState
         if (currentTargetRoom == null || currentTargetRoom.windowAnchorPoints.Length == 0)
         {
             Debug.LogWarning("No windows found in room — reverting to patrol.");
-            ai.switchState(ai.patrolState, false);
+            ai.switchState(ai.patrolState);
             return;
         }
 
@@ -57,7 +57,7 @@ public class AIScanState : AIBaseState
         if (ai.eye.TargetAcquired)
         {
             resetVariables(ai);
-            ai.switchState(ai.attackState, false);
+            ai.switchState(ai.attackState);
             return;
         }
 
@@ -72,7 +72,7 @@ public class AIScanState : AIBaseState
         if (ai.isPatroling && ai.eye.IsDoneSweeping)
         {
             resetVariables(ai);
-            ai.switchState(ai.getLastState, false);
+            ai.switchState(ai.getLastState);
             return;
         }
 
@@ -85,7 +85,7 @@ public class AIScanState : AIBaseState
         {
             resetVariables(ai);
             ai.scanDone = true;
-            ai.switchState(ai.getLastState, false);
+            ai.switchState(ai.getLastState);
             return;
         }
 

@@ -8,9 +8,6 @@ using Unity.Mathematics;
 [RequireComponent(typeof(LineRenderer))]
 public class AIRoomScan : MonoBehaviour
 {
-    // Spotlight
-    [SerializeField] private Light spotlight;
-
     // Scan and Sweep
     [Header("Scan and Sweep")]
     [SerializeField] private float viewRadius = 20f;
@@ -31,6 +28,12 @@ public class AIRoomScan : MonoBehaviour
     [Header("Laser Settings")]
     [SerializeField] private float laserBuildupTime = 1f;
     [SerializeField] private float laserDrawResetTime = 0.1f;
+
+    [Header("Spotlight Settings")]
+        // Spotlight
+    [SerializeField] private Light spotlight;
+    [SerializeField, Range(1500, 20000)] float idleSpotlightIntensity = 5000f;
+    [SerializeField, Range(1500, 20000)]float spottedSpotlightIntensity = 1500f;
 
     [Header("Camera Shake")]
     public Shaker shaker;
@@ -290,6 +293,7 @@ public class AIRoomScan : MonoBehaviour
         spotlight.range = viewRadius;
         spotlight.intensity = 40000;
         spotlight.spotAngle = viewAngle;
+        spotlight.colorTemperature = currentTarget != null ? idleSpotlightIntensity : spottedSpotlightIntensity;    // Adjust intensity based on target presence
 
         if (currentTarget != null)
         {

@@ -39,7 +39,7 @@ public class AISeekState : AIBaseState
         if (ai.seekRoomsChecked == 2)
         {
             resetVariables(ai);
-            ai.switchState(ai.patrolState, false);
+            ai.switchState(ai.patrolState);
             return;
         }
 
@@ -52,7 +52,7 @@ public class AISeekState : AIBaseState
             if (ai.currentTargetRoom == nextRoom)
             {
                 resetVariables(ai);
-                ai.switchState(ai.patrolState, false);
+                ai.switchState(ai.patrolState);
                 return;
             }
 
@@ -61,11 +61,11 @@ public class AISeekState : AIBaseState
             // Switch direction for next time
             ai.seekIncrement = -ai.seekIncrement;
             ai.seekRoomsChecked++;
-            ai.switchState(ai.scanState, false);
+            ai.switchState(ai.scanState);
             return;
         }
         resetVariables(ai);
-        ai.switchState(ai.patrolState, false);
+        ai.switchState(ai.patrolState);
     }
 
 
