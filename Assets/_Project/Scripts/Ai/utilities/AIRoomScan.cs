@@ -219,7 +219,12 @@ public class AIRoomScan : MonoBehaviour
             hitPlayer = false;
 
             if (hit.collider.CompareTag("Destroyable"))
-                Destroy(hit.collider.gameObject);
+            
+                if (hit.collider.GetComponent<Destructible>() != null)
+                    hit.collider.GetComponent<Destructible>()?.destroyObject();
+                else
+                    Destroy(hit.collider.gameObject);
+                    
             else if (hit.collider.CompareTag("Generator"))
                 hit.collider.GetComponent<HitableObject>()?.onHit();
         }
