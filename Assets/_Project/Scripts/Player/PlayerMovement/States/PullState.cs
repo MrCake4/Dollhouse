@@ -15,7 +15,8 @@ public class PullState : BasePlayerState
     public override void onEnter(PlayerStateManager player)
     {
         Debug.Log("→ PULL START");
-        player.animator.SetBool("IsPulling", true);
+        //player.animator.SetBool("IsPulling", true);
+        player.animator.SetBool("IsGrabbing", true);
 
         if (targetRb != null)
         {
@@ -68,7 +69,17 @@ public class PullState : BasePlayerState
         Vector3 newVelocity = new Vector3(moveDir.x, targetRb.linearVelocity.y, moveDir.z);
         targetRb.linearVelocity = newVelocity;
 
-        player.SetPushPullAnimationSpeed(new Vector3(newVelocity.x, 0f, newVelocity.z).magnitude);
+
+        // ANIMATION ---- geschwindigkeit berechnen (negativ = rückwärts, positiv = vorwärts)
+        Vector3 flatVel = new Vector3(newVelocity.x, 0f, newVelocity.z);
+        float speed = flatVel.magnitude;
+        float direction = Mathf.Sign(Vector3.Dot(player.transform.forward, flatVel));
+        float pushPullSpeed = Mathf.Clamp(direction * speed, -1f, 1f);
+
+        player.animator.SetFloat("PushPullSpeed", pushPullSpeed, 0.1f, Time.deltaTime);
+
+
+        //player.SetPushPullAnimationSpeed(new Vector3(newVelocity.x, 0f, newVelocity.z).magnitude);
     }
 
     public override void onUpdate(PlayerStateManager player) { }
@@ -76,7 +87,8 @@ public class PullState : BasePlayerState
     public override void onExit(PlayerStateManager player)
     {
         Debug.Log("→ PULL ENDE");
-        player.animator.SetBool("IsPulling", false);
+        //player.animator.SetBool("IsPulling", false);
+        player.animator.SetBool("IsGrabbing", false);
 
         if (targetRb != null)
         {
