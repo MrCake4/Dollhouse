@@ -6,6 +6,7 @@ public class FallState : BasePlayerState                                //dann, 
     {
         Debug.Log("Falling");
         player.animator.SetBool("IsFalling", true);
+        player.animator.SetBool("ReachedJumpPeak", true);
     }
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
@@ -59,6 +60,7 @@ public class FallState : BasePlayerState                                //dann, 
         }
 
         player.animator.SetBool("IsFalling", false);
+        player.animator.SetBool("ReachedJumpPeak", false);
     }
     
 }

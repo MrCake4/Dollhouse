@@ -7,6 +7,8 @@ public class WalkState : BasePlayerState
     {
         Debug.Log("walking");
         //player.animator.SetBool("IsWalking", true);
+        //player.animator.SetBool("IsMoving", true);
+        player.animator.SetTrigger("ReturnToMoving");
     }
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
@@ -68,5 +70,7 @@ public class WalkState : BasePlayerState
     public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
     {
         //player.animator.SetBool("IsWalking", false);
+        //player.animator.SetBool("IsMoving", false);
+        player.animator.ResetTrigger("ReturnToMoving");
     }
 }

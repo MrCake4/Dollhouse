@@ -5,7 +5,10 @@ public class JumpState : BasePlayerState
     
     public override void onEnter(PlayerStateManager player)
     {
-        player.animator.SetBool("IsJumping", true);
+        //player.animator.SetBool("IsJumping", true);
+        player.animator.SetTrigger("DoJump");
+
+
         /*
         // Spieler kann aus Idle mit WASD schräg springen
         Vector3 direction = player.moveDir != Vector3.zero
@@ -101,7 +104,9 @@ public class JumpState : BasePlayerState
     public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
     {
         //nix weiter nötig lol
-        player.animator.SetBool("IsJumping", false);
+        //player.animator.SetBool("IsJumping", false);
+        player.animator.ResetTrigger("DoJump");
+
     }
 
     
