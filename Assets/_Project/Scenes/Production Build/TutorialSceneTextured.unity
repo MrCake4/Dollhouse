@@ -7603,6 +7603,99 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2760497b1fb930744971dc97f44f427d, type: 3}
   m_PrefabInstance: {fileID: 1637197333}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1669967226
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3.4227536
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.46167
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3.260753
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353913965772890666, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5686582344355375427, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: m_Name
+      value: SceneLoadTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: _scenesToLoad.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: _scenesToUnload.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: _scenesToLoad.Array.data[0].m_SceneName
+      value: Level1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: _scenesToLoad.Array.data[0].m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: d3bb99b3d490f21438e1ddba35b4ba1b, type: 3}
+    - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: _scenesToUnload.Array.data[0].m_SceneName
+      value: TutorialSceneTextured
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: _scenesToUnload.Array.data[0].m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 5cdfa8d063f38ca4cb095a3b2d00c741, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
 --- !u!1001 &1671010106
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10712,3 +10805,4 @@ SceneRoots:
   - {fileID: 179396874}
   - {fileID: 175944375}
   - {fileID: 1671010106}
+  - {fileID: 1669967226}
