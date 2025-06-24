@@ -6,6 +6,9 @@ public class WalkState : BasePlayerState
     public override void onEnter(PlayerStateManager player)
     {
         Debug.Log("walking");
+        //player.animator.SetBool("IsWalking", true);
+        //player.animator.SetBool("IsMoving", true);
+        player.animator.SetTrigger("ReturnToMoving");
     }
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
@@ -20,8 +23,10 @@ public class WalkState : BasePlayerState
         if (player.JumpAllowed())                               //SWITCH JUMP
         {
             player.jumpPressed = false;
+
+            //IF PLAYER HAS NO LOW LEDGE OR MEDIUM LEDGE in his BoxCollider-Trigger --> Jump State  --> sonst in den PullUpState mit der passenden Ledge description
             player.SwitchState(player.jumpState);
-            return;
+            //return;
         }
         
 
@@ -64,6 +69,8 @@ public class WalkState : BasePlayerState
     }
     public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
     {
-        
+        //player.animator.SetBool("IsWalking", false);
+        //player.animator.SetBool("IsMoving", false);
+        player.animator.ResetTrigger("ReturnToMoving");
     }
 }

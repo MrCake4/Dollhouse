@@ -13,6 +13,7 @@ public class CrouchState : BasePlayerState
         );
 
         Debug.Log("Crouching");
+        player.animator.SetBool("IsCrouching", true);
     }
 
 
@@ -22,21 +23,29 @@ public class CrouchState : BasePlayerState
         if (!player.isCrouching && player.HasHeadroom(player.originalHeight))
         {
             // Wenn keine Bewegung → Idle
-            if (player.moveInput == Vector2.zero){                      //SWITCH Idle
+            if (player.moveInput == Vector2.zero)
+            {                      //SWITCH Idle
                 //onExit(player);
                 player.SwitchState(player.idleState);
             }
             // Wenn Bewegung → Walk (kein Run möglich beim Crouch)
-            else{
+            else
+            {
                 //onExit(player);
                 player.SwitchState(player.walkState);                   //SWITCH Walk
             }
         }
 
-        if(player.IsFalling()){                                         //SWITCH Fall
+        if (player.IsFalling())
+        {                                         //SWITCH Fall
             player.SwitchState(player.fallState);
             //Debug.Log("Switcherooo");
         }
+        
+        //___________________ANIMATION_____________________
+        float speed = player.moveInput.magnitude;
+        player.animator.SetFloat("CrouchSpeed", speed, 0.1f, Time.deltaTime);
+
 
     }
 
@@ -53,5 +62,7 @@ public class CrouchState : BasePlayerState
         // Collider zurücksetzen
         player.capsuleCollider.height = player.originalHeight;
         player.capsuleCollider.center = player.originalCenter;
+
+        player.animator.SetBool("IsCrouching", false);
     }
 }

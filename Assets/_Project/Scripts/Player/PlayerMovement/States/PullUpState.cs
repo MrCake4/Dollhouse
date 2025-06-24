@@ -25,6 +25,9 @@ public class PullUpState : BasePlayerState
 
     public override void onEnter(PlayerStateManager player)
     {
+
+        player.animator.SetBool("IsPullingUp", true);
+
         player.rb.useGravity = false;
         player.rb.linearVelocity = Vector3.zero;
 
@@ -74,5 +77,6 @@ public class PullUpState : BasePlayerState
     public override void onExit(PlayerStateManager player)
     {
         player.rb.useGravity = true;
+        player.animator.SetBool("IsPullingUp", false);
     }
 }
