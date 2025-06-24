@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 public class AttachToBone : MonoBehaviour
 {
     // This script is used to attach a GameObject to a specific bone in any rig.
+    // This script does not set the target bone as a parent, but instead maintains a position offset and optionally aligns the rotation.
+
     [Description("Simply drag and drop the GameObject you want to attach to a bone in the inspector.")]
     [SerializeField] GameObject targetBone; // The bone to which the GameObject will be attached.
     [SerializeField] Vector3 offset;
