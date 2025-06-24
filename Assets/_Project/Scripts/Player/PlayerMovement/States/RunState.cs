@@ -13,6 +13,9 @@ public class RunState : BasePlayerState
         currentSpeed = horizontalVelocity.magnitude;
 
         Debug.Log("Running - Startspeed: " + currentSpeed.ToString("F2"));
+        //player.animator.SetBool("IsMoving", true);
+        //player.animator.SetBool("IsRunning", true);
+        player.animator.SetTrigger("ReturnToMoving");
     }
 
     public override void onUpdate(PlayerStateManager player)               //pro Frame
@@ -67,5 +70,8 @@ public class RunState : BasePlayerState
     public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
     {
         Debug.Log("Exit Run");
+        //player.animator.SetBool("IsRunning", false);
+        //player.animator.SetBool("IsMoving", false);
+        player.animator.ResetTrigger("ReturnToMoving");
     }
 }
