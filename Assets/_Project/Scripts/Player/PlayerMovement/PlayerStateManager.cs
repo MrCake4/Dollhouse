@@ -100,8 +100,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     // Update is called once per frame
     void Update()
     {
-        float inputX = Input.GetAxis("Horizontal"); // A/D oder Left Stick X
-        float inputY = Input.GetAxis("Vertical");   // W/S oder Left Stick Y
+        //float inputX = Input.GetAxis("Horizontal"); // A/D oder Left Stick X
+        //float inputY = Input.GetAxis("Vertical");   // W/S oder Left Stick Y
 
         // Eingaben zentral erfassen
         Vector2 keyboardInput = Vector2.zero;       //für Keyboard-Eingabe
@@ -132,16 +132,31 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
             moveDir = new Vector3(moveDir.x, 0, 0); // kein Vor/zurück, nur links/rechts
         }
 
+
+        /*Hinten links = ducken
+        Hinten rechts = rennen
+        B = Objekt aufheben/ fallen lassen          --> Input.GetKey(KeyCode.Joystick1Button1)
+        X = Interact
+
+
+            Joystick1Button3 = Y
+        */
+
+
         // andere Eingaben  --> auskommentierte sind die für PS5 Controller
         //jumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1);     // X!!!
         jumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0);     // jetzt A
         //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button10);          //Rennen mit reindrücken von L
-        isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button8);         //reindrücken von L
+        //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button8);         //reindrücken von L
+        isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button5);         //R1
+
         isCrouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Joystick1Button4);      //L1        //gilt für PS5 & X-Box
         //interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button0);        //Viereck
         interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button2);
         //holdPressed = Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.Joystick1Button5);            //Trying to hold onto something?        //R1    
-        holdPressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Joystick1Button5);            //oben rechts R1
+        //holdPressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Joystick1Button5);            //oben rechts R1
+        holdPressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Joystick1Button3);            //Y
+
 
         //Zustand updaten
         currentState.onUpdate(this);                //beim aktuellen State Update() aufrufen

@@ -57,3 +57,65 @@ public class DeadState : BasePlayerState
         }
     }
 }
+
+
+
+// !!!!!!!!!!!!! NEEDS TESTING !!!!!!!!!!!!
+
+/*
+    using UnityEngine;
+
+public class DeadState : BasePlayerState
+{
+    private Rigidbody playerRigidbody;
+    private CapsuleCollider mainCollider;
+    private Animator animator;
+
+    public override void onEnter(PlayerStateManager player)
+    {
+        Debug.Log("Player is dead!");
+
+        // 1. Referenzen holen
+        playerRigidbody = player.GetComponent<Rigidbody>();
+        mainCollider = player.GetComponent<CapsuleCollider>();
+        animator = player.GetComponentInChildren<Animator>();
+
+        // 2. Haupt-Komponenten deaktivieren
+        if (playerRigidbody != null) playerRigidbody.isKinematic = true;
+        if (mainCollider != null) mainCollider.enabled = false;
+        if (animator != null) animator.enabled = false;
+
+        // 3. Ragdoll aktivieren
+        EnableRagdoll(player.transform);
+    }
+
+    public override void onUpdate(PlayerStateManager player) { }
+    public override void onFixedUpdate(PlayerStateManager player) { }
+
+    public override void onExit(PlayerStateManager player)
+    {
+        // In der Regel bleibt man in DeadState. Wenn nicht, dann hier ggf. zurückbauen.
+    }
+
+    private void EnableRagdoll(Transform root)
+    {
+        // Alle Child-Rigidbodies & Collider aktivieren
+        Rigidbody[] ragdollBodies = root.GetComponentsInChildren<Rigidbody>(true);
+        Collider[] ragdollColliders = root.GetComponentsInChildren<Collider>(true);
+
+        foreach (var rb in ragdollBodies)
+        {
+            if (rb.gameObject == root.gameObject) continue; // Root-Rigidbody NICHT anfassen
+            rb.isKinematic = false;
+            rb.interpolation = RigidbodyInterpolation.Interpolate;
+        }
+
+        foreach (var col in ragdollColliders)
+        {
+            if (col.gameObject == root.gameObject) continue; // Root-Collider NICHT anfassen
+            col.enabled = true;
+        }
+    }
+}
+
+*/
