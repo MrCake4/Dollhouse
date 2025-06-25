@@ -5,10 +5,10 @@ public class CrouchState : BasePlayerState
     public override void onEnter(PlayerStateManager player)
     {
         // Collider halbieren
-        player.capsuleCollider.height = player.originalHeight / 2f;
+        player.capsuleCollider.height = player.originalHeight / 1.25f;
         player.capsuleCollider.center = new Vector3(
             player.originalCenter.x,
-            player.originalCenter.y / 2f,
+            player.originalCenter.y / 1.25f,
             player.originalCenter.z
         );
 
