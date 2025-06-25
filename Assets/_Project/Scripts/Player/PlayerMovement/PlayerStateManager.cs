@@ -43,6 +43,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public bool interactPressed;
     //[HideInInspector] public bool pullUpPressed;
     [HideInInspector] public bool holdPressed;      //Festhalten --> für PullUp, Hang, climb, etc
+    [HideInInspector] public bool pickUpPressed;
     [HideInInspector] public bool is2DMode = false;         // 2.5D MOVEMENT
 
 
@@ -152,7 +153,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         isCrouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Joystick1Button4);      //L1        //gilt für PS5 & X-Box
         //interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button0);        //Viereck
-        interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button2);
+        interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button2);        //X
+        pickUpPressed = Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Joystick1Button1);
         //holdPressed = Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.Joystick1Button5);            //Trying to hold onto something?        //R1    
         //holdPressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Joystick1Button5);            //oben rechts R1
         holdPressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Joystick1Button3);            //Y
