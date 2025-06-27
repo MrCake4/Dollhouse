@@ -13,9 +13,11 @@ public class Generator : HitableObject
     [SerializeField] float maxPower = 100f;
     [SerializeField] int lossOverTime = 1;
     [SerializeField] GameObject antenna;
+    bool playingSound = false; // to prevent multiple sound instances
 
     [Header("Audio")]
     [SerializeField] AudioClip generatorSound;
+    AudioSource generatorAudioSource;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -107,17 +109,25 @@ public class Generator : HitableObject
     {
         if (currentPower > 0 && loosesPowerOverTime && charged)
         {
+            if (SoundEffectsManager.instance != null && generatorSound != null && !playingSound)
+            {
+                generatorAudioSource = SoundEffectsManager.instance.PlayLoopedSoundEffect(generatorSound, transform, 0.5f);
+                playingSound = true; // prevent multiple sound instances
+            }
             currentPower -= lossOverTime * Time.deltaTime; // lose power over time
         }
         else if (currentPower <= 0 && charged)
         {
-            Debug.Log("Generator power depleted, turning off all powered objects.");
+            if (SoundEffectsManager.instance != null && generatorSound != null && playingSound)
+            {
+                SoundEffectsManager.instance.StopSoundEffect(generatorAudioSource);
+                playingSound = false; // reset sound state
+            }
 
             foreach (Interactable interactable in powerableObjects)
-            {
-                dePowerObject(interactable); // turn off all powered objects
-                Debug.Log("Deactivated: " + interactable.name);
-            }
+                {
+                    dePowerObject(interactable); // turn off all powered objects
+                }
             charged = false; // if power is depleted, set charged to false
         }
     }
