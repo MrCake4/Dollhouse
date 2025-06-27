@@ -10,7 +10,7 @@ public class FallState : BasePlayerState                                //dann, 
     }
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
-        if (player.IsGrounded())
+        if (player.HasLanded())
         {
             float speed = player.GetHorizontalSpeed();
 
@@ -21,6 +21,7 @@ public class FallState : BasePlayerState                                //dann, 
             }
             else
             {
+                Debug.Log(player.GetVerticalVelocity());
                 player.SwitchState(player.idleState);                                           //SWITCH Idle
                 return;
             }

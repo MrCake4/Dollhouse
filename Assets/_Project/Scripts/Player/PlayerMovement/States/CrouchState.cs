@@ -13,7 +13,8 @@ public class CrouchState : BasePlayerState
         );
 
         Debug.Log("Crouching");
-        player.animator.SetBool("IsCrouching", true);
+        //player.animator.SetBool("IsCrouching", true);
+        player.animator.SetTrigger("DoCrouch");
     }
 
 
@@ -63,6 +64,7 @@ public class CrouchState : BasePlayerState
         player.capsuleCollider.height = player.originalHeight;
         player.capsuleCollider.center = player.originalCenter;
 
-        player.animator.SetBool("IsCrouching", false);
+        //player.animator.SetBool("IsCrouching", false);
+        player.animator.ResetTrigger("DoCrouch");
     }
 }

@@ -291,6 +291,11 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         return !IsGrounded() && rb.linearVelocity.y < 0f;
     }
 
+    public bool HasLanded()
+    {
+        return IsGrounded() && rb.linearVelocity.y >= 0f;
+    }
+
     public bool JumpAllowed()                                   //steht bei Idle, Walk und Run drinne!  --> damit man gleichzeitig Logik bearbeiten kann --> weniger copy paste
     {
         return jumpPressed
@@ -407,6 +412,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public Vector3 GetHorizontalVelocity()
     {
         return new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+    }
+    public float GetVerticalVelocity()
+    {
+        return rb.linearVelocity.y;
     }
 
     public float GetHorizontalSpeed()
