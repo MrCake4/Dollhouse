@@ -62,8 +62,22 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public float verticalPullUp = 0.8f;
     public float horizontalPullUp = -0.3f;
 
+
+
     //________________ANIMATION_________________
     public Animator animator;
+
+    // ______________LEVEL REFERENCES _________________________
+    [Header("Level References")]
+    public Transform lowCrouchPoint;        // kann im Inspector gesetzt werden
+
+    private float crouchBlend;              // interner Blendwert
+    public void SetCrouchBlend(float value)
+    {
+        crouchBlend = Mathf.Clamp01(value);
+    }
+    public float GetCrouchBlend() => crouchBlend;
+
 
 
 
