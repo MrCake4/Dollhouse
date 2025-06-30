@@ -44,6 +44,26 @@ public class SoundEffectsManager : MonoBehaviour
         return null;
     }
 
+    // play looped sound effect
+    public AudioSource PlayLoopedSoundEffect(AudioClip clip, Transform spawnTransform, float volume)
+    {
+        if (clip != null)
+        {
+            AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
+            audioSource.clip = clip;
+            audioSource.volume = volume;
+            audioSource.loop = true;              // Set to loop
+            audioSource.spatialBlend = 1f;       // <-- Important: make it 3D
+            audioSource.minDistance = 1f;
+            audioSource.maxDistance = 15f;
+            audioSource.Play();
+
+            activeAudioSources.Add(audioSource);
+            return audioSource;
+        }
+        return null;
+    }
+
     /// Plays a random sound effect from an array and returns the AudioSource.
     public AudioSource PlayRandomSoundEffect(AudioClip[] clips, Transform spawnTransform, float volume)
     {
