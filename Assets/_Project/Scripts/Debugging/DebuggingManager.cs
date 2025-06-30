@@ -1,13 +1,18 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DebuggingManager : MonoBehaviour
 {
-    GameObject[] debugElements;
+    private GameObject[] debugElements;
     private bool isMenuActive = true;
+    [SerializeField] private SceneField[] scenes;
+    [SerializeField] private SceneField persistentScene;
 
     void Awake()
     {
         debugElements = GameObject.FindGameObjectsWithTag("Debugging");
+        toggleMenu(false);
     }
 
     void Update()
@@ -38,5 +43,24 @@ public class DebuggingManager : MonoBehaviour
         {
             doll.enabled = true;
         }
+    }
+
+    public void LevelSelector(int dropdownIndex)
+    {
+        SceneManager.LoadSceneAsync(scenes[dropdownIndex], LoadSceneMode.Single);
+        SceneManager.UnloadSceneAsync(GetNonPersistentScene(persistentScene));
+    }
+
+    private Scene GetNonPersistentScene(SceneField persistentSceneName)
+    {
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            Scene scene = SceneManager.GetSceneAt(i);
+            if (scene.name != persistentSceneName.SceneName && scene.isLoaded)
+            {
+                return scene;
+            }
+        }
+        return default;
     }
 }
