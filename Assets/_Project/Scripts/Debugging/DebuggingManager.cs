@@ -13,13 +13,10 @@ public class DebuggingManager : MonoBehaviour
     [SerializeField] private SceneField persistentScene;
     private AIStateManager doll;
     private PlayerStateManager player;
-    private bool isGraphyEnabled = true;
-    private GraphyManager graphy;
 
     void Awake()
     {
         debugElements = GameObject.FindGameObjectsWithTag("Debugging");
-        graphy = FindFirstObjectByType<GraphyManager>();
         toggleMenu(false);
     }
 
