@@ -7243,6 +7243,37 @@ MonoBehaviour:
   minIntensity: 8
   maxIntensity: 11
   flickerSpeed: 0.1
+--- !u!1 &396063337
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 396063338}
+  m_Layer: 0
+  m_Name: LowCrouchPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &396063338
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396063337}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -66.56, y: -3.96, z: -3.64}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1101714150}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &423554492
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19512,6 +19543,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 832502484}
+  - {fileID: 396063338}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1103289725
@@ -38285,7 +38317,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 43.53107, y: 1200.0001, z: 1089.2397}
+  m_Size: {x: 43.53107, y: 1200.0001, z: 1120.24}
   m_Center: {x: 3.1312609, y: 0.000047683716, z: -257.05252}
 --- !u!65 &2087183619
 BoxCollider:
@@ -38306,7 +38338,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 44.549603, y: 1200.0001, z: 305.48993}
+  m_Size: {x: 44.549603, y: 1200.0001, z: 309.4899}
   m_Center: {x: 3.6405237, y: 0.000047683716, z: 648.928}
 --- !u!65 &2087183620
 BoxCollider:
@@ -38327,7 +38359,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 47.835182, y: 1004.59576, z: 1603.3495}
+  m_Size: {x: 47.835182, y: 999.596, z: 1601.349}
   m_Center: {x: 5.283317, y: 97.70107, z: 1.7096984e-12}
 --- !u!1001 &2088093445
 PrefabInstance:
