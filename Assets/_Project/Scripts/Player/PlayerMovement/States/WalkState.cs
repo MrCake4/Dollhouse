@@ -15,8 +15,10 @@ public class WalkState : BasePlayerState
         // switch State
         //if(!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D)) { player.SwitchState(player.idleState);}          // + GroundCheck muss auch true sein! (um still stehen von "Fall" zu unterscheiden)
 
-        if(player.IsFalling()){                        //Damit man wirklich von jedem State aus auch nach Falling wechseln könnte
+        if (player.IsFalling())
+        {                        //Damit man wirklich von jedem State aus auch nach Falling wechseln könnte
             player.SwitchState(player.fallState);
+            return;
             //Debug.Log("Switcherooo");
         }
 
@@ -25,8 +27,10 @@ public class WalkState : BasePlayerState
             player.jumpPressed = false;
 
             //IF PLAYER HAS NO LOW LEDGE OR MEDIUM LEDGE in his BoxCollider-Trigger --> Jump State  --> sonst in den PullUpState mit der passenden Ledge description
+            //player.animator.SetTrigger("DoJump");
+
             player.SwitchState(player.jumpState);
-            //return;
+            return;
         }
         
 

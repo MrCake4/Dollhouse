@@ -25,5 +25,7 @@ public class PlayerAnimation : MonoBehaviour
         // Vertikale Bewegung (für Jump-Fall-BlendTree)
         float verticalVelocity = player.rb.linearVelocity.y;
         animator.SetFloat(verticalVelocityParam, verticalVelocity, 0.1f, Time.deltaTime);
+
+        
     }
 }
