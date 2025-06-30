@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,7 @@ public class DebuggingManager : MonoBehaviour
     private bool isMenuActive = true;
     [SerializeField] private SceneField[] scenes;
     [SerializeField] private SceneField persistentScene;
+    private bool changingScene = false;
 
     void Awake()
     {
@@ -47,8 +49,14 @@ public class DebuggingManager : MonoBehaviour
 
     public void LevelSelector(int dropdownIndex)
     {
-        SceneManager.LoadSceneAsync(scenes[dropdownIndex], LoadSceneMode.Single);
-        SceneManager.UnloadSceneAsync(GetNonPersistentScene(persistentScene));
+        if (!changingScene)
+        {
+            SceneFadeManager.instance.StartFadeOut();
+            SceneManager.LoadSceneAsync(scenes[dropdownIndex], LoadSceneMode.Additive);
+            SceneFadeManager.instance.StartFadeIn();
+            SceneManager.UnloadSceneAsync(GetNonPersistentScene(persistentScene));
+            changingScene = true;
+        }
     }
 
     private Scene GetNonPersistentScene(SceneField persistentSceneName)
