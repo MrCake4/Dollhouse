@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Tayx.Graphy;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,10 +13,13 @@ public class DebuggingManager : MonoBehaviour
     [SerializeField] private SceneField persistentScene;
     private AIStateManager doll;
     private PlayerStateManager player;
+    private bool isGraphyEnabled = true;
+    private GraphyManager graphy;
 
     void Awake()
     {
         debugElements = GameObject.FindGameObjectsWithTag("Debugging");
+        graphy = FindFirstObjectByType<GraphyManager>();
         toggleMenu(false);
     }
 
@@ -75,26 +79,26 @@ public class DebuggingManager : MonoBehaviour
     }
 
     private IEnumerator LoadSceneRoutine(int dropdownIndex)
-{
-    SceneFadeManager.instance.StartFadeOut();
-    yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingOut);
-
-    var loadOp = SceneManager.LoadSceneAsync(scenes[dropdownIndex], LoadSceneMode.Additive);
-    yield return loadOp;
-
-    Scene newScene = SceneManager.GetSceneByName(scenes[dropdownIndex].SceneName);
-    if (newScene.IsValid())
-        SceneManager.SetActiveScene(newScene);
-
-    var oldScene = GetNonPersistentScene(persistentScene);
-    if (oldScene.IsValid() && oldScene.name != newScene.name)
     {
-        var unloadOp = SceneManager.UnloadSceneAsync(oldScene);
-        yield return unloadOp;
-    }
+        SceneFadeManager.instance.StartFadeOut();
+        yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingOut);
 
-    SceneFadeManager.instance.StartFadeIn();
-}
+        var loadOp = SceneManager.LoadSceneAsync(scenes[dropdownIndex], LoadSceneMode.Additive);
+        yield return loadOp;
+
+        Scene newScene = SceneManager.GetSceneByName(scenes[dropdownIndex].SceneName);
+        if (newScene.IsValid())
+            SceneManager.SetActiveScene(newScene);
+
+        var oldScene = GetNonPersistentScene(persistentScene);
+        if (oldScene.IsValid() && oldScene.name != newScene.name)
+        {
+            var unloadOp = SceneManager.UnloadSceneAsync(oldScene);
+            yield return unloadOp;
+        }
+
+        SceneFadeManager.instance.StartFadeIn();
+    }
 
 
     public void ToggleInvincibility(bool on)
