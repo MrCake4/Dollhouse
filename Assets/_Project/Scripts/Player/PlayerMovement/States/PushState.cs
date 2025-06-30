@@ -16,8 +16,9 @@ public class PushState : BasePlayerState
     {
         Debug.Log("→ PUSH START");
         //player.animator.SetBool("IsPushing", true);
-        player.animator.SetBool("IsGrabbing", true);
+        //player.animator.SetBool("IsGrabbing", true);
         player.animator.SetFloat("PushPullSpeed", 0f, 0.1f, Time.deltaTime);
+        player.animator.SetTrigger("DoPushPullGrab");
 
 
         if (targetRb != null)
@@ -82,10 +83,12 @@ public class PushState : BasePlayerState
         Vector3 flatVel = new Vector3(newVelocity.x, 0f, newVelocity.z);
         float speed = flatVel.magnitude;
         float direction = Mathf.Sign(Vector3.Dot(player.transform.forward, flatVel));
-        float pushPullSpeed = Mathf.Clamp(direction * speed, -1f, 1f);
+        float pushPullSpeed = direction * speed;
 
         player.animator.SetFloat("PushPullSpeed", pushPullSpeed, 0.1f, Time.deltaTime);
 
+
+        //Debug.Log(speed);
 
     }
 
@@ -95,7 +98,8 @@ public class PushState : BasePlayerState
     {
         Debug.Log("→ PUSH ENDE");
         //player.animator.SetBool("IsPushing", false);
-        player.animator.SetBool("IsGrabbing", false);
+        //player.animator.SetBool("IsGrabbing", false);
+        player.animator.ResetTrigger("DoPushPullGrab");
 
         if (targetRb != null)
         {

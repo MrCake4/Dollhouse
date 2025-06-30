@@ -43,6 +43,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public bool interactPressed;
     //[HideInInspector] public bool pullUpPressed;
     [HideInInspector] public bool holdPressed;      //Festhalten --> für PullUp, Hang, climb, etc
+    [HideInInspector] public bool pickUpPressed;
     [HideInInspector] public bool is2DMode = false;         // 2.5D MOVEMENT
 
 
@@ -61,8 +62,22 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public float verticalPullUp = 0.8f;
     public float horizontalPullUp = -0.3f;
 
+
+
     //________________ANIMATION_________________
     public Animator animator;
+
+    // ______________LEVEL REFERENCES _________________________
+    [Header("Level References")]
+    public Transform lowCrouchPoint;        // kann im Inspector gesetzt werden
+
+    private float crouchBlend;              // interner Blendwert
+    public void SetCrouchBlend(float value)
+    {
+        crouchBlend = Mathf.Clamp01(value);
+    }
+    public float GetCrouchBlend() => crouchBlend;
+
 
 
 
@@ -100,8 +115,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     // Update is called once per frame
     void Update()
     {
-        float inputX = Input.GetAxis("Horizontal"); // A/D oder Left Stick X
-        float inputY = Input.GetAxis("Vertical");   // W/S oder Left Stick Y
+        //float inputX = Input.GetAxis("Horizontal"); // A/D oder Left Stick X
+        //float inputY = Input.GetAxis("Vertical");   // W/S oder Left Stick Y
 
         // Eingaben zentral erfassen
         Vector2 keyboardInput = Vector2.zero;       //für Keyboard-Eingabe
@@ -132,16 +147,32 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
             moveDir = new Vector3(moveDir.x, 0, 0); // kein Vor/zurück, nur links/rechts
         }
 
+
+        /*Hinten links = ducken
+        Hinten rechts = rennen
+        B = Objekt aufheben/ fallen lassen          --> Input.GetKey(KeyCode.Joystick1Button1)
+        X = Interact
+
+
+            Joystick1Button3 = Y
+        */
+
+
         // andere Eingaben  --> auskommentierte sind die für PS5 Controller
         //jumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1);     // X!!!
         jumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0);     // jetzt A
         //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button10);          //Rennen mit reindrücken von L
-        isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button8);         //reindrücken von L
+        //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button8);         //reindrücken von L
+        isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button5);         //R1
+
         isCrouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Joystick1Button4);      //L1        //gilt für PS5 & X-Box
         //interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button0);        //Viereck
-        interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button2);
+        interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button2);        //X
+        pickUpPressed = Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Joystick1Button1);
         //holdPressed = Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.Joystick1Button5);            //Trying to hold onto something?        //R1    
-        holdPressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Joystick1Button5);            //oben rechts R1
+        //holdPressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Joystick1Button5);            //oben rechts R1
+        holdPressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Joystick1Button3);            //Y
+
 
         //Zustand updaten
         currentState.onUpdate(this);                //beim aktuellen State Update() aufrufen
@@ -274,6 +305,11 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         return !IsGrounded() && rb.linearVelocity.y < 0f;
     }
 
+    public bool HasLanded()
+    {
+        return IsGrounded() && rb.linearVelocity.y >= 0f;
+    }
+
     public bool JumpAllowed()                                   //steht bei Idle, Walk und Run drinne!  --> damit man gleichzeitig Logik bearbeiten kann --> weniger copy paste
     {
         return jumpPressed
@@ -390,6 +426,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public Vector3 GetHorizontalVelocity()
     {
         return new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+    }
+    public float GetVerticalVelocity()
+    {
+        return rb.linearVelocity.y;
     }
 
     public float GetHorizontalSpeed()
