@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class DebuggingManager : MonoBehaviour
 {
     private GameObject[] debugElements;
-    private bool isMenuActive = true;
+    private bool isMenuActive = false;
     [SerializeField] private SceneField[] scenes;
     [SerializeField] private SceneField persistentScene;
     private bool changingScene = false;
