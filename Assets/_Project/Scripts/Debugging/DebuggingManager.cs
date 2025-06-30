@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,12 +10,18 @@ public class DebuggingManager : MonoBehaviour
     private bool isMenuActive = false;
     [SerializeField] private SceneField[] scenes;
     [SerializeField] private SceneField persistentScene;
-    private bool changingScene = false;
+    private AIStateManager doll;
+    private PlayerStateManager player;
 
     void Awake()
     {
         debugElements = GameObject.FindGameObjectsWithTag("Debugging");
         toggleMenu(false);
+    }
+
+    void Start()
+    {
+        player = FindAnyObjectByType<PlayerStateManager>();
     }
 
     void Update()
@@ -36,7 +43,8 @@ public class DebuggingManager : MonoBehaviour
 
     public void toggleDoll(bool isDollEnabled)
     {
-        AIStateManager doll = FindAnyObjectByType<AIStateManager>();
+        doll = FindAnyObjectByType<AIStateManager>();
+        if (doll == null) Debug.Log("No Doll");
         if (!isDollEnabled)
         {
             doll.enabled = false;
@@ -49,14 +57,8 @@ public class DebuggingManager : MonoBehaviour
 
     public void LevelSelector(int dropdownIndex)
     {
-        if (!changingScene)
-        {
-            SceneFadeManager.instance.StartFadeOut();
-            SceneManager.LoadSceneAsync(scenes[dropdownIndex], LoadSceneMode.Additive);
-            SceneFadeManager.instance.StartFadeIn();
-            SceneManager.UnloadSceneAsync(GetNonPersistentScene(persistentScene));
-            changingScene = true;
-        }
+
+        StartCoroutine(LoadSceneRoutine(dropdownIndex));
     }
 
     private Scene GetNonPersistentScene(SceneField persistentSceneName)
@@ -70,5 +72,40 @@ public class DebuggingManager : MonoBehaviour
             }
         }
         return default;
+    }
+
+    private IEnumerator LoadSceneRoutine(int dropdownIndex)
+{
+    SceneFadeManager.instance.StartFadeOut();
+    yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingOut);
+
+    var loadOp = SceneManager.LoadSceneAsync(scenes[dropdownIndex], LoadSceneMode.Additive);
+    yield return loadOp;
+
+    Scene newScene = SceneManager.GetSceneByName(scenes[dropdownIndex].SceneName);
+    if (newScene.IsValid())
+        SceneManager.SetActiveScene(newScene);
+
+    var oldScene = GetNonPersistentScene(persistentScene);
+    if (oldScene.IsValid() && oldScene.name != newScene.name)
+    {
+        var unloadOp = SceneManager.UnloadSceneAsync(oldScene);
+        yield return unloadOp;
+    }
+
+    SceneFadeManager.instance.StartFadeIn();
+}
+
+
+    public void ToggleInvincibility(bool on)
+    {
+        if (!on)
+        {
+            player.isInvincible = false;
+        }
+        else
+        {
+            player.isInvincible = true;
+        }
     }
 }
