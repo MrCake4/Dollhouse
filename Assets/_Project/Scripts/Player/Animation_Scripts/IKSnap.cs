@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class IKSnap : MonoBehaviour
@@ -56,6 +57,24 @@ public class IKSnap : MonoBehaviour
         else
         {
             rightHandIK = false;
+        }
+    }
+
+    void OnAnimatorIK(int layerIndex)
+    {
+        if (useIK)
+        {
+            if (leftHandIK)
+            {
+                anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1f);
+                anim.SetIKPosition(AvatarIKGoal.LeftHand, leftHandPos);
+            }
+
+            if (rightHandIK)
+            {
+                anim.SetIKPositionWeight(AvatarIKGoal.RightFoot, 1f);
+                anim.SetIKPosition(AvatarIKGoal.RightHand, leftHandPos);
+            }
         }
     }
 }
