@@ -20,11 +20,19 @@ public class RunState : BasePlayerState
 
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
-        if (player.JumpAllowed())                           //SWITCH JUMP
-        {   
-            player.jumpPressed = false;
-            player.SwitchState(player.jumpState);
-            return;
+        if (player.JumpAllowed())
+        {
+            if (player.CanPullUp())
+            {
+                // handled intern den State-Switch
+                return;
+            }
+            else
+            {
+                player.jumpPressed = false;
+                player.SwitchState(player.jumpState);
+                return;
+            }
         }
 
         if (player.IsFalling())

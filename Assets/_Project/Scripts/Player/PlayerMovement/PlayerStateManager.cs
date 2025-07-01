@@ -35,6 +35,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     public float airControlMultiplier = 0.3f;              //um mitten im Jump noch Richtung steuern zu können
 
+    [SerializeField] public float ledgeOffset = 0.6f;
+
     //crouch
     [HideInInspector] public CapsuleCollider capsuleCollider;
     [HideInInspector] public float originalHeight;
@@ -301,34 +303,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         box.enabled = false;
 
         foreach (Collider col in hits)
-        {
-            /*if (col.CompareTag("lowLedge"))
-            {
-                Vector3 closestPoint = col.ClosestPoint(transform.position);
-                pullUpState.SetLedgePosition(closestPoint);
-                pullUpState.SetPullUpType(PullUpState.PullUpType.Low);
-                SwitchState(pullUpState);
-                return;
-            }*/
-
-            if (col.CompareTag("mediumLedge"))
-            {
-                Vector3 closestPoint = col.ClosestPoint(transform.position);
-                pullUpState.SetLedgePosition(closestPoint);
-                pullUpState.SetPullUpType(PullUpState.PullUpType.Medium);
-                SwitchState(pullUpState);
-                return;
-            }
-
-            if (col.CompareTag("highLedge"))
-            {
-                Vector3 closestPoint = col.ClosestPoint(transform.position);
-                pullUpState.SetLedgePosition(closestPoint);
-                pullUpState.SetPullUpType(PullUpState.PullUpType.High);
-                SwitchState(pullUpState);
-                return;
-            }
-
+        { 
             if (col.CompareTag("HangOnto"))
             {
                 Vector3 closestPoint = col.ClosestPoint(transform.position);
@@ -336,7 +311,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
                 SwitchState(hangState);
                 return;
             }
-        }
+        } 
 
         // Nichts gefunden
     }
@@ -365,6 +340,52 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
             }
         }
     }
+
+
+    public bool CanPullUp()
+    {
+        //schaue ich richtig auf die Ledge (max. 50 Grad Abweichung)
+        //ist es im BoxCollider
+
+        //wenn true dann PullUpstate.SetLedgePosition(Hit.Collider.transform.position)
+
+        if (!jumpPressed) return false;
+
+        BoxCollider box = GetComponent<BoxCollider>();
+        if (box == null) return false;
+
+        box.enabled = true;
+
+        Collider[] hits = Physics.OverlapBox(
+            box.bounds.center,
+            box.bounds.extents,
+            transform.rotation,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        box.enabled = false;
+
+        foreach (Collider col in hits)
+        {
+            if (col.CompareTag("mediumLedge"))
+            {
+                // Richtung prüfen
+                Vector3 toLedge = col.transform.position - transform.position;
+                float angle = Vector3.Angle(transform.forward, toLedge);
+                if (angle > 50f) return false;
+
+                pullUpState.SetLedgePos(col.transform.position);
+                SwitchState(pullUpState);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    
 
     // ============================ FOR ANIMATION ONLY ============================ 
 
