@@ -3980,8 +3980,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 369.70578, y: 49.39524, z: 1600}
-  m_Center: {x: -615.1445, y: -8.545714, z: 0}
+  m_Size: {x: 369.70578, y: 49.39524, z: 348.6125}
+  m_Center: {x: -615.14264, y: -8.545714, z: 470.7754}
 --- !u!65 &872707307
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4001,8 +4001,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1600.0002, y: 50.39441, z: 1097.6259}
-  m_Center: {x: 0, y: -8.046142, z: -251.18536}
+  m_Size: {x: 1600.0002, y: 49.39524, z: 1097.6259}
+  m_Center: {x: 0, y: -8.545714, z: -251.18536}
 --- !u!65 &872707308
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4022,8 +4022,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 906.1079, y: 42.94579, z: 1600}
-  m_Center: {x: 346.945, y: -11.77041, z: 0}
+  m_Size: {x: 906.1079, y: 42.945786, z: 386.66104}
+  m_Center: {x: 346.945, y: -11.77041, z: 458.26596}
 --- !u!1 &901214259
 GameObject:
   m_ObjectHideFlags: 0
@@ -10207,6 +10207,10 @@ PrefabInstance:
     - target: {fileID: 4388978588952829790, guid: abc4abb2a7a5a9740a0bde2738578f64, type: 3}
       propertyPath: m_Name
       value: Chair
+      objectReference: {fileID: 0}
+    - target: {fileID: 4426802930128585293, guid: abc4abb2a7a5a9740a0bde2738578f64, type: 3}
+      propertyPath: m_Mass
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7749941053279712426, guid: abc4abb2a7a5a9740a0bde2738578f64, type: 3}
       propertyPath: m_LocalPosition.x

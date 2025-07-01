@@ -58,7 +58,7 @@ public class JumpState : BasePlayerState
     }
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
-        if ( player.GetVerticalVelocity() <= 0.1 && player.IsGrounded())                                            // Wenn der Jump physisch nicht gezündet hat (z. B. wegen Blockade)
+        if ( player.GetVerticalVelocity() <= 0.1 && player.groundCheck.isGrounded)                                            // Wenn der Jump physisch nicht gezündet hat (z. B. wegen Blockade)
         {
             Debug.Log("somehow I think I am grounded - lol");
             float speed = player.GetHorizontalSpeed();
