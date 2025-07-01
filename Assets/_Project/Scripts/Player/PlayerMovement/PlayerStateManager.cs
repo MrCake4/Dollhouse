@@ -20,6 +20,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public DeadState deadState = new DeadState();               //für den Fall, dass der Spieler stirbt
 
 
+    //CHECK - COLLIDERS
+    [SerializeField] public GroundCheck groundCheck;
+
+
     // important variables
     //Eingaben - Bewegung + Ausrichtung
     [HideInInspector] public Vector2 moveInput;             // WASD als Vector2
@@ -250,70 +254,23 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         );
 
         return !blocked;
-        /*Vector3 rayOrigin = transform.position + Vector3.up * (capsuleCollider.height / 2f);
-        float rayLength = requiredHeight - (capsuleCollider.height / 2f);
-
-        Debug.DrawRay(rayOrigin, Vector3.up * rayLength, Color.red, 0.2f); // Zum Debuggen
-
-        return !Physics.Raycast(
-            rayOrigin,
-            Vector3.up,
-            rayLength,
-            ~0,                                 // = Alle Layer
-            QueryTriggerInteraction.Ignore      // = Trigger-Collider werden ignoriert
-        );*/
     }
-
-    public bool IsGrounded()                                                    //für Fall & Jump
-    {
-        /*float rayLength = 0.05f;
-        Vector3 origin = transform.position + Vector3.up * 0.01f;
-
-        Debug.DrawRay(origin, Vector3.down * rayLength, Color.green, 0.1f);     // Debug
-
-        return Physics.Raycast(
-            origin,
-            Vector3.down,
-            rayLength,
-            ~0,
-            QueryTriggerInteraction.Ignore                                      //wieder ignorieren, wenn Triggerbox 
-        ); */
-        Vector3 boxCenter = transform.position + Vector3.up * 0.1f;
-        Vector3 boxHalfExtents = new Vector3(0.3f, 0.05f, 0.3f); // adjust to fit your player's footprint
-        float castDistance = 0.15f;
-
-        bool grounded = Physics.BoxCast(
-            boxCenter,
-            boxHalfExtents,
-            Vector3.down,
-            out RaycastHit hit,
-            Quaternion.identity,
-            castDistance,
-            ~0,
-            QueryTriggerInteraction.Ignore
-        );
-
-        Debug.DrawRay(boxCenter, Vector3.down * castDistance, grounded ? Color.green : Color.red);
-        //if (grounded == true) { Debug.Log("I am Grounded!!!!"); };
-        return grounded;
-    }
-
 
     // my BOOLEANS
     public bool IsFalling()
     {
-        return !IsGrounded() && rb.linearVelocity.y < 0f;
+        return !groundCheck.isGrounded && rb.linearVelocity.y <= 0f;
     }
 
     public bool HasLanded()
     {
-        return IsGrounded() && rb.linearVelocity.y >= 0f;
+        return groundCheck.isGrounded && rb.linearVelocity.y >= 0f;
     }
 
     public bool JumpAllowed()                                   //steht bei Idle, Walk und Run drinne!  --> damit man gleichzeitig Logik bearbeiten kann --> weniger copy paste
     {
         return jumpPressed
-        && IsGrounded()
+        && groundCheck.isGrounded
         && !isCrouching
         && HasHeadroom(1.2f);            //1.2f damit der ray länger ist als der Ray der schaut, ob man grounded ist --> dann kann man eigenntlich immer den FallState erreichen
     }
@@ -412,13 +369,6 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     // ============================ FOR ANIMATION ONLY ============================ 
 
     // Platzhalter für spätere Animationen
-    public void SetPushPullAnimationSpeed(float speed)
-    {
-        // Beispiel: Animator.SetFloat("PushSpeed", speed);
-        // Noch nicht implementiert
-    }
-
-
 
 
 
