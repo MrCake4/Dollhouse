@@ -19,6 +19,9 @@ public class Generator : HitableObject
     [SerializeField] AudioClip generatorSound;
     AudioSource generatorAudioSource;
 
+    [Header("Debug")]
+    [SerializeField] bool powerObjects = false; // for debugging purposes, to turn on all powerable objects 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -107,13 +110,22 @@ public class Generator : HitableObject
     // update the power of the generator
     void updatePower()
     {
-        if (currentPower > 0 && loosesPowerOverTime && charged)
+        if (powerObjects)
         {
-            if (SoundEffectsManager.instance != null && generatorSound != null && !playingSound)
+            charged = true; // set charged to true for debugging purposes
+            activatePowerableObjects(); // for debugging purposes, turn on all powerable objects
+            charged = false; // reset charged to false after powering objects
+            powerObjects = false; // reset the flag
+        }
+
+        if (SoundEffectsManager.instance != null && generatorSound != null && !playingSound && charged)
             {
                 generatorAudioSource = SoundEffectsManager.instance.PlayLoopedSoundEffect(generatorSound, transform, 0.5f);
                 playingSound = true; // prevent multiple sound instances
             }
+
+        if (currentPower > 0 && loosesPowerOverTime && charged)
+        {
             currentPower -= lossOverTime * Time.deltaTime; // lose power over time
         }
         else if (currentPower <= 0 && charged)
@@ -125,9 +137,9 @@ public class Generator : HitableObject
             }
 
             foreach (Interactable interactable in powerableObjects)
-                {
-                    dePowerObject(interactable); // turn off all powered objects
-                }
+            {
+                dePowerObject(interactable); // turn off all powered objects
+            }
             charged = false; // if power is depleted, set charged to false
         }
     }
