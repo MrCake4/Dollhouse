@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0a3a7f73eb89c24cbe4721eb62387b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundCheck: {fileID: 0}
+  groundCheck: {fileID: 906893773296162648}
   moveInput: {x: 0, y: 0}
   moveDir: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
@@ -184,7 +184,7 @@ MonoBehaviour:
   crouchSpeed: 2
   verticalPullUp: 0.8
   horizontalPullUp: -0.3
-  animator: {fileID: 0}
+  animator: {fileID: 7860713031711705011}
   lowCrouchPoint: {fileID: 0}
   isInvincible: 0
 --- !u!65 &3534552629127739091
@@ -287,6 +287,7 @@ MonoBehaviour:
   rightHandIK: 1
   leftHandPos: {x: 0, y: 0, z: 0}
   rightHandPos: {x: 0, y: 0, z: 0}
+  leftHandRot: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &7990743528947643684
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,7 +686,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 9e7718e3bd96a7349912d3a338f487ca, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

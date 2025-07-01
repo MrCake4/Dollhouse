@@ -12,6 +12,8 @@ public class IKSnap : MonoBehaviour
     public Vector3 leftHandPos;
     public Vector3 rightHandPos;
 
+    public Quaternion leftHandRot;
+
 
     private Animator anim;
 
@@ -41,6 +43,7 @@ public class IKSnap : MonoBehaviour
         {
             leftHandIK = true;
             leftHandPos = LHit.point;
+            leftHandRot = Quaternion.FromToRotation(Vector3.up, transform.forward);
         }
         else
         {
