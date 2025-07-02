@@ -9902,6 +9902,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1333812489}
   m_SourcePrefab: {fileID: 100100000, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+--- !u!4 &302318293 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: 72896ae3f0eccb64ca638b74db49c82e, type: 3}
+  m_PrefabInstance: {fileID: 1273020884}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &302563440
 GameObject:
   m_ObjectHideFlags: 0
@@ -18352,6 +18357,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TrapDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 3275141750451317437, guid: c387b6e1c259fed4990f93bc431d2166, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 83e0a38ec72c4e74b8247358a68b7c0b, type: 2}
     - target: {fileID: 6528130735139880686, guid: c387b6e1c259fed4990f93bc431d2166, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.221
@@ -34046,10 +34055,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 400000, guid: 72896ae3f0eccb64ca638b74db49c82e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1476056830}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72896ae3f0eccb64ca638b74db49c82e, type: 3}
 --- !u!1001 &1273096001
@@ -40239,6 +40245,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1360709344}
+  - {fileID: 302318293}
   m_Father: {fileID: 2138832356}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1337134062 stripped
