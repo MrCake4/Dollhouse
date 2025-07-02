@@ -20,6 +20,9 @@ public class PullUpState : BasePlayerState
     {
         CalculateLedgePos(player);
 
+
+        Debug.Log("I AM IN PULLUP STATE");
+
         // Zielposition auf der oberen Kante, leicht vorgezogen
         finalStandPos = new Vector3(
             ledgePos.x - player.ledgeOffset, 

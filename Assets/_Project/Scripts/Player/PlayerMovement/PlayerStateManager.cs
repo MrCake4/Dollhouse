@@ -266,7 +266,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     public bool HasLanded()
     {
-        return groundCheck.isGrounded && rb.linearVelocity.y >= 0f;
+        return groundCheck.isGrounded && rb.linearVelocity.y <= 0.01f;
     }
 
     public bool JumpAllowed()                                   //steht bei Idle, Walk und Run drinne!  --> damit man gleichzeitig Logik bearbeiten kann --> weniger copy paste
@@ -349,6 +349,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         //wenn true dann PullUpstate.SetLedgePosition(Hit.Collider.transform.position)
 
+        Debug.Log("I AM F***** TRYING");
+
         if (!jumpPressed) return false;
 
         BoxCollider box = GetComponent<BoxCollider>();
@@ -370,10 +372,17 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         {
             if (col.CompareTag("mediumLedge"))
             {
+
+                Debug.Log("FOUND A MEDIUM LEDGE");
+
                 // Richtung prüfen
                 Vector3 toLedge = col.transform.position - transform.position;
                 float angle = Vector3.Angle(transform.forward, toLedge);
-                if (angle > 50f) return false;
+                /*if (angle > 50f)
+                {
+                    Debug.Log("ANGLE IS SHIT");
+                    return false;
+                }*/
 
                 pullUpState.SetLedgePos(col.transform.position);
                 SwitchState(pullUpState);
