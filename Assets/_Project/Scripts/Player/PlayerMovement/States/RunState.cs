@@ -26,10 +26,12 @@ public class RunState : BasePlayerState
             player.SwitchState(player.jumpState);
             return;
         }
-        
-        if(player.IsFalling()){                             //SWICTH Fall
+
+        if (player.IsFalling())
+        {                             //SWICTH Fall
             player.SwitchState(player.fallState);
             //Debug.Log("Switcherooo");
+            return;
         }
 
 

@@ -20,6 +20,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public DeadState deadState = new DeadState();               //für den Fall, dass der Spieler stirbt
 
 
+    //CHECK - COLLIDERS
+    [SerializeField] public GroundCheck groundCheck;
+
+
     // important variables
     //Eingaben - Bewegung + Ausrichtung
     [HideInInspector] public Vector2 moveInput;             // WASD als Vector2
@@ -43,6 +47,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public bool interactPressed;
     //[HideInInspector] public bool pullUpPressed;
     [HideInInspector] public bool holdPressed;      //Festhalten --> für PullUp, Hang, climb, etc
+    [HideInInspector] public bool pickUpPressed;
     [HideInInspector] public bool is2DMode = false;         // 2.5D MOVEMENT
 
 
@@ -61,8 +66,22 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public float verticalPullUp = 0.8f;
     public float horizontalPullUp = -0.3f;
 
+
+
     //________________ANIMATION_________________
     public Animator animator;
+
+    // ______________LEVEL REFERENCES _________________________
+    [Header("Level References")]
+    public Transform lowCrouchPoint;        // kann im Inspector gesetzt werden
+
+    private float crouchBlend;              // interner Blendwert
+    public void SetCrouchBlend(float value)
+    {
+        crouchBlend = Mathf.Clamp01(value);
+    }
+    public float GetCrouchBlend() => crouchBlend;
+
 
 
 
@@ -100,8 +119,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     // Update is called once per frame
     void Update()
     {
-        float inputX = Input.GetAxis("Horizontal"); // A/D oder Left Stick X
-        float inputY = Input.GetAxis("Vertical");   // W/S oder Left Stick Y
+        //float inputX = Input.GetAxis("Horizontal"); // A/D oder Left Stick X
+        //float inputY = Input.GetAxis("Vertical");   // W/S oder Left Stick Y
 
         // Eingaben zentral erfassen
         Vector2 keyboardInput = Vector2.zero;       //für Keyboard-Eingabe
@@ -132,16 +151,32 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
             moveDir = new Vector3(moveDir.x, 0, 0); // kein Vor/zurück, nur links/rechts
         }
 
+
+        /*Hinten links = ducken
+        Hinten rechts = rennen
+        B = Objekt aufheben/ fallen lassen          --> Input.GetKey(KeyCode.Joystick1Button1)
+        X = Interact
+
+
+            Joystick1Button3 = Y
+        */
+
+
         // andere Eingaben  --> auskommentierte sind die für PS5 Controller
         //jumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1);     // X!!!
         jumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0);     // jetzt A
         //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button10);          //Rennen mit reindrücken von L
-        isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button8);         //reindrücken von L
+        //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button8);         //reindrücken von L
+        isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button5);         //R1
+
         isCrouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Joystick1Button4);      //L1        //gilt für PS5 & X-Box
         //interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button0);        //Viereck
-        interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button2);
+        interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button2);        //X
+        pickUpPressed = Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Joystick1Button1);
         //holdPressed = Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.Joystick1Button5);            //Trying to hold onto something?        //R1    
-        holdPressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Joystick1Button5);            //oben rechts R1
+        //holdPressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Joystick1Button5);            //oben rechts R1
+        holdPressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Joystick1Button3);            //Y
+
 
         //Zustand updaten
         currentState.onUpdate(this);                //beim aktuellen State Update() aufrufen
@@ -219,65 +254,23 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         );
 
         return !blocked;
-        /*Vector3 rayOrigin = transform.position + Vector3.up * (capsuleCollider.height / 2f);
-        float rayLength = requiredHeight - (capsuleCollider.height / 2f);
-
-        Debug.DrawRay(rayOrigin, Vector3.up * rayLength, Color.red, 0.2f); // Zum Debuggen
-
-        return !Physics.Raycast(
-            rayOrigin,
-            Vector3.up,
-            rayLength,
-            ~0,                                 // = Alle Layer
-            QueryTriggerInteraction.Ignore      // = Trigger-Collider werden ignoriert
-        );*/
     }
-
-    public bool IsGrounded()                                                    //für Fall & Jump
-    {
-        /*float rayLength = 0.05f;
-        Vector3 origin = transform.position + Vector3.up * 0.01f;
-
-        Debug.DrawRay(origin, Vector3.down * rayLength, Color.green, 0.1f);     // Debug
-
-        return Physics.Raycast(
-            origin,
-            Vector3.down,
-            rayLength,
-            ~0,
-            QueryTriggerInteraction.Ignore                                      //wieder ignorieren, wenn Triggerbox 
-        ); */
-        Vector3 boxCenter = transform.position + Vector3.up * 0.1f;
-        Vector3 boxHalfExtents = new Vector3(0.3f, 0.05f, 0.3f); // adjust to fit your player's footprint
-        float castDistance = 0.15f;
-
-        bool grounded = Physics.BoxCast(
-            boxCenter,
-            boxHalfExtents,
-            Vector3.down,
-            out RaycastHit hit,
-            Quaternion.identity,
-            castDistance,
-            ~0,
-            QueryTriggerInteraction.Ignore
-        );
-
-        Debug.DrawRay(boxCenter, Vector3.down * castDistance, grounded ? Color.green : Color.red);
-        //if (grounded == true) { Debug.Log("I am Grounded!!!!"); };
-        return grounded;
-    }
-
 
     // my BOOLEANS
     public bool IsFalling()
     {
-        return !IsGrounded() && rb.linearVelocity.y < 0f;
+        return !groundCheck.isGrounded && rb.linearVelocity.y <= 0f;
+    }
+
+    public bool HasLanded()
+    {
+        return groundCheck.isGrounded && rb.linearVelocity.y >= 0f;
     }
 
     public bool JumpAllowed()                                   //steht bei Idle, Walk und Run drinne!  --> damit man gleichzeitig Logik bearbeiten kann --> weniger copy paste
     {
         return jumpPressed
-        && IsGrounded()
+        && groundCheck.isGrounded
         && !isCrouching
         && HasHeadroom(1.2f);            //1.2f damit der ray länger ist als der Ray der schaut, ob man grounded ist --> dann kann man eigenntlich immer den FallState erreichen
     }
@@ -376,13 +369,6 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     // ============================ FOR ANIMATION ONLY ============================ 
 
     // Platzhalter für spätere Animationen
-    public void SetPushPullAnimationSpeed(float speed)
-    {
-        // Beispiel: Animator.SetFloat("PushSpeed", speed);
-        // Noch nicht implementiert
-    }
-
-
 
 
 
@@ -390,6 +376,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public Vector3 GetHorizontalVelocity()
     {
         return new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+    }
+    public float GetVerticalVelocity()
+    {
+        return rb.linearVelocity.y;
     }
 
     public float GetHorizontalSpeed()

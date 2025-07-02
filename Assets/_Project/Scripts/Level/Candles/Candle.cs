@@ -21,9 +21,24 @@ public class Candle : Interactable
     // Password bindings
     KeypadButton keypadButton;
     [SerializeField]bool isNormalCandle = true; // If false, the candle will not trigger the keypad button
+    [SerializeField] GameObject numberQuad; // The light object that will be enabled when the candle is lit
+    MeshRenderer meshRendererNumberQuad;
 
     [Header("Sound Effects")]
     [SerializeField] AudioClip candleLightEffect; // Sound effect when the candle is lit
+
+    void Awake()
+    {
+        if (isNormalCandle && numberQuad != null)
+        {
+            // make mesh of numberQuad invisible at start, dont use setactive(false) because it will break the number quad
+            meshRendererNumberQuad = numberQuad.GetComponent<MeshRenderer>();
+            if (meshRendererNumberQuad != null)
+            {
+                meshRendererNumberQuad.enabled = false; // Disable the mesh renderer to make it invisible
+            }
+        }
+    }
 
     void Start()
     {
@@ -49,6 +64,7 @@ public class Candle : Interactable
             !isLit)
         {
             lightCandle();
+            if (meshRendererNumberQuad != null) meshRendererNumberQuad.enabled = true; // Enable the number quad when the candle is lit
             // Play sound effect if it is a normal candle
             if (isNormalCandle && candleLightEffect != null) SoundEffectsManager.instance.PlaySoundEffect(candleLightEffect, transform, 1f);
 

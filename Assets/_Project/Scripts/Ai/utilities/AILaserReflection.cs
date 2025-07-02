@@ -33,6 +33,7 @@ public class LaserReflection : MonoBehaviour
     {
         // Cast a ray from the laser
         if(aiRoomScan.IsLaserEnabled && laserLine.positionCount == 2){
+            Debug.Log("Laser enabled, starting reflection");
             ReflectLaser(0);
         }
         else if(!aiRoomScan.IsLaserEnabled && laserLine.positionCount > 2){
@@ -46,11 +47,13 @@ public class LaserReflection : MonoBehaviour
     {
         if (i + 1 >= laserLine.positionCount || i >= maxLines) return; // Prevent out of bounds
 
+        Debug.Log("Reflecting laser at index " + i);
+
         Vector3 origin = laserLine.GetPosition(i);
         Vector3 direction = laserLine.GetPosition(i + 1) - origin;
 
         RaycastHit hit;
-        Debug.DrawRay(origin, direction.normalized, Color.red, 1f);
+        Debug.DrawRay(origin, direction, Color.green, 1f);
 
         if (Physics.Raycast(origin, direction.normalized, out hit))                                                    
         {
@@ -67,8 +70,8 @@ public class LaserReflection : MonoBehaviour
 
                 // Add the hit point to the LineRenderer
                 RaycastHit hit2;
-                 Vector3 origin2 = laserLine.GetPosition(i+1);
-                if(Physics.Raycast(origin2, reflection, out hit2))                                              
+                Vector3 origin2 = laserLine.GetPosition(i + 1);
+                if (Physics.Raycast(origin2, reflection, out hit2))
                 {
                     if (hit2.collider.CompareTag("Reflector")){
                         laserLine.positionCount++;
