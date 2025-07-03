@@ -34,9 +34,9 @@ public class GroundCheck : MonoBehaviour
         return true;
     }
 
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(transform.position, GetComponent<BoxCollider>().size);
-    }
+    }*/
 }

@@ -41,4 +41,13 @@ public class PlayerAnimation : MonoBehaviour
 
         animator.SetFloat(groundDistanceParam, normalized, 0.1f, Time.deltaTime);
     }
+
+    public void EndPullUp()
+    {
+        if (player.getCurrentState is PullUpState pullUp)
+        {
+            pullUp.pullUpFinished = true;
+        }
+    }
+
 }
