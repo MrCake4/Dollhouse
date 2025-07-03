@@ -86,7 +86,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5959111915692159886}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.9995293, z: 0, w: 0.030678263}
+  m_LocalRotation: {x: -0, y: 0.99952924, z: -0, w: 0.030681653}
   m_LocalPosition: {x: 4.47, y: 0, z: -4.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -145,7 +145,7 @@ CapsuleCollider:
   m_Radius: 0.38624007
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0.99, z: 0.028671682}
+  m_Center: {x: 0, y: 0.98, z: 0.028671682}
 --- !u!114 &37969996182406248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,7 +166,6 @@ MonoBehaviour:
   jumpForce: 1
   jumpHeight: 1.5
   airControlMultiplier: 1
-  ledgeOffset: 0.6
   capsuleCollider: {fileID: 0}
   originalHeight: 0
   originalCenter: {x: 0, y: 0, z: 0}
@@ -181,7 +180,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   walkSpeed: 3
-  maxSpeed: 6
+  maxSpeed: 8
   crouchSpeed: 2
   verticalPullUp: 0.8
   horizontalPullUp: -0.3
@@ -207,8 +206,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 1, y: 1.9084904, z: 0.6876712}
-  m_Center: {x: -0.0000000013553643, y: 1.2064999, z: 0.5103673}
+  m_Size: {x: 1, y: 1.623944, z: 0.6876712}
+  m_Center: {x: 0, y: 1.0642267, z: 0.5103673}
 --- !u!114 &2056382266145577787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,6 +282,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e3a647406055743bb818d8fbda4e06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useIK: 1
+  leftHandIK: 1
+  rightHandIK: 1
+  leftHandPos: {x: 0, y: 0, z: 0}
+  rightHandPos: {x: 0, y: 0, z: 0}
+  leftHandRot: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &7990743528947643684
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,44 +759,6 @@ MonoBehaviour:
   - {fileID: 453293240857961208}
   - {fileID: 6068171275525110728}
   - {fileID: 6362707979596007867}
---- !u!95 &2337510998726432827
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3644138483066235601}
-  m_Enabled: 0
-  m_Avatar: {fileID: 9000000, guid: 9e7718e3bd96a7349912d3a338f487ca, type: 3}
-  m_Controller: {fileID: 9100000, guid: e00e22562cc8fc843ba2dba7f5748392, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2949595082118641064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3644138483066235601}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87542a41e778e3d4e901c8f068dacda2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speedParam: Speed
-  groundDistanceParam: GroundDistance
-  maxGroundDistance: 2
-  rayOriginOverride: {fileID: 0}
 --- !u!4 &3900904657325781500 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 608321761475470972, guid: 9e7718e3bd96a7349912d3a338f487ca, type: 3}
