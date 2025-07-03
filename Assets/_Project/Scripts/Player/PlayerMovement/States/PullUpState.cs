@@ -37,8 +37,8 @@ public class PullUpState : BasePlayerState
             ledgePos.z
         );
 
-        player.animator.applyRootMotion = true;
-        player.rb.isKinematic = true;
+        //player.animator.applyRootMotion = true;
+        //player.rb.isKinematic = true;
 
         player.animator.SetTrigger("DoPullUp");
     }
@@ -50,8 +50,8 @@ public class PullUpState : BasePlayerState
         // am Ende der Animation genau auf die finale Position setzen
         player.transform.position = finalStandPos;
 
-        player.animator.applyRootMotion = false;
-        player.rb.isKinematic = false;
+        //player.animator.applyRootMotion = false;
+        //player.rb.isKinematic = false;
     }
 
     public override void onUpdate(PlayerStateManager player)
