@@ -1,54 +1,66 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PullUpState : BasePlayerState
 {
-    private float pullSpeed = 3f;
-    private Vector3 ledgePosition;
-    private Vector3 finalStandPosition;
+    private Vector3 ledgePos;
+    private Vector3 finalStandPos;
 
-    public void SetLedgePosition(Vector3 ledgePos)
+    public void SetLedgePos(Vector3 pos)
     {
-        ledgePosition = ledgePos;
+        ledgePos = pos;
+    }
+
+    private void CalculateLedgePos(PlayerStateManager player)
+    {
+        ledgePos = new Vector3(ledgePos.x, ledgePos.y, player.transform.position.z);
     }
 
     public override void onEnter(PlayerStateManager player)
     {
-        player.rb.useGravity = false;
-        player.rb.linearVelocity = Vector3.zero;
+        CalculateLedgePos(player);
 
-        // Offset dynamisch zur aktuellen Blickrichtung
-        float verticalOffset = player.verticalPullUp;
-        float backOffset = player.horizontalPullUp;
 
-        finalStandPosition = ledgePosition + Vector3.up * verticalOffset - player.transform.forward * backOffset;
+        Debug.Log("I AM IN PULLUP STATE");
 
-        Debug.Log("PullUp → Zielposition dynamisch gesetzt: " + finalStandPosition.ToString("F2"));
-    }
-
-    public override void onFixedUpdate(PlayerStateManager player)
-    {
-        Vector3 newPos = Vector3.MoveTowards(
-            player.transform.position,
-            finalStandPosition,
-            pullSpeed * Time.fixedDeltaTime
+        // Zielposition auf der oberen Kante, leicht vorgezogen
+        finalStandPos = new Vector3(
+            ledgePos.x - player.ledgeOffset, 
+            ledgePos.y,
+            ledgePos.z
         );
 
-        player.rb.MovePosition(newPos);
+        // Spieler sofort an die untere Griffposition bringen
+        player.transform.position = new Vector3(
+            ledgePos.x,
+            ledgePos.y - 1.0f, // etwa 1m unterhalb
+            ledgePos.z
+        );
 
-        if (Vector3.Distance(player.transform.position, finalStandPosition) < 0.05f)
-        {
-            player.rb.useGravity = true;
-            player.SwitchState(player.idleState);
-        }
-    }
+        player.animator.applyRootMotion = true;
+        player.rb.isKinematic = true;
 
-    public override void onUpdate(PlayerStateManager player)
-    {
-        Debug.DrawLine(player.transform.position, finalStandPosition, Color.green);
+        player.animator.SetTrigger("DoPullUp");
     }
 
     public override void onExit(PlayerStateManager player)
     {
-        player.rb.useGravity = true;
+        player.animator.ResetTrigger("DoPullUp");
+        
+        // am Ende der Animation genau auf die finale Position setzen
+        player.transform.position = finalStandPos;
+
+        player.animator.applyRootMotion = false;
+        player.rb.isKinematic = false;
+    }
+
+    public override void onUpdate(PlayerStateManager player)
+    {
+
+    }
+
+    public override void onFixedUpdate(PlayerStateManager player)
+    {
+
     }
 }

@@ -6,34 +6,48 @@ public class WalkState : BasePlayerState
     public override void onEnter(PlayerStateManager player)
     {
         Debug.Log("walking");
+        //player.animator.SetBool("IsWalking", true);
+        //player.animator.SetBool("IsMoving", true);
+        player.animator.SetTrigger("ReturnToMoving");
     }
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
         // switch State
         //if(!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D)) { player.SwitchState(player.idleState);}          // + GroundCheck muss auch true sein! (um still stehen von "Fall" zu unterscheiden)
 
-        if(player.IsFalling()){                        //Damit man wirklich von jedem State aus auch nach Falling wechseln könnte
+        if (player.IsFalling())
+        {                        //Damit man wirklich von jedem State aus auch nach Falling wechseln könnte
             player.SwitchState(player.fallState);
+            return;
             //Debug.Log("Switcherooo");
         }
 
-        if (player.JumpAllowed())                               //SWITCH JUMP
+        if (player.JumpAllowed())
         {
-            player.jumpPressed = false;
-            player.SwitchState(player.jumpState);
-            return;
-        }
-        
-        if (player.holdPressed)                             //SWITCH PULLUP or HANG
-        {
-            player.TryGrab();
-            return;
+            if (player.CanPullUp())
+            {
+                // handled intern den State-Switch
+                return;
+            }
+            else
+            {
+                player.jumpPressed = false;
+                player.SwitchState(player.jumpState);
+                return;
+            }
         }
 
-        if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
+        
+
+        /*if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
         {
             player.pushState.SetTarget(pushTarget);
             player.SwitchState(player.pushState);
+            return;
+        }*/
+        if (player.holdPressed)                                             //SWITCH PUSH/PULL
+        {
+            player.TryGrabObject(); // greift auf nahes pushableObject zu
             return;
         }
 
@@ -64,6 +78,8 @@ public class WalkState : BasePlayerState
     }
     public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
     {
-        
+        //player.animator.SetBool("IsWalking", false);
+        //player.animator.SetBool("IsMoving", false);
+        player.animator.ResetTrigger("ReturnToMoving");
     }
 }

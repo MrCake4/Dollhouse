@@ -25,7 +25,7 @@ public class AIPatrolState : AIBaseState
         if (ai.currentTargetWindow == null)
         {
             Debug.Log("Current Target is null");
-           return; 
+            return; 
         }
 
         if (ai.windowsPatrolled >= ai.getCheckWindowPerPatrol)
@@ -33,7 +33,7 @@ public class AIPatrolState : AIBaseState
             // exits patrol, moves to patrol spawn and goes into idle again
             ai.transform.position = Vector3.MoveTowards(ai.transform.position, ai.patrolSpawn.position, Time.deltaTime * ai.moveSpeed);
 
-            if(Vector3.Distance(ai.transform.position, ai.patrolSpawn.position) < 0.1f) exitState(ai);
+            if(Vector3.Distance(ai.transform.position, ai.patrolSpawn.position) < 0.1f) exitState(ai); return;
         }
         else
         {
@@ -41,7 +41,7 @@ public class AIPatrolState : AIBaseState
             ai.currentWindowIndex = randomWindow;
             ai.windowsPatrolled++;
             Debug.Log("Windows Patroled: " + ai.windowsPatrolled);
-            ai.switchState(ai.scanState, false);
+            ai.switchState(ai.scanState);
             return;
         }
         
@@ -101,6 +101,6 @@ public class AIPatrolState : AIBaseState
     public override void exitState(AIStateManager ai)
     {
         resetVariables(ai);
-        ai.switchState(ai.idleState, false);
+        ai.switchState(ai.idleState);
     }
 }

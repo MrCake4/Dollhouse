@@ -5,24 +5,34 @@ public class FallState : BasePlayerState                                //dann, 
     public override void onEnter(PlayerStateManager player)
     {
         Debug.Log("Falling");
+        player.animator.SetBool("IsFalling", true);
+        player.animator.SetBool("ReachedJumpPeak", true);
     }
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
-        if (player.IsGrounded())
+        if (player.HasLanded())
         {
             float speed = player.GetHorizontalSpeed();
 
             if (speed >= player.walkSpeed)
             {
                 player.SwitchState(player.isRunning ? player.runState : player.walkState);      //SWITCH Run / Walk
+                return;
             }
             else
             {
+                Debug.Log(player.GetVerticalVelocity());
                 player.SwitchState(player.idleState);                                           //SWITCH Idle
+                return;
             }
         }
 
-        if (player.holdPressed)                                             //SWITCH PULLUP or HANG
+        /*if (player.holdPressed)                                             //SWITCH PULLUP or HANG
+        {
+            player.TryGrab();
+            return;
+        }*/
+        if (player.holdPressed)
         {
             player.TryGrab();
             return;
@@ -49,6 +59,9 @@ public class FallState : BasePlayerState                                //dann, 
             vel.z = horizontal.z;
             player.rb.linearVelocity = vel;
         }
+
+        player.animator.SetBool("IsFalling", false);
+        player.animator.SetBool("ReachedJumpPeak", false);
     }
     
 }

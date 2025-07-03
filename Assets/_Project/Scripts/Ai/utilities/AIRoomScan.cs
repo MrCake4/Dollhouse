@@ -2,15 +2,10 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using MilkShake;
-using UnityEditor.Experimental.GraphView;
-using Unity.Mathematics;
 
 [RequireComponent(typeof(LineRenderer))]
 public class AIRoomScan : MonoBehaviour
 {
-    // Spotlight
-    [SerializeField] private Light spotlight;
-
     // Scan and Sweep
     [Header("Scan and Sweep")]
     [SerializeField] private float viewRadius = 20f;
@@ -31,6 +26,13 @@ public class AIRoomScan : MonoBehaviour
     [Header("Laser Settings")]
     [SerializeField] private float laserBuildupTime = 1f;
     [SerializeField] private float laserDrawResetTime = 0.1f;
+    bool laserCharging = false;
+
+    [Header("Spotlight Settings")]
+        // Spotlight
+    [SerializeField] private Light spotlight;
+    [SerializeField, Range(1500, 20000)] float idleSpotlightIntensity = 5000f;
+    [SerializeField, Range(1500, 20000)]float spottedSpotlightIntensity = 1500f;
 
     [Header("Camera Shake")]
     public Shaker shaker;
@@ -56,6 +58,8 @@ public class AIRoomScan : MonoBehaviour
     [SerializeField] private AudioClip[] turnLightOnOffClip;
     [SerializeField] private AudioClip ScanSweepClip;
     AudioSource sweepAudioSource;
+    [SerializeField] private AudioClip[] SpotSoundEffects;
+    [SerializeField] private AudioClip LaserSoundEffect;
     private float defaultViewRadius;
     private float defaultSweepDuration;
 
@@ -122,8 +126,12 @@ public class AIRoomScan : MonoBehaviour
             yield return null;
         }
 
+
         yield return ReturnToCenter();
-        SetSpotlight(false);
+
+        if(currentTarget == null){SetSpotlight(false);}
+
+        
         IsDoneSweeping = true;
     }
 
@@ -151,6 +159,10 @@ public class AIRoomScan : MonoBehaviour
 
                     if (!Physics.Raycast(rayOrigin, rayDir, distance, obstacleMask))
                     {
+                        if (SpotSoundEffects.Length > 0)
+                        {
+                            SoundEffectsManager.instance.PlayRandomSoundEffect(SpotSoundEffects, target.transform, 1f);
+                        }
                         currentTarget = target.transform;
                         targetOffset = offset;
                         return;
@@ -183,6 +195,8 @@ public class AIRoomScan : MonoBehaviour
 
     private void ShootLaser()
     {
+        SoundEffectsManager.instance.PlaySoundEffect(LaserSoundEffect, transform, 1f);
+
         Vector3 laserTarget = playerCollider.bounds.center + targetOffset;
         Vector3 direction = (laserTarget - transform.position).normalized;
         float distance = Vector3.Distance(transform.position, laserTarget);
@@ -203,7 +217,12 @@ public class AIRoomScan : MonoBehaviour
             hitPlayer = false;
 
             if (hit.collider.CompareTag("Destroyable"))
-                Destroy(hit.collider.gameObject);
+            
+                if (hit.collider.GetComponent<Destructible>() != null)
+                    hit.collider.GetComponent<Destructible>()?.destroyObject();
+                else
+                    Destroy(hit.collider.gameObject);
+                    
             else if (hit.collider.CompareTag("Generator"))
                 hit.collider.GetComponent<HitableObject>()?.onHit();
         }
@@ -218,6 +237,8 @@ public class AIRoomScan : MonoBehaviour
     {
         currentTarget = null;
         laserTimer = laserBuildupTime;
+        laserCharging = false;
+        ReturnToCenter();
     }
 
     private void UpdateLaserLine()
@@ -248,8 +269,10 @@ public class AIRoomScan : MonoBehaviour
 
     private void ChargeSequence()
     {
-        if (laserTimer <= 1f && implosionParticles != null && !implosionParticles.isPlaying)
+        if (laserTimer <= 1f && implosionParticles != null && !implosionParticles.isPlaying && !laserCharging)
         {
+            laserCharging = true;
+            Debug.Log("Starting implosion sequence");
             rumbleController();
             shaker?.Shake(shakePreset);
 
@@ -281,6 +304,7 @@ public class AIRoomScan : MonoBehaviour
         spotlight.range = viewRadius;
         spotlight.intensity = 40000;
         spotlight.spotAngle = viewAngle;
+        spotlight.colorTemperature = currentTarget != null ? spottedSpotlightIntensity : idleSpotlightIntensity;    // Adjust intensity based on target presence
 
         if (currentTarget != null)
         {
@@ -356,4 +380,5 @@ public class AIRoomScan : MonoBehaviour
     public bool IsLaserEnabled => laserLine.enabled;
     public bool PlayerWasHit => hitPlayer;
     public void UpdateLaser() => UpdateLaserLine();
+    public void ResetEyeScan() => ResetScan();
 }

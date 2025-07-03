@@ -6,24 +6,47 @@ public class IdleState : BasePlayerState
     public override void onEnter(PlayerStateManager player)
     {
         Debug.Log("not walking anymore");
-    }
-    public override void onUpdate(PlayerStateManager player) //pro Frame
-    {
+        //player.ResetAllAnimationBools();
+        //player.animator.SetBool("IsMoving", true);
 
-        if (player.JumpAllowed())                                           //SWITCH JUMP
+        /*if (player.JumpAllowed())                                           //early SWITCH JUMP
         {
             player.jumpPressed = false;
             player.SwitchState(player.jumpState);
             return; //retrun, damit Code direkt aufhört und zu JumpState switched
         }
+        else { player.animator.SetTrigger("ReturnToMoving"); }*/
+        
+        player.animator.SetTrigger("ReturnToMoving");
 
-        if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
+        
+
+    }
+    public override void onUpdate(PlayerStateManager player) //pro Frame
+    {
+
+        if (player.JumpAllowed())
         {
-            player.pushState.SetTarget(pushTarget);
-            player.SwitchState(player.pushState);
+            if (player.CanPullUp())
+            {
+                // handled intern den State-Switch
+                return;
+            }
+            else
+            {
+                player.jumpPressed = false;
+                player.SwitchState(player.jumpState);
+                return;
+            }
+        }
+
+        if (player.holdPressed)                                             //SWITCH PUSH/PULL
+        {
+            player.TryGrabObject(); // greift auf nahes pushableObject zu
+            
             return;
         }
-        
+
         //wenn Crouching true
         else if (player.isCrouching)                                        //SWITCH Crouch
         {
@@ -40,16 +63,14 @@ public class IdleState : BasePlayerState
             player.SwitchState(player.walkState);
         }
 
-        if(player.IsFalling()){                                             //SWITCH Fall
+        if (player.IsFalling())
+        {                                             //SWITCH Fall
+            Debug.Log(player.GetVerticalVelocity());
             player.SwitchState(player.fallState);
             //Debug.Log("Switcherooo");
-        }
-
-        if (player.holdPressed)                                             //SWITCH PULLUP or HANG
-        {
-            player.TryGrab();
             return;
         }
+
 
 
         //SWITCH Pull Up
@@ -67,6 +88,7 @@ public class IdleState : BasePlayerState
     }
     public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
     {
-        
+        //player.animator.SetBool("IsMoving", false);
+        player.animator.ResetTrigger("ReturnToMoving");
     }
 }

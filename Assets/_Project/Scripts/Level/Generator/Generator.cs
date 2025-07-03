@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Generator : HitableObject
@@ -11,6 +12,15 @@ public class Generator : HitableObject
     [SerializeField] bool loosesPowerOverTime = true;   // if true, the generator will lose power over time
     [SerializeField] float maxPower = 100f;
     [SerializeField] int lossOverTime = 1;
+    [SerializeField] GameObject antenna;
+    bool playingSound = false; // to prevent multiple sound instances
+
+    [Header("Audio")]
+    [SerializeField] AudioClip generatorSound;
+    AudioSource generatorAudioSource;
+
+    [Header("Debug")]
+    [SerializeField] bool powerObjects = false; // for debugging purposes, to turn on all powerable objects 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,7 +49,46 @@ public class Generator : HitableObject
     void Update()
     {
         updatePower();
+        updateAntenna();
     }
+
+    // rotate antenna if the generator is charged, 
+    // and flicker the light intensity based on the current power level
+    void updateAntenna()
+    {
+        if (antenna == null) return;
+
+        Light antennaLight = antenna.GetComponentInChildren<Light>();
+
+        if (charged)
+        {
+            // Rotate antenna visually
+            antenna.transform.Rotate(Vector3.up, 100 * Time.deltaTime);
+
+            if (antennaLight != null)
+            {
+                antennaLight.enabled = true;
+
+                // Flicker speed increases as power decreases
+                float normalizedPower = Mathf.Clamp01(currentPower / maxPower);
+                float flickerSpeed = Mathf.Lerp(8f, 2f, normalizedPower); // 8 = fast, 2 = slow
+
+                // Flicker intensity (sin wave)
+                float baseIntensity = 500f;
+                float flickerAmount = Mathf.Sin(Time.time * flickerSpeed) * 300f; // subtle wobble
+
+                antennaLight.intensity = baseIntensity + flickerAmount;
+            }
+        }
+        else
+        {
+            if (antennaLight != null)
+            {
+                antennaLight.enabled = false;
+            }
+        }
+    }
+
 
     // turn power on for a specific object
     void powerObject(Interactable o)
@@ -61,20 +110,47 @@ public class Generator : HitableObject
     // update the power of the generator
     void updatePower()
     {
+        if (powerObjects)
+        {
+            charged = true; // set charged to true for debugging purposes
+            activatePowerableObjects(); // for debugging purposes, turn on all powerable objects
+            charged = false; // reset charged to false after powering objects
+            powerObjects = false; // reset the flag
+        }
+
+        if (SoundEffectsManager.instance != null && generatorSound != null && !playingSound && charged)
+            {
+                generatorAudioSource = SoundEffectsManager.instance.PlayLoopedSoundEffect(generatorSound, transform, 0.5f);
+                playingSound = true; // prevent multiple sound instances
+            }
+
         if (currentPower > 0 && loosesPowerOverTime && charged)
         {
             currentPower -= lossOverTime * Time.deltaTime; // lose power over time
         }
         else if (currentPower <= 0 && charged)
         {
-            Debug.Log("Generator power depleted, turning off all powered objects.");
+            if (SoundEffectsManager.instance != null && generatorSound != null && playingSound)
+            {
+                SoundEffectsManager.instance.StopSoundEffect(generatorAudioSource);
+                playingSound = false; // reset sound state
+            }
 
             foreach (Interactable interactable in powerableObjects)
             {
                 dePowerObject(interactable); // turn off all powered objects
-                Debug.Log("Deactivated: " + interactable.name);
             }
             charged = false; // if power is depleted, set charged to false
         }
+    }
+    
+    public float GetCurrentPower()
+    {
+        return currentPower;
+    }
+
+public float GetMaxPower()
+    {
+        return maxPower;
     }
 }

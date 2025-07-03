@@ -3,85 +3,117 @@ using UnityEngine;
 public class PushState : BasePlayerState
 {
     private Rigidbody targetRb;
-    private float basePushSpeed = 1.5f; // kann im Editor einstellbar gemacht werden
-    private RigidbodyConstraints originalConstraints; // merken, was vorher gesetzt war
+    private Transform grabPoint;
+    private float pushSpeed = 1.5f; // Einfluss durch Masse später skalierbar
 
-    public void SetTarget(Rigidbody rb)
+    public void SetTarget(Rigidbody rb, Transform point)
     {
-        if (rb == null)
-        {
-            Debug.LogWarning("PushState: Versuch, null als Ziel zu setzen!");
-            return;
-        }
-        
         targetRb = rb;
+        grabPoint = point;
     }
-
 
     public override void onEnter(PlayerStateManager player)
     {
-        Debug.Log("now pushing");
+        Debug.Log("→ PUSH START");
+        //player.animator.SetBool("IsPushing", true);
+        //player.animator.SetBool("IsGrabbing", true);
+        player.animator.SetFloat("PushPullSpeed", 0f, 0.1f, Time.deltaTime);
+        player.animator.SetTrigger("DoPushPullGrab");
+
+
         if (targetRb != null)
         {
-            // Merke ursprüngliche Constraints
-            originalConstraints = targetRb.constraints;
-
-            // Optional: nur Rotation einfrieren, Bewegung erlauben? --> man kann auch Rotation mit erlauben sonst
+            targetRb.isKinematic = false;
             targetRb.constraints = RigidbodyConstraints.FreezeRotation;
         }
     }
-    public override void onUpdate(PlayerStateManager player)               //pro Frame
-    {
-        if (player.moveInput == Vector2.zero)                               //SWITCH Idle
-        {
-            player.SwitchState(player.idleState);     
-            return;
-        }
 
-        // Prüfe Surface-Winkel erneut
-        Vector3 rayOrigin = player.transform.position + Vector3.up * (player.capsuleCollider.height / 3f);
-        if (Physics.Raycast(rayOrigin, player.transform.forward, out RaycastHit hit, 0.6f, player.bigObjectLayer))
+    public override void onFixedUpdate(PlayerStateManager player)
+    {
+        if (targetRb == null || grabPoint == null) return;
+
+        // Spieler bleibt exakt am GrabPoint
+        Vector3 targetPos = grabPoint.position;
+        targetPos.y = player.transform.position.y;
+        player.transform.position = targetPos;
+
+        Quaternion lookRot = Quaternion.LookRotation(grabPoint.forward);
+        player.transform.rotation = lookRot;
+
+        if (!player.holdPressed)
         {
-            float angle = Vector3.Angle(-hit.normal, player.transform.forward);
-            if (angle > 25f)
-            {
-                player.SwitchState(player.idleState);
-                return;
-            }
-        }
-        else
-        {
-            // Kein Kontakt mehr
+            targetRb.linearVelocity = Vector3.zero;
             player.SwitchState(player.idleState);
             return;
         }
 
-        if(player.IsFalling()){                        //SWITCH Fall
-            player.SwitchState(player.fallState);
-            //Debug.Log("Switcherooo");
+        if (player.moveInput == Vector2.zero)
+        {
+            player.grabObjectState.SetTarget(
+                targetRb.GetComponent<PushableObject>(),
+                grabPoint
+            );
+            player.SwitchState(player.grabObjectState);
+            return;
         }
 
+
+
+        Vector3 input = new Vector3(player.moveInput.x, 0f, player.moveInput.y);
+        float dot = Vector3.Dot(player.transform.forward, input);
+
+        if (dot < -0.1f)
+        {
+            player.pullState.SetTarget(targetRb, grabPoint);
+            player.SwitchState(player.pullState);
+            return;
+        }
+
+        // Richtung des Push
+        Vector3 moveDir = player.transform.forward * dot * pushSpeed;
+
+        // Nur XZ behalten, Y nicht anfassen
+        Vector3 newVelocity = new Vector3(moveDir.x, targetRb.linearVelocity.y, moveDir.z);
+        targetRb.linearVelocity = newVelocity;
+
+        //player.SetPushPullAnimationSpeed(new Vector3(newVelocity.x, 0f, newVelocity.z).magnitude);
+
+
+        // ANIMATION ---- geschwindigkeit berechnen (negativ = rückwärts, positiv = vorwärts)
+        Vector3 flatVel = new Vector3(newVelocity.x, 0f, newVelocity.z);
+        float speed = flatVel.magnitude;
+        float direction = Mathf.Sign(Vector3.Dot(player.transform.forward, flatVel));
+        float pushPullSpeed = direction * speed;
+
+        player.animator.SetFloat("PushPullSpeed", pushPullSpeed, 0.1f, Time.deltaTime);
+
+
+        //Debug.Log(speed);
+
     }
-    public override void onFixedUpdate(PlayerStateManager player)          //Physik
+
+    public override void onUpdate(PlayerStateManager player) { }
+
+    public override void onExit(PlayerStateManager player)
     {
-        if (targetRb == null) return; 
+        Debug.Log("→ PUSH ENDE");
+        //player.animator.SetBool("IsPushing", false);
+        //player.animator.SetBool("IsGrabbing", false);
+        player.animator.ResetTrigger("DoPushPullGrab");
 
-        Vector3 pushDir = player.transform.forward;
-        float force = basePushSpeed / Mathf.Max(1f, targetRb.mass);
-
-
-        targetRb.AddForce(pushDir * force, ForceMode.Force);
-
-        // Optional: Langsameres Player-Movement
-        player.MovePlayer(force); // Oder fixen Wert z. B. 0.5f
-        player.RotateToMoveDirection();
-    }
-    public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
-    {
         if (targetRb != null)
         {
-            // Setze ursprüngliche Constraints wieder zurück
-            targetRb.constraints = originalConstraints;
+            targetRb.linearVelocity = Vector3.zero;
+
+            PushableObject pushable = targetRb.GetComponent<PushableObject>();
+            if (pushable != null)
+            {
+                pushable.ResetPhysics(); // <- HIER EINBAUEN!
+            }
         }
+
+        targetRb = null;
+        grabPoint = null;
     }
+
 }
