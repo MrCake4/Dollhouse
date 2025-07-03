@@ -5,6 +5,8 @@ public class PullUpState : BasePlayerState
 {
     private Vector3 ledgePos;
     private Vector3 finalStandPos;
+    public bool pullUpFinished = false;
+
 
     public void SetLedgePos(Vector3 pos)
     {
@@ -25,7 +27,7 @@ public class PullUpState : BasePlayerState
 
         // Zielposition auf der oberen Kante, leicht vorgezogen
         finalStandPos = new Vector3(
-            ledgePos.x - player.ledgeOffset, 
+            ledgePos.x - player.ledgeOffset,
             ledgePos.y,
             ledgePos.z
         );
@@ -43,24 +45,33 @@ public class PullUpState : BasePlayerState
         player.animator.SetTrigger("DoPullUp");
     }
 
+
+
+    public override void onUpdate(PlayerStateManager player)
+    {
+        if (pullUpFinished)
+        {
+            onExit(player);
+            player.SwitchState(player.idleState);
+        }
+
+    }
     public override void onExit(PlayerStateManager player)
     {
         player.animator.ResetTrigger("DoPullUp");
-        
+
         // am Ende der Animation genau auf die finale Position setzen
         player.transform.position = finalStandPos;
 
         player.animator.applyRootMotion = false;
         player.rb.isKinematic = false;
-    }
-
-    public override void onUpdate(PlayerStateManager player)
-    {
+        pullUpFinished = false;
 
     }
-
     public override void onFixedUpdate(PlayerStateManager player)
     {
 
     }
+
+
 }

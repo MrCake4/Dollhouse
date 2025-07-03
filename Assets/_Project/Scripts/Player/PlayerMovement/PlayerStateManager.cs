@@ -394,10 +394,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     }
 
 
-    
+
 
     // ============================ FOR ANIMATION ONLY ============================ 
-
+    
     // Platzhalter für spätere Animationen
 
 
