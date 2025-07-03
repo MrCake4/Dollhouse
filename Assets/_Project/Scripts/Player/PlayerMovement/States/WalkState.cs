@@ -22,16 +22,21 @@ public class WalkState : BasePlayerState
             //Debug.Log("Switcherooo");
         }
 
-        if (player.JumpAllowed())                               //SWITCH JUMP
+        if (player.JumpAllowed())
         {
-            player.jumpPressed = false;
-
-            //IF PLAYER HAS NO LOW LEDGE OR MEDIUM LEDGE in his BoxCollider-Trigger --> Jump State  --> sonst in den PullUpState mit der passenden Ledge description
-            //player.animator.SetTrigger("DoJump");
-
-            player.SwitchState(player.jumpState);
-            return;
+            if (player.CanPullUp())
+            {
+                // handled intern den State-Switch
+                return;
+            }
+            else
+            {
+                player.jumpPressed = false;
+                player.SwitchState(player.jumpState);
+                return;
+            }
         }
+
         
 
         /*if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
