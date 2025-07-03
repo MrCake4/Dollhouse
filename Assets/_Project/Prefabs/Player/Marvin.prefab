@@ -166,7 +166,6 @@ MonoBehaviour:
   jumpForce: 1
   jumpHeight: 1.5
   airControlMultiplier: 1
-  ledgeOffset: 0.6
   capsuleCollider: {fileID: 0}
   originalHeight: 0
   originalCenter: {x: 0, y: 0, z: 0}
@@ -283,6 +282,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e3a647406055743bb818d8fbda4e06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useIK: 1
+  leftHandIK: 1
+  rightHandIK: 1
+  leftHandPos: {x: 0, y: 0, z: 0}
+  rightHandPos: {x: 0, y: 0, z: 0}
+  leftHandRot: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &7990743528947643684
 GameObject:
   m_ObjectHideFlags: 0
