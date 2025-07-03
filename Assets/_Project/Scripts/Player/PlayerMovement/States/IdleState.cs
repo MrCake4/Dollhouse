@@ -25,19 +25,20 @@ public class IdleState : BasePlayerState
     public override void onUpdate(PlayerStateManager player) //pro Frame
     {
 
-        if (player.JumpAllowed())                                           //SWITCH JUMP
+        if (player.JumpAllowed())
         {
-            player.jumpPressed = false;
-            player.SwitchState(player.jumpState);
-            return; //retrun, damit Code direkt aufhört und zu JumpState switched
+            if (player.CanPullUp())
+            {
+                // handled intern den State-Switch
+                return;
+            }
+            else
+            {
+                player.jumpPressed = false;
+                player.SwitchState(player.jumpState);
+                return;
+            }
         }
-
-        /*if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
-        {
-            player.pushState.SetTarget(pushTarget);
-            player.SwitchState(player.pushState);
-            return;
-        }*/
 
         if (player.holdPressed)                                             //SWITCH PUSH/PULL
         {

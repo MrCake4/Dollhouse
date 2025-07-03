@@ -1,82 +1,66 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PullUpState : BasePlayerState
 {
-    public enum PullUpType
+    private Vector3 ledgePos;
+    private Vector3 finalStandPos;
+
+    public void SetLedgePos(Vector3 pos)
     {
-        Medium,
-        High
+        ledgePos = pos;
     }
 
-    private PullUpType pullUpType = PullUpType.Medium;
-    private float pullSpeed = 3f;
-    private Vector3 ledgePosition;
-    private Vector3 finalStandPosition;
-
-    public void SetLedgePosition(Vector3 ledgePos)
+    private void CalculateLedgePos(PlayerStateManager player)
     {
-        ledgePosition = ledgePos;
-    }
-
-    public void SetPullUpType(PullUpType type)
-    {
-        pullUpType = type;
+        ledgePos = new Vector3(ledgePos.x, ledgePos.y, player.transform.position.z);
     }
 
     public override void onEnter(PlayerStateManager player)
     {
+        CalculateLedgePos(player);
 
-        player.animator.SetBool("IsPullingUp", true);
 
-        player.rb.useGravity = false;
-        player.rb.linearVelocity = Vector3.zero;
+        Debug.Log("I AM IN PULLUP STATE");
 
-        float verticalOffset = player.verticalPullUp;
-        float backOffset = player.horizontalPullUp;
-
-        // Offsets je nach Typ anpassen
-        switch (pullUpType)
-        {
-            case PullUpType.Medium:
-                verticalOffset = 0.8f;
-                backOffset = -0.3f;
-                break;
-            case PullUpType.High:
-                verticalOffset = 1.2f;
-                backOffset = -0.4f;
-                break;
-        }
-
-        finalStandPosition = ledgePosition + Vector3.up * verticalOffset - player.transform.forward * backOffset;
-
-        Debug.Log($"PullUp → Typ: {pullUpType} | Zielposition: {finalStandPosition:F2}");
-    }
-
-    public override void onFixedUpdate(PlayerStateManager player)
-    {
-        Vector3 newPos = Vector3.MoveTowards(
-            player.transform.position,
-            finalStandPosition,
-            pullSpeed * Time.fixedDeltaTime
+        // Zielposition auf der oberen Kante, leicht vorgezogen
+        finalStandPos = new Vector3(
+            ledgePos.x - player.ledgeOffset, 
+            ledgePos.y,
+            ledgePos.z
         );
 
-        player.rb.MovePosition(newPos);
+        // Spieler sofort an die untere Griffposition bringen
+        player.transform.position = new Vector3(
+            ledgePos.x,
+            ledgePos.y - 1.0f, // etwa 1m unterhalb
+            ledgePos.z
+        );
 
-        if (Vector3.Distance(player.transform.position, finalStandPosition) < 0.05f)
-        {
-            player.rb.useGravity = true;
-            player.SwitchState(player.idleState);
-        }
-    }
+        player.animator.applyRootMotion = true;
+        player.rb.isKinematic = true;
 
-    public override void onUpdate(PlayerStateManager player)
-    {
-        Debug.DrawLine(player.transform.position, finalStandPosition, Color.green);
+        player.animator.SetTrigger("DoPullUp");
     }
 
     public override void onExit(PlayerStateManager player)
     {
-        player.rb.useGravity = true;
-        player.animator.SetBool("IsPullingUp", false);
+        player.animator.ResetTrigger("DoPullUp");
+        
+        // am Ende der Animation genau auf die finale Position setzen
+        player.transform.position = finalStandPos;
+
+        player.animator.applyRootMotion = false;
+        player.rb.isKinematic = false;
+    }
+
+    public override void onUpdate(PlayerStateManager player)
+    {
+
+    }
+
+    public override void onFixedUpdate(PlayerStateManager player)
+    {
+
     }
 }
