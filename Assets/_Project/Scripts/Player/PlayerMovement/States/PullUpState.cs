@@ -60,14 +60,14 @@ public class PullUpState : BasePlayerState
     {
         player.animator.ResetTrigger("DoPullUp");
 
-        // am Ende der Animation genau auf die finale Position setzen
+        // einfach sauber auf finalStandPos setzen
         player.transform.position = finalStandPos;
 
         player.animator.applyRootMotion = false;
         player.rb.isKinematic = false;
         pullUpFinished = false;
-
     }
+
     public override void onFixedUpdate(PlayerStateManager player)
     {
 
