@@ -558,11 +558,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 84.898, z: 0}
---- !u!1 &245440576 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7990743528947643684, guid: 011dab05884397b47ab51a8e94460a34, type: 3}
-  m_PrefabInstance: {fileID: 4534568745584539558}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &247024964
 GameObject:
   m_ObjectHideFlags: 0
@@ -2420,27 +2415,6 @@ PrefabInstance:
       addedObject: {fileID: 691331082}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abc4abb2a7a5a9740a0bde2738578f64, type: 3}
---- !u!135 &1570440275
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 245440576}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1638083298
 GameObject:
   m_ObjectHideFlags: 0
@@ -3482,18 +3456,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 83653170942287420, guid: 011dab05884397b47ab51a8e94460a34, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7119334
-      objectReference: {fileID: 0}
-    - target: {fileID: 83653170942287420, guid: 011dab05884397b47ab51a8e94460a34, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.44567958
-      objectReference: {fileID: 0}
-    - target: {fileID: 83653170942287420, guid: 011dab05884397b47ab51a8e94460a34, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.7119334
-      objectReference: {fileID: 0}
     - target: {fileID: 2427950078991586988, guid: 011dab05884397b47ab51a8e94460a34, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.11
@@ -3538,14 +3500,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Marvin
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5704598723932444948, guid: 011dab05884397b47ab51a8e94460a34, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7990743528947643684, guid: 011dab05884397b47ab51a8e94460a34, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1570440275}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 011dab05884397b47ab51a8e94460a34, type: 3}
 --- !u!1001 &9155768651085578461
 PrefabInstance:
