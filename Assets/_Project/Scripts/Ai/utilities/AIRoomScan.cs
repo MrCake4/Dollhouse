@@ -2,8 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using MilkShake;
-using UnityEditor.Experimental.GraphView;
-using Unity.Mathematics;
 
 [RequireComponent(typeof(LineRenderer))]
 public class AIRoomScan : MonoBehaviour

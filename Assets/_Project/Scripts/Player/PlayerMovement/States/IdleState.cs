@@ -8,25 +8,37 @@ public class IdleState : BasePlayerState
         Debug.Log("not walking anymore");
         //player.ResetAllAnimationBools();
         //player.animator.SetBool("IsMoving", true);
-        player.animator.SetTrigger("ReturnToMoving");
 
-    }
-    public override void onUpdate(PlayerStateManager player) //pro Frame
-    {
-
-        if (player.JumpAllowed())                                           //SWITCH JUMP
+        /*if (player.JumpAllowed())                                           //early SWITCH JUMP
         {
             player.jumpPressed = false;
             player.SwitchState(player.jumpState);
             return; //retrun, damit Code direkt aufhört und zu JumpState switched
         }
+        else { player.animator.SetTrigger("ReturnToMoving"); }*/
+        
+        player.animator.SetTrigger("ReturnToMoving");
 
-        /*if (player.moveInput != Vector2.zero && player.PushAllowed(out Rigidbody pushTarget))      //SWITCH PUSH
+        
+
+    }
+    public override void onUpdate(PlayerStateManager player) //pro Frame
+    {
+
+        if (player.JumpAllowed())
         {
-            player.pushState.SetTarget(pushTarget);
-            player.SwitchState(player.pushState);
-            return;
-        }*/
+            if (player.CanPullUp())
+            {
+                // handled intern den State-Switch
+                return;
+            }
+            else
+            {
+                player.jumpPressed = false;
+                player.SwitchState(player.jumpState);
+                return;
+            }
+        }
 
         if (player.holdPressed)                                             //SWITCH PUSH/PULL
         {
@@ -51,9 +63,12 @@ public class IdleState : BasePlayerState
             player.SwitchState(player.walkState);
         }
 
-        if(player.IsFalling()){                                             //SWITCH Fall
+        if (player.IsFalling())
+        {                                             //SWITCH Fall
+            Debug.Log(player.GetVerticalVelocity());
             player.SwitchState(player.fallState);
             //Debug.Log("Switcherooo");
+            return;
         }
 
 

@@ -17,18 +17,6 @@ namespace NavKeypad
         public UnityEvent OnAccessGranted => onAccessGranted;
         public UnityEvent OnAccessDenied => onAccessDenied;
 
-        [Header("Settings")]
-        [SerializeField] private string accessGrantedText = "Granted";
-        [SerializeField] private string accessDeniedText = "Denied";
-
-        [Header("Visuals")]
-        [SerializeField] private float displayResultTime = 1f;
-        [Range(0, 5)]
-        [SerializeField] private float screenIntensity = 2.5f;
-        [Header("Colors")]
-        [SerializeField] private Color screenNormalColor = new Color(0.98f, 0.50f, 0.032f, 1f); //orangy
-        [SerializeField] private Color screenDeniedColor = new Color(1f, 0f, 0f, 1f); //red
-        [SerializeField] private Color screenGrantedColor = new Color(0f, 0.62f, 0.07f); //greenish
         [Header("SoundFx")]
         [SerializeField] private AudioClip buttonClickedSfx;
         [SerializeField] private AudioClip accessDeniedSfx;
@@ -42,6 +30,7 @@ namespace NavKeypad
         private bool accessWasGranted = false;
 
         // Winstons modifications
+        [Header("Candles")]
         public int litCandleCount = 0; // Count of lit candles
         [SerializeField] Candle[] candles;  // stores all candles in the scene that controll the keypad
 
@@ -100,7 +89,6 @@ namespace NavKeypad
 
             if (granted) AccessGranted();
             else AccessDenied();
-            yield return new WaitForSeconds(displayResultTime);
             displayingResult = false;
             if (granted) yield break;
             ClearInput();

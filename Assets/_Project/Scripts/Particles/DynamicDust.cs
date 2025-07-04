@@ -20,7 +20,7 @@ public class DynamicDust : MonoBehaviour
     // LateUpdate is called after all Update functions have been called
     // This is where we will modify the particles' velocities
 
-    void Awake()
+    void Start()
     {
         player = FindFirstObjectByType<PlayerStateManager>().transform;
     }

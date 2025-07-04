@@ -38,13 +38,13 @@ public class ToggleBrightness : MonoBehaviour
     void checkInput()
     {
         // Plus key: Shift + Equals (main keyboard) or KeypadPlus (numpad)
-        if (Input.GetKey(KeyCode.O)|| Input.GetKey(KeyCode.KeypadPlus))
+        if (Input.GetKey(KeyCode.I)|| Input.GetKey(KeyCode.KeypadPlus))
         {
             if (colorAdjustments != null)
                 colorAdjustments.postExposure.value += 0.01f;
         }
         // Minus key: Minus (main keyboard) or KeypadMinus (numpad)
-        if (Input.GetKey(KeyCode.L) || Input.GetKey(KeyCode.KeypadMinus))
+        if (Input.GetKey(KeyCode.K) || Input.GetKey(KeyCode.KeypadMinus))
         {
             if (colorAdjustments != null)
                 colorAdjustments.postExposure.value -= 0.01f;
