@@ -60,6 +60,7 @@ public class DebuggingManager : MonoBehaviour
     {
 
         StartCoroutine(LoadSceneRoutine(dropdownIndex));
+        toggleMenu(false);
     }
 
     private Scene GetNonPersistentScene(SceneField persistentSceneName)
