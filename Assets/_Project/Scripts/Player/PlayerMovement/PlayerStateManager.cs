@@ -35,6 +35,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     public float airControlMultiplier = 0.3f;              //um mitten im Jump noch Richtung steuern zu können
 
+    [SerializeField] public float ledgeOffset = 0.6f;
+
     //crouch
     [HideInInspector] public CapsuleCollider capsuleCollider;
     [HideInInspector] public float originalHeight;
@@ -264,7 +266,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     public bool HasLanded()
     {
-        return groundCheck.isGrounded && rb.linearVelocity.y >= 0f;
+        return groundCheck.isGrounded && rb.linearVelocity.y <= 0.01f;
     }
 
     public bool JumpAllowed()                                   //steht bei Idle, Walk und Run drinne!  --> damit man gleichzeitig Logik bearbeiten kann --> weniger copy paste
@@ -301,34 +303,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         box.enabled = false;
 
         foreach (Collider col in hits)
-        {
-            /*if (col.CompareTag("lowLedge"))
-            {
-                Vector3 closestPoint = col.ClosestPoint(transform.position);
-                pullUpState.SetLedgePosition(closestPoint);
-                pullUpState.SetPullUpType(PullUpState.PullUpType.Low);
-                SwitchState(pullUpState);
-                return;
-            }*/
-
-            if (col.CompareTag("mediumLedge"))
-            {
-                Vector3 closestPoint = col.ClosestPoint(transform.position);
-                pullUpState.SetLedgePosition(closestPoint);
-                pullUpState.SetPullUpType(PullUpState.PullUpType.Medium);
-                SwitchState(pullUpState);
-                return;
-            }
-
-            if (col.CompareTag("highLedge"))
-            {
-                Vector3 closestPoint = col.ClosestPoint(transform.position);
-                pullUpState.SetLedgePosition(closestPoint);
-                pullUpState.SetPullUpType(PullUpState.PullUpType.High);
-                SwitchState(pullUpState);
-                return;
-            }
-
+        { 
             if (col.CompareTag("HangOnto"))
             {
                 Vector3 closestPoint = col.ClosestPoint(transform.position);
@@ -336,7 +311,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
                 SwitchState(hangState);
                 return;
             }
-        }
+        } 
 
         // Nichts gefunden
     }
@@ -366,8 +341,63 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         }
     }
 
-    // ============================ FOR ANIMATION ONLY ============================ 
 
+    public bool CanPullUp()
+    {
+        //schaue ich richtig auf die Ledge (max. 50 Grad Abweichung)
+        //ist es im BoxCollider
+
+        //wenn true dann PullUpstate.SetLedgePosition(Hit.Collider.transform.position)
+
+        Debug.Log("I AM F***** TRYING");
+
+        if (!jumpPressed) return false;
+
+        BoxCollider box = GetComponent<BoxCollider>();
+        if (box == null) return false;
+
+        box.enabled = true;
+
+        Collider[] hits = Physics.OverlapBox(
+            box.bounds.center,
+            box.bounds.extents,
+            transform.rotation,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        box.enabled = false;
+
+        foreach (Collider col in hits)
+        {
+            if (col.CompareTag("mediumLedge"))
+            {
+
+                Debug.Log("FOUND A MEDIUM LEDGE");
+
+                // Richtung prüfen
+                Vector3 toLedge = col.transform.position - transform.position;
+                float angle = Vector3.Angle(transform.forward, toLedge);
+                /*if (angle > 50f)
+                {
+                    Debug.Log("ANGLE IS SHIT");
+                    return false;
+                }*/
+
+                pullUpState.SetLedgePos(col.transform.position);
+                SwitchState(pullUpState);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+
+
+    // ============================ FOR ANIMATION ONLY ============================ 
+    
     // Platzhalter für spätere Animationen
 
 
