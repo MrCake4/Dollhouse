@@ -1786,7 +1786,6 @@ GameObject:
   - component: {fileID: 293000867}
   - component: {fileID: 293000866}
   - component: {fileID: 293000868}
-  - component: {fileID: 293000870}
   - component: {fileID: 293000869}
   m_Layer: 9
   m_Name: Keys
@@ -1872,27 +1871,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sparkleEffect: {fileID: 840736825}
---- !u!135 &293000870
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293000865}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 6.4308176
-  m_Center: {x: -5.032647, y: 0, z: -0.8981695}
 --- !u!1 &321359254
 GameObject:
   m_ObjectHideFlags: 0
