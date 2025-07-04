@@ -2798,7 +2798,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 22, y: 388.2}
+  m_AnchoredPosition: {x: 22, y: 278}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &421678736
@@ -2985,7 +2985,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   volumeAnchorOverride: {fileID: 0}
-  antialiasing: 0
+  antialiasing: 2
   SMAAQuality: 2
   dithering: 0
   stopNaNs: 0
@@ -7035,6 +7035,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 340006cd2c8af0640b741e65adeaac7d, type: 3}
       propertyPath: m_Name
       value: DollHouse
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 340006cd2c8af0640b741e65adeaac7d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
