@@ -32,7 +32,7 @@ public class InteractableMirrorJoint : Interactable
                 mirrorBoneHandler.SetTargetBone(gameObject);
                 playerItemHandler.DropItem(); // Drop the carried object after attaching it to the mirror joint
                 // set layer to 0
-                mirror.layer = 0; // Set the layer to Default (0) to ensure it is not interactable by the player
+                mirror.layer = 7; // Set the layer to Default (0) to ensure it is not interactable by the player
                 occupied = true; // Mark the joint as occupied
             }
         }
