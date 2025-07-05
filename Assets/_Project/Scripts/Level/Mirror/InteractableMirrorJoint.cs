@@ -23,17 +23,21 @@ public class InteractableMirrorJoint : Interactable
     public override void interact()
     {
 
-        if (playerItemHandler != null && playerItemHandler.GetCarriedObject().tag == "Reflector" && !occupied)
+        if (playerItemHandler != null && !occupied)
         {
-            GameObject mirror = playerItemHandler.GetCarriedObject();
-            AttachToBone mirrorBoneHandler = playerItemHandler.GetCarriedObject().GetComponent<AttachToBone>();
-            if (mirrorBoneHandler != null)
+            if (playerItemHandler.GetCarriedObject() != null && playerItemHandler.GetCarriedObject().tag == "Reflector")
             {
-                mirrorBoneHandler.SetTargetBone(gameObject);
-                playerItemHandler.DropItem(); // Drop the carried object after attaching it to the mirror joint
-                // set layer to 0
-                mirror.layer = 7; // Set the layer to Default (0) to ensure it is not interactable by the player
-                occupied = true; // Mark the joint as occupied
+                GameObject mirror = playerItemHandler.GetCarriedObject();
+                AttachToBone mirrorBoneHandler = playerItemHandler.GetCarriedObject().GetComponent<AttachToBone>();
+                if (mirrorBoneHandler != null)
+                {
+                    mirrorBoneHandler.SetTargetBone(gameObject);
+                    playerItemHandler.DropItem(); // Drop the carried object after attaching it to the mirror joint
+                                                  // set layer to 0
+                    mirror.GetComponent<Rigidbody>().isKinematic = true; // Set the mirror's Rigidbody to kinematic to prevent physics interactions
+                    mirror.layer = 7; // Set the layer to Default (0) to ensure it is not interactable by the player
+                    occupied = true; // Mark the joint as occupied
+                }
             }
         }
     }
