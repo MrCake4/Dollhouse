@@ -12,16 +12,21 @@ public class AttachToBone : MonoBehaviour
     [SerializeField] Vector3 offset;
     [SerializeField] bool alignRotation = false; // If true, the GameObject will align its rotation with the bone's rotation.
 
-void LateUpdate()
-{
-    if (targetBone != null)
+    void LateUpdate()
     {
-        // Maintain position offset from the bone
-        transform.position = targetBone.transform.position + targetBone.transform.rotation * offset;
+        if (targetBone != null)
+        {
+            // Maintain position offset from the bone
+            transform.position = targetBone.transform.position + targetBone.transform.rotation * offset;
 
-        // Match rotation if desired
-        if (alignRotation)
-            transform.rotation = targetBone.transform.rotation;
+            // Match rotation if desired
+            if (alignRotation)
+                transform.rotation = targetBone.transform.rotation;
+        }
     }
-}
+
+    public void SetTargetBone(GameObject bone)
+    {
+        targetBone = bone;
+    }
 }

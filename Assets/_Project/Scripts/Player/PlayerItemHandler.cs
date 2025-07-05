@@ -101,7 +101,7 @@ public class PlayerItemHandler : MonoBehaviour
         if (rb) rb.isKinematic = true;
     }
 
-    private void DropItem()
+    public void DropItem()
     {
         if (carriedObject == null) return;
 
