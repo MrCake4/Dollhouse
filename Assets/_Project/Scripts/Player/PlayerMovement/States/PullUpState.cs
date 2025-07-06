@@ -33,11 +33,11 @@ public class PullUpState : BasePlayerState
         );
 
         // Spieler sofort an die untere Griffposition bringen
-        player.transform.position = new Vector3(
+        /*player.transform.position = new Vector3(
             ledgePos.x,
             ledgePos.y - 1.0f, // etwa 1m unterhalb
             ledgePos.z
-        );
+        );*/
 
         player.animator.applyRootMotion = true;
         player.rb.isKinematic = true;
