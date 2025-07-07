@@ -63,8 +63,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     //PULL UP
     [Header("Pull Up Settings")]
-    [SerializeField] public float ledgeOffset = -0.5f;
-    [SerializeField] public float pullUpApproachDistance = 0.5f; // zum Probieren
+    //[SerializeField] public float ledgeOffset = 0f;
+    //[SerializeField] public float pullUpApproachDistance = 0.5f; // zum Probieren
 
 
 

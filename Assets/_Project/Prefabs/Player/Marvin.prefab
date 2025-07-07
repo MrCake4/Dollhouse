@@ -166,7 +166,6 @@ MonoBehaviour:
   jumpForce: 1
   jumpHeight: 1.5
   airControlMultiplier: 1
-  ledgeOffset: 0.6
   capsuleCollider: {fileID: 0}
   originalHeight: 0
   originalCenter: {x: 0, y: 0, z: 0}
@@ -183,8 +182,8 @@ MonoBehaviour:
   walkSpeed: 3
   maxSpeed: 8
   crouchSpeed: 2
-  verticalPullUp: 0.8
-  horizontalPullUp: -0.3
+  ledgeOffset: 0
+  pullUpApproachDistance: 0.5
   animator: {fileID: 7860713031711705011}
   lowCrouchPoint: {fileID: 0}
   isInvincible: 0
@@ -278,7 +277,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5959111915692159886}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40e3a647406055743bb818d8fbda4e06, type: 3}
   m_Name: 

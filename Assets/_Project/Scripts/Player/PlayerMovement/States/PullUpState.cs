@@ -30,7 +30,7 @@ public class PullUpState : BasePlayerState
 
         // Zielposition (oberhalb der Ledge, etwas nach hinten versetzt)
         finalStandPos = new Vector3(
-            ledgePos.x - player.ledgeOffset,
+            ledgePos.x, // - player.ledgeOffset,
             ledgePos.y,
             ledgePos.z
         );
