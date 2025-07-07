@@ -35,8 +35,6 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     public float airControlMultiplier = 0.3f;              //um mitten im Jump noch Richtung steuern zu können
 
-    [SerializeField] public float ledgeOffset = 0.6f;
-
     //crouch
     [HideInInspector] public CapsuleCollider capsuleCollider;
     [HideInInspector] public float originalHeight;
@@ -65,8 +63,9 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     //PULL UP
     [Header("Pull Up Settings")]
-    public float verticalPullUp = 0.8f;
-    public float horizontalPullUp = -0.3f;
+    //[SerializeField] public float ledgeOffset = 0f;
+    //[SerializeField] public float pullUpApproachDistance = 0.5f; // zum Probieren
+
 
 
 
