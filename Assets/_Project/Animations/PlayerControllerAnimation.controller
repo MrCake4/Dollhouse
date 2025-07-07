@@ -89,7 +89,7 @@ AnimatorStateMachine:
     m_Position: {x: 520, y: -400, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2689595530893693610}
-    m_Position: {x: 240, y: -130, z: 0}
+    m_Position: {x: 240, y: -180, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -6818913599920482125}
@@ -694,12 +694,12 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: fullClimb
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
+  m_IKOnFeet: 1
   m_WriteDefaultValues: 1
   m_Mirror: 0
   m_SpeedParameterActive: 0
