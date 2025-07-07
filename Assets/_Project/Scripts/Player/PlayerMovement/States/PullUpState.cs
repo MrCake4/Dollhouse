@@ -8,10 +8,21 @@ public class PullUpState : BasePlayerState
     public bool pullUpFinished = false;
 
 
-    public void SetLedgePos(Vector3 pos)
+    public void SetLedgeFromTransform(Transform triggerTransform, Vector3 playerWorldPos)
     {
-        ledgePos = pos;
+        // Berechne die Position des Spielers RELATIV zum Trigger (lokales Koordinatensystem)
+        Vector3 localPlayerPos = triggerTransform.InverseTransformPoint(playerWorldPos);
+
+        // Wir setzen eine neue Position direkt auf der Ledge:
+        // - Die Höhe (Y) nehmen wir vom Trigger
+        // - Die Tiefe (Z) = 0 (genau auf der Kante)
+        // - Die seitliche Position (X) bleibt erhalten
+        Vector3 localTargetPos = new Vector3(localPlayerPos.x, 0f, 0f);
+
+        // Umwandeln zurück in Weltkoordinaten
+        ledgePos = triggerTransform.TransformPoint(localTargetPos);
     }
+
 
     private void CalculateLedgePos(PlayerStateManager player)
     {

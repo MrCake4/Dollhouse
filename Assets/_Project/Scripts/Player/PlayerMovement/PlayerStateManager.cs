@@ -336,6 +336,50 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     public bool CanPullUp()
     {
+        if (!jumpPressed) return false;
+
+        BoxCollider box = GetComponent<BoxCollider>();
+        if (box == null) return false;
+
+        box.enabled = true;
+
+        Collider[] hits = Physics.OverlapBox(
+            box.bounds.center,
+            box.bounds.extents,
+            transform.rotation,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        box.enabled = false;
+
+        foreach (Collider col in hits)
+        {
+            if (col.CompareTag("mediumLedge"))
+            {
+                Debug.Log("FOUND A MEDIUM LEDGE");
+
+                // Winkel zwischen Spieler-Vorwärtsrichtung und Ledge-Trigger vergleichen
+                float angle = Vector3.Angle(transform.forward, col.transform.forward); // gegeneinander
+
+                if (angle > 50f)
+                {
+                    Debug.Log($"Too far off. Angle: {angle:F1}°");
+                    return false;
+                }
+
+                pullUpState.SetLedgeFromTransform(col.transform, transform.position);
+                SwitchState(pullUpState);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /*public bool CanPullUp()
+    {
         //schaue ich richtig auf die Ledge (max. 50 Grad Abweichung)
         //ist es im BoxCollider
 
@@ -370,20 +414,15 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
                 // Richtung prüfen
                 Vector3 toLedge = col.transform.position - transform.position;
                 float angle = Vector3.Angle(transform.forward, toLedge);
-                /*if (angle > 50f)
-                {
-                    Debug.Log("ANGLE IS SHIT");
-                    return false;
-                }*/
 
-                pullUpState.SetLedgePos(col.transform.position);
+    pullUpState.SetLedgePos(col.transform.position);
                 SwitchState(pullUpState);
                 return true;
             }
         }
 
         return false;
-    }
+    }*/
 
 
 
