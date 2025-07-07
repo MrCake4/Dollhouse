@@ -61,13 +61,6 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public float maxSpeed = 5f;
     public float crouchSpeed = 1f;
 
-    //PULL UP
-    [Header("Pull Up Settings")]
-    //[SerializeField] public float ledgeOffset = 0f;
-    //[SerializeField] public float pullUpApproachDistance = 0.5f; // zum Probieren
-
-
-
 
     //________________ANIMATION_________________
     public Animator animator;
