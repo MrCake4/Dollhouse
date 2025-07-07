@@ -108,7 +108,7 @@ public class CameraMovement : MonoBehaviour
         bool isUsingMouse = Input.GetMouseButton(1);
 
         // 3. Wenn eine Eingabe vorhanden ist, Offset berechnen
-        if (isUsingMouse || isUsingGamepad)
+        if ((isUsingMouse || isUsingGamepad) && cameraPosition != Vector3.zero)
         {
             Vector3 inputOffset;
 
