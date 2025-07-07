@@ -8,6 +8,9 @@ public class PullUpState : BasePlayerState
     public bool pullUpFinished = false;
 
 
+    //extra Kollider an Ledge erzeugen mit Player-Layer, wenn clib läuft --> kann dann angeschossen werden!!!!!!
+
+
     public void SetLedgePos(Vector3 pos)
     {
         ledgePos = pos;
@@ -22,28 +25,29 @@ public class PullUpState : BasePlayerState
     {
         CalculateLedgePos(player);
 
-
         Debug.Log("I AM IN PULLUP STATE");
+        
 
-        // Zielposition auf der oberen Kante, leicht vorgezogen
+        // Zielposition (oberhalb der Ledge, etwas nach hinten versetzt)
         finalStandPos = new Vector3(
             ledgePos.x - player.ledgeOffset,
             ledgePos.y,
             ledgePos.z
         );
 
-        // Spieler sofort an die untere Griffposition bringen
-        /*player.transform.position = new Vector3(
-            ledgePos.x,
-            ledgePos.y - 1.0f, // etwa 1m unterhalb
-            ledgePos.z
-        );*/
+        // 👉 Spieler-Collider SOFORT auf Zielposition setzen
+        player.transform.position = finalStandPos;
 
-        player.animator.applyRootMotion = true;
+        // Optional: Wenn der Spieler zu hoch in der Luft hängt (z. B. visuell),
+        // dann animiere eine kleine Fallbewegung oder spiele eine kurze PullUp-Animation,
+        // aber physikalisch ist der Spieler schon korrekt.
+
+        player.animator.applyRootMotion = false;
         player.rb.isKinematic = true;
 
         player.animator.SetTrigger("DoPullUp");
     }
+
 
 
 
@@ -60,13 +64,17 @@ public class PullUpState : BasePlayerState
     {
         player.animator.ResetTrigger("DoPullUp");
 
-        // einfach sauber auf finalStandPos setzen
-        player.transform.position = finalStandPos;
+        // Finalstandposition leicht nach vorne schieben (z. B. 0.2f)
+        Vector3 forwardOffset = new Vector3(0.2f, 0f, 0f); // nach rechts
+        Vector3 correctedPos = finalStandPos + forwardOffset;
+
+        player.transform.position = correctedPos;
 
         player.animator.applyRootMotion = false;
         player.rb.isKinematic = false;
         pullUpFinished = false;
     }
+
 
     public override void onFixedUpdate(PlayerStateManager player)
     {
