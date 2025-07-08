@@ -51,6 +51,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public bool is2DMode = false;         // 2.5D MOVEMENT
 
 
+    [HideInInspector] public StaminaSystem staminaSystem;       //STAMINA!!!!!!!!!!!
+
+
+
     //for the RayCasts
     public LayerMask bigObjectLayer;
     //public LayerMask smallObjectLayer;
@@ -60,13 +64,6 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public float walkSpeed = 2.5f;
     public float maxSpeed = 5f;
     public float crouchSpeed = 1f;
-
-    //PULL UP
-    [Header("Pull Up Settings")]
-    //[SerializeField] public float ledgeOffset = 0f;
-    //[SerializeField] public float pullUpApproachDistance = 0.5f; // zum Probieren
-
-
 
 
     //________________ANIMATION_________________
@@ -111,6 +108,9 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         currentState.onEnter(this);                 //this = alle Variablen/ Methoden aus dieser Klasse hier
 
         animator = GetComponentInChildren<Animator>();
+
+        staminaSystem = GetComponent<StaminaSystem>();       //STAMINA!!!!!!!!!!!
+
 
     }
 
@@ -168,7 +168,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         jumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0);     // jetzt A
         //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button10);          //Rennen mit reindrücken von L
         //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button8);         //reindrücken von L
-        isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button5);         //R1
+        isRunning = Input.GetKey(KeyCode.LeftShift) && staminaSystem.CanRun()|| Input.GetKey(KeyCode.Joystick1Button5) && staminaSystem.CanRun();         //R1
 
         isCrouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Joystick1Button4);      //L1        //gilt für PS5 & X-Box
         //interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button0);        //Viereck
@@ -189,7 +189,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     void FixedUpdate()
     {
-        isRunning = Input.GetKey(KeyCode.LeftShift ) || Input.GetKey(KeyCode.Joystick1Button8);        //Für JUMP & Fall --> damit man direkt weiterrennen kann
+        isRunning = Input.GetKey(KeyCode.LeftShift ) || Input.GetKey(KeyCode.Joystick1Button8) && staminaSystem.CanRun();        //Für JUMP & Fall --> damit man direkt weiterrennen kann
         currentState.onFixedUpdate(this);           //beim aktuellen State FixedUpdate() aufrufen
 
     }
@@ -343,6 +343,50 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     public bool CanPullUp()
     {
+        if (!jumpPressed) return false;
+
+        BoxCollider box = GetComponent<BoxCollider>();
+        if (box == null) return false;
+
+        box.enabled = true;
+
+        Collider[] hits = Physics.OverlapBox(
+            box.bounds.center,
+            box.bounds.extents,
+            transform.rotation,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        box.enabled = false;
+
+        foreach (Collider col in hits)
+        {
+            if (col.CompareTag("mediumLedge"))
+            {
+                Debug.Log("FOUND A MEDIUM LEDGE");
+
+                // Winkel zwischen Spieler-Vorwärtsrichtung und Ledge-Trigger vergleichen
+                float angle = Vector3.Angle(transform.forward, col.transform.forward); // gegeneinander
+
+                if (angle > 50f)
+                {
+                    Debug.Log($"Too far off. Angle: {angle:F1}°");
+                    return false;
+                }
+
+                pullUpState.SetLedgeFromTransform(col.transform, transform.position);
+                SwitchState(pullUpState);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /*public bool CanPullUp()
+    {
         //schaue ich richtig auf die Ledge (max. 50 Grad Abweichung)
         //ist es im BoxCollider
 
@@ -377,20 +421,15 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
                 // Richtung prüfen
                 Vector3 toLedge = col.transform.position - transform.position;
                 float angle = Vector3.Angle(transform.forward, toLedge);
-                /*if (angle > 50f)
-                {
-                    Debug.Log("ANGLE IS SHIT");
-                    return false;
-                }*/
 
-                pullUpState.SetLedgePos(col.transform.position);
+    pullUpState.SetLedgePos(col.transform.position);
                 SwitchState(pullUpState);
                 return true;
             }
         }
 
         return false;
-    }
+    }*/
 
 
 

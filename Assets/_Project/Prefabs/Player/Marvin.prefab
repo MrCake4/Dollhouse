@@ -71,6 +71,7 @@ GameObject:
   - component: {fileID: 7860713031711705011}
   - component: {fileID: 8935416202205732734}
   - component: {fileID: 8040578505883140115}
+  - component: {fileID: 3228502251770933310}
   m_Layer: 3
   m_Name: Marvin
   m_TagString: Player
@@ -176,14 +177,13 @@ MonoBehaviour:
   holdPressed: 0
   pickUpPressed: 0
   is2DMode: 0
+  staminaSystem: {fileID: 0}
   bigObjectLayer:
     serializedVersion: 2
     m_Bits: 256
   walkSpeed: 3
   maxSpeed: 8
   crouchSpeed: 2
-  ledgeOffset: 0
-  pullUpApproachDistance: 0.5
   animator: {fileID: 7860713031711705011}
   lowCrouchPoint: {fileID: 0}
   isInvincible: 0
@@ -282,6 +282,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e3a647406055743bb818d8fbda4e06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3228502251770933310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5959111915692159886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebeb1e66c0807ac40ae483496885a43e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxStamina: 2
+  recoveryRate: 0.5
+  penaltyDuration: 3
+  currentStamina: 0
+  isPenalty: 0
 --- !u!1 &7990743528947643684
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,7 +409,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9e7718e3bd96a7349912d3a338f487ca, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0027354
+      value: -0.04
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9e7718e3bd96a7349912d3a338f487ca, type: 3}
       propertyPath: m_LocalPosition.z
