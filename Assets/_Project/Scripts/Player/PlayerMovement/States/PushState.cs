@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 
 public class PushState : BasePlayerState
 {
@@ -90,14 +89,6 @@ public class PushState : BasePlayerState
 
 
         //Debug.Log(speed);
-
-        // wenn velocity vom targetRb nach vorne und hinten null ist, dann targetRb y etwas anheben, damit es nicht an einem collider am boden stecken bleibt
-        if (targetRb.linearVelocity.z == 0f && targetRb.linearVelocity.x == 0f)
-        {
-            Vector3 lifted = targetRb.transform.position;
-            lifted.y += 0.05f; // Small lift
-            targetRb.transform.position = lifted;
-        }
 
     }
 
