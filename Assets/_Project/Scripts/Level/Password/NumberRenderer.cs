@@ -1,5 +1,5 @@
 using UnityEngine;
-
+[DefaultExecutionOrder(-100)]
 [RequireComponent(typeof(MeshRenderer))]
 public class NumberRenderer : MonoBehaviour
 {
@@ -15,20 +15,12 @@ public class NumberRenderer : MonoBehaviour
     void Awake()
     {
         numberTexture = Resources.Load<Texture>("Textures/numbers"); // Load texture from Resources folder
+        SetupMaterial();
     }
 
     void Start()
     {
-        SetupMaterial();
-        UpdateUVs(numberToRender);
-    }
-
-    void OnValidate()
-    {
-        if (Application.isPlaying && numberMaterial != null)
-        {
-            UpdateUVs(numberToRender);
-        }
+        //UpdateUVs(numberToRender);
     }
 
     void SetupMaterial()
@@ -43,6 +35,11 @@ public class NumberRenderer : MonoBehaviour
 
     public void UpdateUVs(int number)
     {
+        if (numberMaterial == null)
+        {
+            SetupMaterial(); // fallback
+        }
+
         if (number < 0 || number > 9) return;
 
         // Grid: 5 columns x 2 rows

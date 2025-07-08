@@ -26,7 +26,6 @@ public class LevelManager : MonoBehaviour
 
     public void StartGame()
     {
-        Debug.Log("Button pressed");
         HideMenu();
 
         StartCoroutine(HandleSceneTransition());
