@@ -6753,13 +6753,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 688976085}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.65616274, y: -0.27179098, z: -0.269399, w: 0.65038794}
-  m_LocalPosition: {x: 2.662, y: -0.411, z: -0.003}
+  m_LocalRotation: {x: 0.5495807, y: -0.05818309, z: -0.4567879, w: 0.69708014}
+  m_LocalPosition: {x: 2.662, y: -0.411, z: -1.065}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 570141797}
-  m_LocalEulerAnglesHint: {x: 135.002, y: 89.284, z: 89.494}
+  m_LocalEulerAnglesHint: {x: 134.51599, y: 123.714005, z: 88.252}
 --- !u!114 &688976087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6912,9 +6912,9 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 1, a: 1}
   m_Intensity: 1552.5535
-  m_Range: 10
+  m_Range: 20
   m_SpotAngle: 119.44863
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -6957,7 +6957,7 @@ Light:
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
   m_ColorTemperature: 5715
-  m_UseColorTemperature: 1
+  m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
@@ -7852,13 +7852,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 781608355}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.6860249, y: 0.18381947, z: 0.18220174, w: 0.67998743}
-  m_LocalPosition: {x: -2.574, y: -0.411, z: -0.003}
+  m_LocalRotation: {x: 0.549597, y: 0.043304, z: 0.44854084, w: 0.7034763}
+  m_LocalPosition: {x: -2.574, y: -0.411, z: -0.929}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 570141797}
-  m_LocalEulerAnglesHint: {x: 120.004, y: -88.987, z: -89.122986}
+  m_LocalEulerAnglesHint: {x: 132.743, y: -125.29401, z: -89.451996}
 --- !u!114 &781608357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8011,9 +8011,9 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_Intensity: 1552.5535
-  m_Range: 10
+  m_Range: 20
   m_SpotAngle: 119.44863
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -8056,7 +8056,7 @@ Light:
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
   m_ColorTemperature: 5715
-  m_UseColorTemperature: 1
+  m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
@@ -10787,7 +10787,7 @@ GameObject:
   - component: {fileID: 1067822799}
   m_Layer: 0
   m_Name: button placeholder RED
-  m_TagString: Untagged
+  m_TagString: interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10809,7 +10809,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5000001
   m_Height: 2
@@ -15038,7 +15038,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 24.490362, y: 3.1730776, z: 1.2668879}
   m_Center: {x: 0.50915813, y: 0.44373512, z: -0.0986028}
@@ -17466,7 +17466,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 0, a: 1}
   m_Intensity: 1552.5535
   m_Range: 10
   m_SpotAngle: 119.44863
@@ -17511,7 +17511,7 @@ Light:
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
   m_ColorTemperature: 5715
-  m_UseColorTemperature: 1
+  m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
@@ -20859,7 +20859,7 @@ GameObject:
   - component: {fileID: 1926027007}
   m_Layer: 0
   m_Name: button placeholder GREEN
-  m_TagString: Untagged
+  m_TagString: interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20881,7 +20881,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5000001
   m_Height: 2
@@ -20949,7 +20949,7 @@ Transform:
   m_GameObject: {fileID: 1926027001}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.64, y: 0.42100006, z: -0.162}
+  m_LocalPosition: {x: -9.23, y: 0.42100006, z: -0.162}
   m_LocalScale: {x: 0.57574, y: 0.0746562, z: 0.57574}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22256,7 +22256,7 @@ GameObject:
   - component: {fileID: 2012820148}
   m_Layer: 0
   m_Name: button placeholder BLUE
-  m_TagString: Untagged
+  m_TagString: interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22278,7 +22278,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5000001
   m_Height: 2
@@ -22346,7 +22346,7 @@ Transform:
   m_GameObject: {fileID: 2012820142}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.53, y: 0.42100006, z: -0.162}
+  m_LocalPosition: {x: -7.72, y: 0.42100006, z: -0.162}
   m_LocalScale: {x: 0.57574, y: 0.0746562, z: 0.57574}
   m_ConstrainProportionsScale: 0
   m_Children: []
