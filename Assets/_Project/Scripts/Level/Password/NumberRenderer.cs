@@ -12,6 +12,11 @@ public class NumberRenderer : MonoBehaviour
 
     private Material numberMaterial;
 
+    void Awake()
+    {
+        numberTexture = Resources.Load<Texture>("Textures/numbers"); // Load texture from Resources folder
+    }
+
     void Start()
     {
         SetupMaterial();
