@@ -51,6 +51,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public bool is2DMode = false;         // 2.5D MOVEMENT
 
 
+    [HideInInspector] public StaminaSystem staminaSystem;       //STAMINA!!!!!!!!!!!
+
+
+
     //for the RayCasts
     public LayerMask bigObjectLayer;
     //public LayerMask smallObjectLayer;
@@ -104,6 +108,9 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         currentState.onEnter(this);                 //this = alle Variablen/ Methoden aus dieser Klasse hier
 
         animator = GetComponentInChildren<Animator>();
+
+        staminaSystem = GetComponent<StaminaSystem>();       //STAMINA!!!!!!!!!!!
+
 
     }
 
@@ -161,7 +168,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         jumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0);     // jetzt A
         //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button10);          //Rennen mit reindrücken von L
         //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button8);         //reindrücken von L
-        isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button5);         //R1
+        isRunning = Input.GetKey(KeyCode.LeftShift) && staminaSystem.CanRun()|| Input.GetKey(KeyCode.Joystick1Button5) && staminaSystem.CanRun();         //R1
 
         isCrouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Joystick1Button4);      //L1        //gilt für PS5 & X-Box
         //interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button0);        //Viereck
@@ -182,7 +189,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     void FixedUpdate()
     {
-        isRunning = Input.GetKey(KeyCode.LeftShift ) || Input.GetKey(KeyCode.Joystick1Button8);        //Für JUMP & Fall --> damit man direkt weiterrennen kann
+        isRunning = Input.GetKey(KeyCode.LeftShift ) || Input.GetKey(KeyCode.Joystick1Button8) && staminaSystem.CanRun();        //Für JUMP & Fall --> damit man direkt weiterrennen kann
         currentState.onFixedUpdate(this);           //beim aktuellen State FixedUpdate() aufrufen
 
     }
