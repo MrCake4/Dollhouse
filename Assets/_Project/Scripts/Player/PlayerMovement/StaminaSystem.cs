@@ -3,15 +3,18 @@ using UnityEngine;
 public class StaminaSystem : MonoBehaviour
 {
     [Header("Stamina Settings")]
-    public float maxStamina = 2f;         // Max Laufzeit in Sekunden
-    public float recoveryRate = 0.5f;     // Regeneration pro Sekunde
-    public float penaltyDuration = 3f;    // Timeout nach kompletter Erschöpfung
+    public float maxStamina = 5f;
+    public float recoveryRate = 0.5f;
+    public float penaltyDuration = 2f;
+
+    [Header("Stamina Consumption")]
+    public float staminaDrainRate = 1f;      // pro Sekunde beim Rennen
+    public float jumpStaminaCost = 0.7f;     // fixer Abzug beim Springen
 
     [HideInInspector] public float currentStamina;
-    private float penaltyTimer = 0f;
+    [HideInInspector] public bool isPenalty;
 
-    [HideInInspector] public bool isPenalty = false;
-
+    private float penaltyTimer;
     private PlayerStateManager player;
 
     private void Start()
@@ -20,49 +23,71 @@ public class StaminaSystem : MonoBehaviour
         player = GetComponent<PlayerStateManager>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        // Penalty aktiv
         if (isPenalty)
         {
-            penaltyTimer -= Time.deltaTime;
+            penaltyTimer -= Time.fixedDeltaTime;
             if (penaltyTimer <= 0f)
             {
                 isPenalty = false;
-                currentStamina = maxStamina; // vollständig aufladen nach Strafe
+                currentStamina = maxStamina;
+                Debug.Log("Stamina Penalty Ended");
             }
             return;
         }
 
-        // Im Jump- oder Fallstate -> Stamina bleibt gleich
-        var current = player.getCurrentState;
-        if (current == player.jumpState || current == player.fallState) return;
+        HandleStamina();
+    }
 
-        // Wenn Spieler rennt
+    private void HandleStamina()
+    {
+        var state = player.getCurrentState;
+
+        // Kein Verbrauch im Sprung oder Fall
+        if (state == player.jumpState || state == player.fallState)
+            return;
+
+        // Verbrauch beim Rennen
         if (player.isRunning && player.moveInput != Vector2.zero)
         {
-            currentStamina -= Time.deltaTime;
+            currentStamina -= staminaDrainRate * Time.fixedDeltaTime;
 
             if (currentStamina <= 0f)
             {
-                currentStamina = 0f;
-                isPenalty = true;
-                penaltyTimer = penaltyDuration;
+                StartPenalty("Running");
             }
         }
-        // Wenn Spieler nicht rennt
-        else
+        // Regeneration
+        else if (currentStamina < maxStamina)
         {
-            if (currentStamina < maxStamina)
-            {
-                currentStamina += recoveryRate * Time.deltaTime;
-                currentStamina = Mathf.Min(currentStamina, maxStamina);
-            }
+            currentStamina += recoveryRate * Time.fixedDeltaTime;
+            currentStamina = Mathf.Min(currentStamina, maxStamina);
         }
     }
 
     public bool CanRun()
     {
         return !isPenalty && currentStamina > 0f;
+    }
+
+    public void ConsumeJumpCost()
+    {
+        if (isPenalty) return;
+
+        currentStamina -= jumpStaminaCost;
+
+        if (currentStamina <= 0f)
+        {
+            StartPenalty("Jump");
+        }
+    }
+
+    private void StartPenalty(string source)
+    {
+        isPenalty = true;
+        currentStamina = 0f;
+        penaltyTimer = penaltyDuration;
+        Debug.Log($"Stamina Penalty Activated (by {source})");
     }
 }

@@ -4,8 +4,11 @@ public class JumpState : BasePlayerState
 {
     public override void onEnter(PlayerStateManager player)
     {
-        //player.animator.SetBool("IsJumping", true);
         player.animator.SetTrigger("DoJump");
+
+        // === STAMINA-Verbrauch beim Springen ===
+        player.GetComponent<StaminaSystem>()?.ConsumeJumpCost();
+
 
         /*
         // Spieler kann aus Idle mit WASD schräg springen
