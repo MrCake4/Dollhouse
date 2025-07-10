@@ -58,8 +58,11 @@ public class DebuggingManager : MonoBehaviour
 
     public void LevelSelector(int dropdownIndex)
     {
-
-        StartCoroutine(LoadSceneRoutine(dropdownIndex));
+        if (dropdownIndex <= 0) return;
+        StartCoroutine(LoadSceneRoutine(dropdownIndex - 1));
+        DestroyAllInLayer(LayerMask.NameToLayer("smallObject"));
+        toggleMenu(false);
+        isMenuActive = false;
     }
 
     private Scene GetNonPersistentScene(SceneField persistentSceneName)
@@ -80,19 +83,15 @@ public class DebuggingManager : MonoBehaviour
         SceneFadeManager.instance.StartFadeOut();
         yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingOut);
 
-        var loadOp = SceneManager.LoadSceneAsync(scenes[dropdownIndex], LoadSceneMode.Additive);
-        yield return loadOp;
-
-        Scene newScene = SceneManager.GetSceneByName(scenes[dropdownIndex].SceneName);
-        if (newScene.IsValid())
-            SceneManager.SetActiveScene(newScene);
-
         var oldScene = GetNonPersistentScene(persistentScene);
-        if (oldScene.IsValid() && oldScene.name != newScene.name)
+        if (oldScene.IsValid())
         {
             var unloadOp = SceneManager.UnloadSceneAsync(oldScene);
             yield return unloadOp;
         }
+
+        var loadOp = SceneManager.LoadSceneAsync(scenes[dropdownIndex], LoadSceneMode.Additive);
+        yield return loadOp;
 
         SceneFadeManager.instance.StartFadeIn();
     }
@@ -107,6 +106,19 @@ public class DebuggingManager : MonoBehaviour
         else
         {
             player.isInvincible = true;
+        }
+    }
+
+    void DestroyAllInLayer(int layer)
+    {
+        GameObject[] allObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj.layer == layer)
+            {
+                Destroy(obj);
+            }
         }
     }
 }

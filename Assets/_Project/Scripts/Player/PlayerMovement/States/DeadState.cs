@@ -19,7 +19,7 @@ public class DeadState : BasePlayerState
         if (animator != null) animator.enabled = false;
 
         // Ragdoll aktivieren
-        EnableRagdoll(player.transform);
+        //EnableRagdoll(player.transform);
     }
 
     public override void onUpdate(PlayerStateManager player) { }
@@ -29,6 +29,10 @@ public class DeadState : BasePlayerState
     {
         // Im DeadState bleibt man – normalerweise kein Exit nötig,
         // aber falls doch: Ragdoll deaktivieren (optional).
+
+        playerRigidbody.isKinematic = false;
+        mainCollider.enabled = true;
+        animator.enabled = true;
     }
 
     private void EnableRagdoll(Transform root)

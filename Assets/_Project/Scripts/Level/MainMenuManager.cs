@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class LevelManager : MonoBehaviour
 {
@@ -27,15 +28,25 @@ public class LevelManager : MonoBehaviour
     {
         HideMenu();
 
-        _scenesToLoad.Add(SceneManager.LoadSceneAsync(_persistentGameplay));
-        _scenesToLoad.Add(SceneManager.LoadSceneAsync(_levelScene, LoadSceneMode.Additive));
+        StartCoroutine(HandleSceneTransition());
     }
-    
+
     private void HideMenu()
     {
         for (int i = 0; i < objectsToHide.Length; i++)
         {
             objectsToHide[i].SetActive(false);
         }
+    }
+
+
+    private IEnumerator HandleSceneTransition()
+    {
+        SceneFadeManager.instance.StartFadeOut();
+
+        yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingOut);
+
+        _scenesToLoad.Add(SceneManager.LoadSceneAsync(_persistentGameplay));
+        _scenesToLoad.Add(SceneManager.LoadSceneAsync(_levelScene, LoadSceneMode.Additive));
     }
 }

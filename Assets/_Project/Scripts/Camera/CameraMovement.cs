@@ -44,6 +44,25 @@ public class CameraMovement : MonoBehaviour
         lookAtPlayer = currentRoom.getLookAtPlayer;
         currentLookAt = player.transform.position;
         cam = GetComponentInChildren<Camera>();
+
+        /// Camera Snap Fix at the start of a level
+        applyCameraSnapFix();
+    }
+
+    private void applyCameraSnapFix()
+    {
+        Vector3 desiredCameraPos = player.transform.position + cameraPosition;
+        float followStrength = currentRoom.getFollowStrength;
+        Vector3 blendedTarget = Vector3.Lerp(currentRoom.cameraAnchorPoint.position, desiredCameraPos, followStrength);
+        Bounds roomBounds = currentRoom.roomCollider.bounds;
+
+        float clampedX = Mathf.Clamp(blendedTarget.x, roomBounds.min.x, roomBounds.max.x);
+        float clampedY = Mathf.Clamp(blendedTarget.y, roomBounds.min.y, roomBounds.max.y);
+        float clampedZ = Mathf.Clamp(blendedTarget.z, roomBounds.min.z, roomBounds.max.z);
+        Vector3 clampedTarget = new Vector3(clampedX, clampedY, clampedZ);
+
+        transform.position = clampedTarget; // Instantly place camera
+        transform.LookAt(currentLookAt, Vector3.up); // Correct initial look-at direction
     }
 
     // Update is called once per frame
@@ -108,7 +127,7 @@ public class CameraMovement : MonoBehaviour
         bool isUsingMouse = Input.GetMouseButton(1);
 
         // 3. Wenn eine Eingabe vorhanden ist, Offset berechnen
-        if (isUsingMouse || isUsingGamepad)
+        if ((isUsingMouse || isUsingGamepad) && cameraPosition != Vector3.zero)
         {
             Vector3 inputOffset;
 
