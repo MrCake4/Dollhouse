@@ -28,20 +28,14 @@ public class PowerableTV : Interactable
     {
         if (player == null) return;
 
-        if(isOn) tvScreen.SetActive(true);
-        else tvScreen.SetActive(false);
-
         // if player is far away, turn off the tv even if it is on
-        if (Vector3.Distance(player.transform.position, transform.position) < 20f)
+        if (Vector3.Distance(player.transform.position, transform.position) > 20f)
         {
-            if (isOn) tvScreen.SetActive(true);
-            return;
-        }
-        else
-        {
-            // if player is far away, turn off the TV
             if (isOn) tvScreen.SetActive(false);
             return;
         }
+
+        if (isOn) tvScreen.SetActive(true);
+        else tvScreen.SetActive(false);
     }
 }
