@@ -8,9 +8,18 @@ public class ColorReceiver : MonoBehaviour
 
     private Renderer rend;
 
-    void Start()
+    void Awake()
     {
         rend = GetComponent<Renderer>();
+
+        if(rend==null) rend = GetComponentInChildren<Renderer>();
+
+        if (rend == null)
+        {
+            Debug.LogError($"❗ Kein Renderer gefunden auf {gameObject.name}. ColorReceiver benötigt einen Renderer, um die Farbe zu ändern.");
+            return;
+        }
+
         rend.material.color = Color.black;
     }
 

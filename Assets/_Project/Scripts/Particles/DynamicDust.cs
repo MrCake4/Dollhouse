@@ -21,29 +21,33 @@ public class DynamicDust : MonoBehaviour
     // This is where we will modify the particles' velocities
 
     void Start()
-    {
-        player = FindFirstObjectByType<PlayerStateManager>().transform;
+    {   if (player == null)
+        {
+            player = FindFirstObjectByType<PlayerStateManager>().transform;
+        }
     }
 
     void LateUpdate()
     {
-        if (particles == null || particles.Length < particleSystem.main.maxParticles)
+        if (player != null)
+        {
+            if (particles == null || particles.Length < particleSystem.main.maxParticles)
             particles = new ParticleSystem.Particle[particleSystem.main.maxParticles];
 
-        int aliveParticles = particleSystem.GetParticles(particles);
+            int aliveParticles = particleSystem.GetParticles(particles);
 
-        for (int i = 0; i < aliveParticles; i++)
-        {
-            Vector3 toPlayer = particles[i].position - player.position;
-            float distance = toPlayer.magnitude;
-
-            if (distance < repelRadius)
+            for (int i = 0; i < aliveParticles; i++)
             {
-                Vector3 repelDirection = toPlayer.normalized;
-                particles[i].velocity += repelDirection * repelForce * Time.deltaTime;
-            }
-        }
+                Vector3 toPlayer = particles[i].position - player.position;
+                float distance = toPlayer.magnitude;
 
-        particleSystem.SetParticles(particles, aliveParticles);
+                if (distance < repelRadius)
+                {
+                    Vector3 repelDirection = toPlayer.normalized;
+                    particles[i].velocity += repelDirection * repelForce * Time.deltaTime;
+                }
+            }
+            particleSystem.SetParticles(particles, aliveParticles);
+        }
     }
 }
