@@ -33,8 +33,7 @@ public class ButtonForSpotlight : Interactable
 
     public override void interact()
     {
-        //if (isOn) LightSwitch();
-        LightSwitch();
+        if (isOn) LightSwitch();
     }
 
     public override void onPowerOn()
