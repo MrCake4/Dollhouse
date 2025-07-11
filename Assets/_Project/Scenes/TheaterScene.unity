@@ -650,6 +650,67 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 46791829}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &60153014
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7372714776079444, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: m_Name
+      value: Dolly AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583837177724126326, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 16.176662
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583837177724126326, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583837177724126326, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 34.850075
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583837177724126326, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583837177724126326, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583837177724126326, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583837177724126326, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583837177724126326, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583837177724126326, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583837177724126326, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8889679970781055578, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: idleTime
+      value: 1800
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
 --- !u!1 &65407701
 GameObject:
   m_ObjectHideFlags: 0
@@ -9789,8 +9850,42 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6a8ff7c7c5ecebd42be44871395959e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 917212382}
   m_SourcePrefab: {fileID: 100100000, guid: 6a8ff7c7c5ecebd42be44871395959e3, type: 3}
+--- !u!1 &917212380 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6a8ff7c7c5ecebd42be44871395959e3, type: 3}
+  m_PrefabInstance: {fileID: 917212379}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &917212381 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8036361683542918558, guid: 6a8ff7c7c5ecebd42be44871395959e3, type: 3}
+  m_PrefabInstance: {fileID: 917212379}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &917212382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917212380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03d748af022570c418990e0c115d71b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerableObjects: []
+  currentPower: 0
+  charged: 0
+  loosesPowerOverTime: 1
+  maxPower: 100
+  lossOverTime: 1
+  antenna: {fileID: 917212381}
+  generatorSound: {fileID: 0}
+  powerObjects: 0
 --- !u!1001 &923273650
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23870,3 +23965,4 @@ SceneRoots:
   - {fileID: 1331165038}
   - {fileID: 1720467421}
   - {fileID: 1317931831}
+  - {fileID: 60153014}
