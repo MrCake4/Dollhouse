@@ -33,21 +33,27 @@ public class PullUpState : BasePlayerState
     {
         CalculateLedgePos(player);
 
-
         Debug.Log("I AM IN PULLUP STATE");
 
         // Zielposition auf der oberen Kante, leicht vorgezogen
         finalStandPos = ledgePos + player.transform.forward.normalized * -0.08f;
 
-        // Spieler sofort an die untere Griffposition bringen
+        // Rigidbody und RootMotion deaktivieren VOR dem Umpositionieren
+        player.rb.isKinematic = true;
+        player.animator.applyRootMotion = true;
+
+        // Setze sofort die Zielposition
         player.transform.position = finalStandPos;
 
-
-        player.animator.applyRootMotion = true;
-        player.rb.isKinematic = true;
-
+        // Animation triggern
         player.animator.SetTrigger("DoPullUp");
+
+        // Hier kommt der Trick:
+        // Forciere ein sofortiges Update der Animator-Pose,
+        // damit die neue Pose im selben Frame aktiv ist.
+        player.animator.Update(0f);
     }
+
 
 
 

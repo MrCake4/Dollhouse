@@ -384,17 +384,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         return false;
     }
 
-
-    /*public bool CanPullUp()
+    public bool TryAutoPullUp()
     {
-        //schaue ich richtig auf die Ledge (max. 50 Grad Abweichung)
-        //ist es im BoxCollider
-
-        //wenn true dann PullUpstate.SetLedgePosition(Hit.Collider.transform.position)
-
-        Debug.Log("I AM F***** TRYING");
-
-        if (!jumpPressed) return false;
+        if (moveDir == Vector3.zero || rb.linearVelocity.y <= 0f)
+            return false;
 
         BoxCollider box = GetComponent<BoxCollider>();
         if (box == null) return false;
@@ -415,21 +408,25 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         {
             if (col.CompareTag("mediumLedge"))
             {
+                // Blickwinkel prüfen
+                float angle = Vector3.Angle(transform.forward, col.transform.forward);
+                if (angle > 50f) return false;
 
-                Debug.Log("FOUND A MEDIUM LEDGE");
+                // Bewegung zur Ledge muss nach vorne gehen
+                float dot = Vector3.Dot(moveDir.normalized, transform.forward);
+                if (dot < 0.5f) return false;
 
-                // Richtung prüfen
-                Vector3 toLedge = col.transform.position - transform.position;
-                float angle = Vector3.Angle(transform.forward, toLedge);
-
-    pullUpState.SetLedgePos(col.transform.position);
+                // Springen + Blickrichtung + Bewegung = passt!
+                pullUpState.SetLedgeFromTransform(col.transform, transform.position);
                 SwitchState(pullUpState);
                 return true;
             }
         }
 
         return false;
-    }*/
+    }
+
+    
 
 
 
