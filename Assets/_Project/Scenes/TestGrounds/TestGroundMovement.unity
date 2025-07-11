@@ -894,8 +894,9 @@ MonoBehaviour:
   barBG: {fileID: 420813544}
   staminaSystem: {fileID: 1710465924}
   lerpSpeed: 5
-  staminaBarParent: {fileID: 1627545085}
+  canvasGroup: {fileID: 1627545088}
   hideDelay: 2
+  fadeSpeed: 3
 --- !u!1 &420813543
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,7 +908,6 @@ GameObject:
   - component: {fileID: 420813544}
   - component: {fileID: 420813547}
   - component: {fileID: 420813546}
-  - component: {fileID: 420813545}
   m_Layer: 3
   m_Name: BarBG
   m_TagString: Untagged
@@ -934,24 +934,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -198}
   m_SizeDelta: {x: 350, y: 7}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &420813545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 420813543}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 255a5b5c57d4e574c9e9ea909467c3c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  instantFill: {fileID: 0}
-  barBG: {fileID: 0}
-  staminaSystem: {fileID: 1710465924}
-  lerpSpeed: 5
-  staminaBarParent: {fileID: 0}
-  hideDelay: 2
 --- !u!114 &420813546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2687,7 +2669,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1627545086}
-  - component: {fileID: 1627545087}
+  - component: {fileID: 1627545088}
   m_Layer: 3
   m_Name: StaminaBar
   m_TagString: Untagged
@@ -2716,24 +2698,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1627545087
-MonoBehaviour:
+--- !u!225 &1627545088
+CanvasGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1627545085}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 255a5b5c57d4e574c9e9ea909467c3c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  instantFill: {fileID: 1811994132}
-  barBG: {fileID: 420813544}
-  staminaSystem: {fileID: 1710465924}
-  lerpSpeed: 5
-  staminaBarParent: {fileID: 1627545085}
-  hideDelay: 2
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1638083298
 GameObject:
   m_ObjectHideFlags: 0
@@ -3238,7 +3214,6 @@ GameObject:
   - component: {fileID: 1811994132}
   - component: {fileID: 1811994135}
   - component: {fileID: 1811994134}
-  - component: {fileID: 1811994133}
   m_Layer: 3
   m_Name: InstantFill
   m_TagString: Untagged
@@ -3265,24 +3240,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -198}
   m_SizeDelta: {x: 350, y: 7}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1811994133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1811994131}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 255a5b5c57d4e574c9e9ea909467c3c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  instantFill: {fileID: 0}
-  barBG: {fileID: 0}
-  staminaSystem: {fileID: 1710465924}
-  lerpSpeed: 5
-  staminaBarParent: {fileID: 0}
-  hideDelay: 2
 --- !u!114 &1811994134
 MonoBehaviour:
   m_ObjectHideFlags: 0

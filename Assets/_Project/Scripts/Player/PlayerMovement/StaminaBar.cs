@@ -8,17 +8,18 @@ public class StaminaBarDual : MonoBehaviour
     [SerializeField] private float lerpSpeed = 5f;
 
     [Header("Visibility Settings")]
-    [SerializeField] private GameObject staminaBarParent;   // Gesamte Leiste (Canvas-Child)
+    [SerializeField] private CanvasGroup canvasGroup;       // CanvasGroup für sanftes Ein-/Ausblenden
     [SerializeField] private float hideDelay = 2f;          // Sekunden bis Ausblenden
+    [SerializeField] private float fadeSpeed = 3f;          // Geschwindigkeit für Fading
 
     private float fullWidth;
     private float currentWidth;
     private float hideTimer = 0f;
-    private bool isVisible = true;
+    private float targetAlpha = 1f;
 
     void Start()
     {
-        if (!instantFill || !barBG || !staminaSystem || !staminaBarParent)
+        if (!instantFill || !barBG || !staminaSystem || !canvasGroup)
         {
             Debug.LogWarning("StaminaBarDual: Nicht alle Felder korrekt zugewiesen.");
             enabled = false;
@@ -27,9 +28,9 @@ public class StaminaBarDual : MonoBehaviour
 
         fullWidth = barBG.rect.width;
         currentWidth = fullWidth * (staminaSystem.currentStamina / staminaSystem.maxStamina);
-
         barBG.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, fullWidth);
-        staminaBarParent.SetActive(true); // Immer aktiv zu Beginn
+
+        canvasGroup.alpha = 1f; // Start sichtbar
     }
 
     void Update()
@@ -41,30 +42,28 @@ public class StaminaBarDual : MonoBehaviour
         instantFill.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, currentWidth);
 
         HandleVisibility(ratio);
+        FadeVisibility();
     }
 
     private void HandleVisibility(float ratio)
     {
         if (ratio < 1f)
         {
-            // Stamina ist nicht voll → sofort zeigen
             hideTimer = 0f;
-            if (!isVisible)
-            {
-                staminaBarParent.SetActive(true);
-                isVisible = true;
-            }
+            targetAlpha = 1f; // Sichtbar
         }
         else
         {
-            // Stamina ist voll → Timer hochzählen
             hideTimer += Time.deltaTime;
-
-            if (hideTimer >= hideDelay && isVisible)
+            if (hideTimer >= hideDelay)
             {
-                staminaBarParent.SetActive(false);
-                isVisible = false;
+                targetAlpha = 0f; // Unsichtbar
             }
         }
+    }
+
+    private void FadeVisibility()
+    {
+        canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, targetAlpha, Time.deltaTime * fadeSpeed);
     }
 }
