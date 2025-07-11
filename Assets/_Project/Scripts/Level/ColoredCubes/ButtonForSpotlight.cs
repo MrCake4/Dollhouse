@@ -10,6 +10,8 @@ public class ButtonForSpotlight : Interactable
         down
     }
 
+    [SerializeField] AudioClip[] leverSounds;
+
     [SerializeField] Light spotlight;
     private PlayerItemHandler player;
     [SerializeField] bool isOn = false;
@@ -60,6 +62,8 @@ public class ButtonForSpotlight : Interactable
     private void pullLever(leverPosition position)
     {
         if (leverTransform == null) return;
+
+        if (leverSounds.Length > 0) SoundEffectsManager.instance.PlayRandomSoundEffect(leverSounds, transform, 0.5f);
 
         switch (position)
         {

@@ -431,8 +431,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.5207424, y: 1.8301352, z: 1.6046834}
-  m_Center: {x: -0.11880398, y: -0.019922316, z: 0.51425624}
+  m_Size: {x: 1.6032658, y: 1.837849, z: 1.6275549}
+  m_Center: {x: 0.0037755966, y: -0.016065419, z: -0.0020599365}
 --- !u!114 &36618660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9524,7 +9524,7 @@ Transform:
   m_GameObject: {fileID: 873789137}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000029802319, y: 0.0000007152557, z: 0.00000038743013, w: 1}
-  m_LocalPosition: {x: -0.11198807, y: 0.27184248, z: -0.8390751}
+  m_LocalPosition: {x: -0.112, y: 0.272, z: -1.266}
   m_LocalScale: {x: 0.40779996, y: 0.40779996, z: 0.40780002}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11237,7 +11237,7 @@ Transform:
   m_GameObject: {fileID: 1005511804}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000566244, y: -1, z: 0.0000003874301, w: 0.000003978609}
-  m_LocalPosition: {x: -0.1035347, y: 0.27184248, z: 1.8409595}
+  m_LocalPosition: {x: -0.10354614, y: 0.27199996, z: 1.4140348}
   m_LocalScale: {x: 0.4078, y: 0.40779996, z: 0.40780002}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15891,7 +15891,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: f7f31390ca5cdaa46a0b173e01b7bd18, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: f7f31390ca5cdaa46a0b173e01b7bd18, type: 3}
       propertyPath: m_LocalPosition.y
@@ -15899,7 +15899,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: f7f31390ca5cdaa46a0b173e01b7bd18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.51
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: f7f31390ca5cdaa46a0b173e01b7bd18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -27115,6 +27115,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 548c2fc315e4cce4d8a7bf40023ae1da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leverSounds:
+  - {fileID: 8300000, guid: 97665265084802741ad34f2dc6d4797c, type: 3}
+  - {fileID: 8300000, guid: bf1484f8b66549747a5e2de725ce14ef, type: 3}
+  - {fileID: 8300000, guid: 181530643de737a4d8b6a9f0d3a16bb7, type: 3}
   spotlight: {fileID: 1581845431}
   isOn: 0
   lightObject: {fileID: 8258130576557847702}
@@ -27304,6 +27308,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 548c2fc315e4cce4d8a7bf40023ae1da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leverSounds:
+  - {fileID: 8300000, guid: 97665265084802741ad34f2dc6d4797c, type: 3}
+  - {fileID: 8300000, guid: bf1484f8b66549747a5e2de725ce14ef, type: 3}
+  - {fileID: 8300000, guid: 181530643de737a4d8b6a9f0d3a16bb7, type: 3}
   spotlight: {fileID: 688976088}
   isOn: 0
   lightObject: {fileID: 7150809691521869945}
@@ -27662,6 +27670,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 548c2fc315e4cce4d8a7bf40023ae1da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leverSounds:
+  - {fileID: 8300000, guid: 97665265084802741ad34f2dc6d4797c, type: 3}
+  - {fileID: 8300000, guid: bf1484f8b66549747a5e2de725ce14ef, type: 3}
+  - {fileID: 8300000, guid: 181530643de737a4d8b6a9f0d3a16bb7, type: 3}
   spotlight: {fileID: 781608358}
   isOn: 0
   lightObject: {fileID: 3405532885983905193}
