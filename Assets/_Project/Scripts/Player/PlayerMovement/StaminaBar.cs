@@ -9,8 +9,8 @@ public class StaminaBarDual : MonoBehaviour
 
     [Header("Visibility Settings")]
     [SerializeField] private CanvasGroup canvasGroup;       // CanvasGroup für sanftes Ein-/Ausblenden
-    [SerializeField] private float hideDelay = 2f;          // Sekunden bis Ausblenden
-    [SerializeField] private float fadeSpeed = 3f;          // Geschwindigkeit für Fading
+    [SerializeField] private float hideDelay = 0.6f;          // Sekunden bis Ausblenden
+    [SerializeField] private float fadeSpeed = 7f;          // Geschwindigkeit für Fading
 
     private float fullWidth;
     private float currentWidth;
