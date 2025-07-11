@@ -1,35 +1,70 @@
 using UnityEngine;
 
-public class StaminaBar : MonoBehaviour
+public class StaminaBarDual : MonoBehaviour
 {
-    [SerializeField] private RectTransform fillBar;         // Sichtbare Leiste
-    [SerializeField] private StaminaSystem staminaSystem;   // Referenz zum Player
-    [SerializeField] private float lerpSpeed = 5f;           // Geschwindigkeit der „Glättung“
+    [SerializeField] private RectTransform instantFill;
+    [SerializeField] private RectTransform barBG;
+    [SerializeField] private StaminaSystem staminaSystem;
+    [SerializeField] private float lerpSpeed = 5f;
 
-    private Vector3 initialScale;
-    private float currentDisplayedRatio = 1f;                // aktuell sichtbare Länge (0.0 – 1.0)
+    [Header("Visibility Settings")]
+    [SerializeField] private GameObject staminaBarParent;   // Gesamte Leiste (Canvas-Child)
+    [SerializeField] private float hideDelay = 2f;          // Sekunden bis Ausblenden
+
+    private float fullWidth;
+    private float currentWidth;
+    private float hideTimer = 0f;
+    private bool isVisible = true;
 
     void Start()
     {
-        if (fillBar == null || staminaSystem == null)
+        if (!instantFill || !barBG || !staminaSystem || !staminaBarParent)
         {
-            Debug.LogWarning("StaminaBar: fillBar oder staminaSystem nicht zugewiesen.");
+            Debug.LogWarning("StaminaBarDual: Nicht alle Felder korrekt zugewiesen.");
             enabled = false;
             return;
         }
 
-        initialScale = fillBar.localScale;
-        currentDisplayedRatio = staminaSystem.currentStamina / staminaSystem.maxStamina;
+        fullWidth = barBG.rect.width;
+        currentWidth = fullWidth * (staminaSystem.currentStamina / staminaSystem.maxStamina);
+
+        barBG.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, fullWidth);
+        staminaBarParent.SetActive(true); // Immer aktiv zu Beginn
     }
 
     void Update()
     {
-        float targetRatio = staminaSystem.currentStamina / staminaSystem.maxStamina;
-        targetRatio = Mathf.Clamp01(targetRatio);
+        float ratio = Mathf.Clamp01(staminaSystem.currentStamina / staminaSystem.maxStamina);
+        float targetWidth = fullWidth * ratio;
 
-        // Sanft interpolieren zwischen aktueller Anzeige und Zielwert
-        currentDisplayedRatio = Mathf.Lerp(currentDisplayedRatio, targetRatio, Time.deltaTime * lerpSpeed);
+        currentWidth = Mathf.Lerp(currentWidth, targetWidth, Time.deltaTime * lerpSpeed);
+        instantFill.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, currentWidth);
 
-        fillBar.localScale = new Vector3(initialScale.x * currentDisplayedRatio, initialScale.y, initialScale.z);
+        HandleVisibility(ratio);
+    }
+
+    private void HandleVisibility(float ratio)
+    {
+        if (ratio < 1f)
+        {
+            // Stamina ist nicht voll → sofort zeigen
+            hideTimer = 0f;
+            if (!isVisible)
+            {
+                staminaBarParent.SetActive(true);
+                isVisible = true;
+            }
+        }
+        else
+        {
+            // Stamina ist voll → Timer hochzählen
+            hideTimer += Time.deltaTime;
+
+            if (hideTimer >= hideDelay && isVisible)
+            {
+                staminaBarParent.SetActive(false);
+                isVisible = false;
+            }
+        }
     }
 }
