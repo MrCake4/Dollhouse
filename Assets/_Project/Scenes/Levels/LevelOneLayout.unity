@@ -10040,6 +10040,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sparkleEffect: {fileID: 1290204882}
+--- !u!114 &265510362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265510348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27d0fc0f3f3ceae488cc4810102c7772, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetBone: {fileID: 0}
+  offset: {x: 0, y: -0.24, z: -0.36}
+  alignRotation: 1
 --- !u!1001 &277936632
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60282,6 +60297,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1359213696285950647, guid: 74253ee25c9a5d84682e985f65abbac3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 265510360}
+    - targetCorrespondingSourceObject: {fileID: 1359213696285950647, guid: 74253ee25c9a5d84682e985f65abbac3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 265510362}
   m_SourcePrefab: {fileID: 100100000, guid: 74253ee25c9a5d84682e985f65abbac3, type: 3}
 --- !u!4 &2286085368413653018 stripped
 Transform:
