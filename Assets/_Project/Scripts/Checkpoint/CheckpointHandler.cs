@@ -10,6 +10,7 @@ public class CheckpointHandler : MonoBehaviour
     PlayerStateManager player;
 
     AIRoomScan eye;
+    bool respawning = false;
 
     void Start()
     {
@@ -24,13 +25,14 @@ public class CheckpointHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && !respawning)
         {
-
+            respawning = true;
             StartCoroutine(RespawnPlayer(GameObject.FindWithTag("Player").transform));
 
             // reset AI state to idle
             AIStateManager ai = FindFirstObjectByType<AIStateManager>();
+            respawning = false;
             if (ai != null) ResetAI(ai); return;
         }
     }
@@ -59,6 +61,13 @@ public class CheckpointHandler : MonoBehaviour
         SceneFadeManager.instance.StartFadeOut();
 
         yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingOut);
+
+        if (checkpoints.Length < 0)
+        {
+            playerObject.position = FindAnyObjectByType<SceneEntry>().transform.position;
+            SceneFadeManager.instance.StartFadeIn();
+            player.SwitchState(player.idleState);
+        }
         // Respawn the player at the last active checkpoint
         for (int i = checkpoints.Length - 1; i >= 0; i--)
         {
