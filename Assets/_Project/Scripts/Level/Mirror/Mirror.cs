@@ -11,14 +11,18 @@ public class Mirror : MonoBehaviour
 
     public Transform getReflectionPoint()
     {
-        
+
         if (reflectionPoint == null)
         {
-            Debug.LogError("❗ Reflection point is not set on Mirror: " + gameObject.name);
             return null;
         }
 
         return reflectionPoint;
+    }
+    
+    public void setReflectionPoint(Transform newPoint)
+    {
+        reflectionPoint = newPoint;
     }
 
 }
