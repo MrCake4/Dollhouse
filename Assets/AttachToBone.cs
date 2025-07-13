@@ -25,8 +25,20 @@ public class AttachToBone : MonoBehaviour
         }
     }
 
+    public void SetOffset(Vector3 newOffset)
+    {
+        offset = newOffset;
+    }
+
+
+
     public void SetTargetBone(GameObject bone)
     {
         targetBone = bone;
+    }
+
+    public Vector3 GetOffset()
+    {
+        return offset;
     }
 }
