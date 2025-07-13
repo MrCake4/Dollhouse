@@ -217,18 +217,20 @@ public class AIRoomScan : MonoBehaviour
             hitPlayer = false;
 
             if (hit.collider.CompareTag("Destroyable"))
-            
+
                 if (hit.collider.GetComponent<Destructible>() != null)
                     hit.collider.GetComponent<Destructible>()?.destroyObject();
                 else
                     Destroy(hit.collider.gameObject);
-                    
+
             else if (hit.collider.CompareTag("Generator"))
                 hit.collider.GetComponent<HitableObject>()?.onHit();
+            else if (hit.collider.CompareTag("Reflector"))
+            {
+                Debug.Log("Reflector hit: " + hit.collider.gameObject.name);
+                GetComponent<LaserReflection>()?.ReflectLaser(0, hit.collider.gameObject);
+            }
         }
-
-        if (GetComponent<LaserReflection>() is LaserReflection reflect)
-            reflect.ClearLaser();
 
         setImplosionLight(false);
     }
