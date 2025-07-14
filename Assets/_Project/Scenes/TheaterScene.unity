@@ -9512,6 +9512,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: mushroom_lowpoly
       objectReference: {fileID: 0}
+    - target: {fileID: 2629151714263262770, guid: aa78b4fcbdc47d541821bcff447cced8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.907
+      objectReference: {fileID: 0}
+    - target: {fileID: 2629151714263262770, guid: aa78b4fcbdc47d541821bcff447cced8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.834
+      objectReference: {fileID: 0}
+    - target: {fileID: 2629151714263262770, guid: aa78b4fcbdc47d541821bcff447cced8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: aa78b4fcbdc47d541821bcff447cced8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.23
@@ -11868,6 +11880,59 @@ Light:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1 &998425476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 998425477}
+  - component: {fileID: 998425478}
+  m_Layer: 0
+  m_Name: TheaterRoomCollider01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &998425477
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998425476}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.70710707, z: -0, w: 0.70710653}
+  m_LocalPosition: {x: -10.14, y: 0.82, z: 5.15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1351206982}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!65 &998425478
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998425476}
+  m_Material: {fileID: 13400000, guid: dbdd02aca4a4bf249be55c0c6143e93b, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.1025497, y: 11.690336, z: 25.056683}
+  m_Center: {x: 2.1347766, y: 5.345167, z: 10.636877}
 --- !u!1001 &999491843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16441,6 +16506,8 @@ Transform:
   - {fileID: 1197750299}
   - {fileID: 333076377}
   - {fileID: 1108248878}
+  - {fileID: 998425477}
+  - {fileID: 1682796329}
   - {fileID: 750482491}
   - {fileID: 1602719258}
   m_Father: {fileID: 326165926}
@@ -20539,6 +20606,59 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: -5645937942226959685, guid: 6212e7289da49fc40be6647b76693961, type: 3}
+--- !u!1 &1682796328
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1682796329}
+  - component: {fileID: 1682796330}
+  m_Layer: 0
+  m_Name: TheaterRoomCollider02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1682796329
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682796328}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.70710707, z: -0, w: 0.70710653}
+  m_LocalPosition: {x: -10.14, y: 0.82, z: -0.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1351206982}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!65 &1682796330
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682796328}
+  m_Material: {fileID: 13400000, guid: dbdd02aca4a4bf249be55c0c6143e93b, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.1025497, y: 11.690336, z: 25.056683}
+  m_Center: {x: 2.1347766, y: 5.345167, z: 10.636877}
 --- !u!4 &1683554122 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2774220344278030320, guid: 6212e7289da49fc40be6647b76693961, type: 3}
@@ -25097,6 +25217,38 @@ PrefabInstance:
     - target: {fileID: -6689036041284674117, guid: 1b1c3651f7bad5f4e96d7fbc6e4f996e, type: 3}
       propertyPath: m_Name
       value: mushrooms
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420448543828996343, guid: 1b1c3651f7bad5f4e96d7fbc6e4f996e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 17.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420448543828996343, guid: 1b1c3651f7bad5f4e96d7fbc6e4f996e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 22.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420448543828996343, guid: 1b1c3651f7bad5f4e96d7fbc6e4f996e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420448543828996343, guid: 1b1c3651f7bad5f4e96d7fbc6e4f996e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9182428
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420448543828996343, guid: 1b1c3651f7bad5f4e96d7fbc6e4f996e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420448543828996343, guid: 1b1c3651f7bad5f4e96d7fbc6e4f996e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420448543828996343, guid: 1b1c3651f7bad5f4e96d7fbc6e4f996e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.396018
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420448543828996343, guid: 1b1c3651f7bad5f4e96d7fbc6e4f996e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -46.659
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 1b1c3651f7bad5f4e96d7fbc6e4f996e, type: 3}
       propertyPath: m_LocalScale.x
