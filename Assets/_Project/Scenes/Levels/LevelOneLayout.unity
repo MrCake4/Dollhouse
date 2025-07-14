@@ -21908,17 +21908,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cc9859f2870ba144eb65d53dcda102f7, type: 3}
   m_PrefabInstance: {fileID: 618594595}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &618658500 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4908000166004069398, guid: d6eb0c5956c02d0468038d68530787bd, type: 3}
-  m_PrefabInstance: {fileID: 288172727}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4584e98d218184459ff42f439decd88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &622139395
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42421,6 +42410,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0054601114, y: 0.082983516, z: 1.7950116}
   m_Center: {x: 0.0000005347127, y: 0.03882128, z: -0.763002}
+--- !u!114 &1344004990 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4908000166004069398, guid: d6eb0c5956c02d0468038d68530787bd, type: 3}
+  m_PrefabInstance: {fileID: 321992336}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4584e98d218184459ff42f439decd88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1344573493
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53867,7 +53867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa89ae2a5739944dbd8303580cdfbd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraPosition: {x: 0, y: 0, z: 0}
+  cameraPosition: {x: 0, y: 0, z: -1}
   floatAmplitude: 0.5
   floatFrequency: 0.1
   maxOffset: 3
@@ -53877,7 +53877,7 @@ MonoBehaviour:
   - {fileID: 1746452831}
   - {fileID: 1227224292}
   - {fileID: 1464275756}
-  currentRoom: {fileID: 618658500}
+  currentRoom: {fileID: 1344004990}
   cameraSpeed: 2
 --- !u!4 &1870558530
 Transform:
