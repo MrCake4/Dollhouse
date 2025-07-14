@@ -25871,18 +25871,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2102497458}
     m_Modifications:
+    - target: {fileID: 2848729478878647802, guid: 6684e8dbe3cafa14b8dff33846dcd92e, type: 3}
+      propertyPath: m_Name
+      value: LeverG
+      objectReference: {fileID: 0}
+    - target: {fileID: 2848729478878647802, guid: 6684e8dbe3cafa14b8dff33846dcd92e, type: 3}
+      propertyPath: m_TagString
+      value: interactable
+      objectReference: {fileID: 0}
     - target: {fileID: 3330721549571004868, guid: 6684e8dbe3cafa14b8dff33846dcd92e, type: 3}
       propertyPath: spotlight
       value: 
       objectReference: {fileID: 1581845431}
+    - target: {fileID: 3330721549571004868, guid: 6684e8dbe3cafa14b8dff33846dcd92e, type: 3}
+      propertyPath: onMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 2b3025e6a372df2439c46ebf6e84b7c1, type: 2}
+    - target: {fileID: 3466969975076035541, guid: 6684e8dbe3cafa14b8dff33846dcd92e, type: 3}
+      propertyPath: m_TagString
+      value: interactable
+      objectReference: {fileID: 0}
     - target: {fileID: 3818663589964851752, guid: 6684e8dbe3cafa14b8dff33846dcd92e, type: 3}
       propertyPath: m_Name
       value: Fusebox
       objectReference: {fileID: 0}
+    - target: {fileID: 5342799842217528862, guid: 6684e8dbe3cafa14b8dff33846dcd92e, type: 3}
+      propertyPath: m_TagString
+      value: interactable
+      objectReference: {fileID: 0}
     - target: {fileID: 7549658383726485760, guid: 6684e8dbe3cafa14b8dff33846dcd92e, type: 3}
       propertyPath: spotlight
       value: 
-      objectReference: {fileID: 1581845431}
+      objectReference: {fileID: 688976088}
+    - target: {fileID: 7549658383726485760, guid: 6684e8dbe3cafa14b8dff33846dcd92e, type: 3}
+      propertyPath: onMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: e549f7ec478c6f24ba39267d25c35702, type: 2}
     - target: {fileID: 8341461284964298493, guid: 6684e8dbe3cafa14b8dff33846dcd92e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 16.85
@@ -25926,7 +25950,11 @@ PrefabInstance:
     - target: {fileID: 9047524334340336002, guid: 6684e8dbe3cafa14b8dff33846dcd92e, type: 3}
       propertyPath: spotlight
       value: 
-      objectReference: {fileID: 1581845431}
+      objectReference: {fileID: 781608358}
+    - target: {fileID: 9047524334340336002, guid: 6684e8dbe3cafa14b8dff33846dcd92e, type: 3}
+      propertyPath: onMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 2911e29a591ae7b499dfd6e09e1e07e0, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
