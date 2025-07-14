@@ -48,8 +48,8 @@ public class StaminaSystem : MonoBehaviour
         if (state == player.jumpState || state == player.fallState)
             return;
 
-        // Verbrauch beim Rennen
-        if (player.isRunning && player.moveInput != Vector2.zero)
+        // Verbrauch beim Rennen → prüfe, ob Spieler WIRKLICH im RunState ist
+        if (state == player.runState && player.GetHorizontalSpeed() > player.walkSpeed + 0.5f)
         {
             currentStamina -= staminaDrainRate * Time.fixedDeltaTime;
 
@@ -65,6 +65,7 @@ public class StaminaSystem : MonoBehaviour
             currentStamina = Mathf.Min(currentStamina, maxStamina);
         }
     }
+
 
     public bool CanRun()
     {
