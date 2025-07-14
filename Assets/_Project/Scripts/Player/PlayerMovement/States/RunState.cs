@@ -30,6 +30,7 @@ public class RunState : BasePlayerState
             else
             {
                 player.jumpPressed = false;
+                player.jumpState.jumpHeight = player.RunJumpHeight;
                 player.SwitchState(player.jumpState);
                 return;
             }

@@ -16,7 +16,14 @@ public class DeadState : BasePlayerState
 
         if (playerRigidbody != null) playerRigidbody.isKinematic = true;
         if (mainCollider != null) mainCollider.enabled = false;
-        if (animator != null) animator.enabled = false;
+        //if (animator != null) animator.enabled = false;
+        
+
+        /*if isGrounded --> "Die"
+            if !isGrounded --> "Fall" --> checkForGroundDistance() --> "HitGround"
+        
+        */
+        player.animator.SetTrigger("Die");
 
         // Ragdoll aktivieren
         //EnableRagdoll(player.transform);
@@ -33,6 +40,8 @@ public class DeadState : BasePlayerState
         playerRigidbody.isKinematic = false;
         mainCollider.enabled = true;
         animator.enabled = true;
+
+        player.animator.ResetTrigger("Die");
     }
 
     private void EnableRagdoll(Transform root)
@@ -59,6 +68,8 @@ public class DeadState : BasePlayerState
                 rb.interpolation = RigidbodyInterpolation.Interpolate;
             }
         }
+
+        
     }
 }
 

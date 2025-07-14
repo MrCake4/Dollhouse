@@ -35,6 +35,7 @@ public class IdleState : BasePlayerState
             else
             {
                 player.jumpPressed = false;
+                player.jumpState.jumpHeight = player.IdleJumpHeight;
                 player.SwitchState(player.jumpState);
                 return;
             }
