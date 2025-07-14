@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class InteractableBell : Interactable
+public class InteractableDuck : Interactable
 {
-    [SerializeField] AudioClip[] bellSound;
+    [SerializeField] AudioClip[] duckSounds;
 
     // Trigger options
     [SerializeField] RoomContainer roomToTrigger;
     [SerializeField] AIStateManager ai;
     [SerializeField] bool triggered = false;
-    float coolDown = 0.5f; // Cooldown to prevent multiple triggers in a short time
+    float coolDown = 2f; // Cooldown to prevent multiple triggers in a short time
     float coolDownTimer = 0f;
 
     void Awake()
@@ -20,7 +20,7 @@ public class InteractableBell : Interactable
     {
         if (SoundEffectsManager.instance != null)
         {
-            SoundEffectsManager.instance.PlayRandomSoundEffect(bellSound, transform, 1f);
+            SoundEffectsManager.instance.PlayRandomSoundEffect(duckSounds, transform, 0.2f);
         }
         TriggerAI();
     }
@@ -28,7 +28,7 @@ public class InteractableBell : Interactable
     void TriggerAI()
     {
         if (!ai.enabled) ai.enabled = true;
-        if (roomToTrigger != null && !roomToTrigger.triggered)
+        if (roomToTrigger != null && !roomToTrigger.triggered && ai.getCurrentState == ai.idleState)
         {
             triggered = true;
             roomToTrigger.triggered = true;
