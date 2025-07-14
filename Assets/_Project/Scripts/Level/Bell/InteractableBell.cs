@@ -28,7 +28,7 @@ public class InteractableBell : Interactable
     void TriggerAI()
     {
         if (!ai.enabled) ai.enabled = true;
-        if (roomToTrigger != null && !roomToTrigger.triggered)
+        if (roomToTrigger != null && !roomToTrigger.triggered && ai.getCurrentState == ai.idleState)
         {
             triggered = true;
             roomToTrigger.triggered = true;
