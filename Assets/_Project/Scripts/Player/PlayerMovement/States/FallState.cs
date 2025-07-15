@@ -39,11 +39,31 @@ public class FallState : BasePlayerState                                //dann, 
         }
         
     }
-    public override void onFixedUpdate(PlayerStateManager player)          //Physik
+    public override void onFixedUpdate(PlayerStateManager player)
     {
-        player.ApplyAirControl(player);
-        player.RotateToMoveDirection();
+        Vector3 vel = player.rb.linearVelocity;
+
+        // === Bewegungsrichtung anpassen ===
+        Vector3 forward = player.moveDir.normalized;
+        float horizontalSpeed = new Vector3(vel.x, 0, vel.z).magnitude;
+        Vector3 newHorizontal = forward * horizontalSpeed;
+        player.rb.linearVelocity = new Vector3(newHorizontal.x, vel.y, newHorizontal.z);
+
+        // === Drehe Spieler zur Eingaberichtung ===
+        if (forward.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(forward);
+            player.transform.rotation = Quaternion.Slerp(
+                player.transform.rotation,
+                targetRot,
+                Time.fixedDeltaTime * 10f
+            );
+        }
     }
+
+
+
+
     public override void onExit(PlayerStateManager player)                 //was passiert, wenn aus State rausgeht
     {
         Vector3 vel = player.rb.linearVelocity;
