@@ -39,7 +39,7 @@ public class AIStateManager : MonoBehaviour
     public AIRoomScan eye;
 
     [Header("AI Behaviour")]
-    [SerializeField, Range(0, 300)] private float idleTime;
+    [SerializeField, Range(0, 1800)] private float idleTime;
     [Range(0, 10)] public float moveSpeed = 10;       // How fast AI goes from room to room
     [SerializeField, Range(1, 100)] private int checkWindowsPerPatrol = 4;
     [HideInInspector] public int windowsPatrolled = 0;

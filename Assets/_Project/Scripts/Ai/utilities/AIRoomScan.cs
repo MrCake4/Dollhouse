@@ -189,7 +189,7 @@ public class AIRoomScan : MonoBehaviour
             ResetScan();
         }
 
-        UpdateLaserLine();
+        // UpdateLaserLine();
         UpdateSpotlight();
     }
 
@@ -249,8 +249,10 @@ public class AIRoomScan : MonoBehaviour
             SetLaser(transform.position, playerCollider.bounds.center + targetOffset);
 
         laserDrawTimer -= Time.deltaTime;
+        
         if (laserDrawTimer <= 0f)
         {
+            Debug.Log("Deactivating Laser");
             laserLine.enabled = false;
             laserDrawTimer = laserDrawResetTime;
         }
@@ -261,6 +263,7 @@ public class AIRoomScan : MonoBehaviour
         Quaternion target = centerRotation;
         while (Quaternion.Angle(transform.rotation, target) > 0.5f)
         {
+            UpdateLaserLine();
             transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * returnToCenterSpeed);
             yield return null;
         }

@@ -14,6 +14,8 @@ public class PlatformColorCheck : MonoBehaviour
 
     private Renderer rend;
 
+    bool solved = false;
+
 
     private void Start()
     {
@@ -32,23 +34,24 @@ public class PlatformColorCheck : MonoBehaviour
             Color objectColor = receiver.GetCurrentColor();
 
             //============================= Debug only ===============================
-                bool currentMatch = ColorsAreEqual(objectColor, targetColor, tolerance);
+            bool currentMatch = ColorsAreEqual(objectColor, targetColor, tolerance);
 
-                // Nur loggen, wenn sich der Match-Status ändert
-                if (currentMatch != lastMatch)
+            // Nur loggen, wenn sich der Match-Status ändert
+            if (currentMatch != lastMatch)
+            {
+                if (currentMatch)
                 {
-                    if (currentMatch)
-                    {
-                        Debug.Log("🎉 Juhuu, richtige Farbe!");
-                    }
-                    else
-                    {
-                        Debug.Log("💢 Oh no, falsche Farbe!");
-                    }
-                    lastMatch = currentMatch;
+                    Debug.Log("🎉 Juhuu, richtige Farbe!");
+                    solved = true;
                 }
+                else
+                {
+                    Debug.Log("💢 Oh no, falsche Farbe!");
+                }
+                lastMatch = currentMatch;
+            }
             //============================= Debug only ===============================
-            
+
             isColorMatch = ColorsAreEqual(objectColor, targetColor, tolerance);
         }
     }
@@ -68,7 +71,7 @@ public class PlatformColorCheck : MonoBehaviour
 
             lastMatch = false;
             //============================= Debug only ===============================
-            
+
         }
     }
 
@@ -78,4 +81,6 @@ public class PlatformColorCheck : MonoBehaviour
                Mathf.Abs(a.g - b.g) < tolerance &&
                Mathf.Abs(a.b - b.b) < tolerance;
     }
+
+    public bool getSolved => solved; // Getter für den aktuellen Farbstatus
 }

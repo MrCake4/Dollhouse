@@ -6,6 +6,8 @@ public class PlayerItemHandler : MonoBehaviour
     private BoxCollider triggerCollider;
     private PlayerStateManager player;
 
+    [SerializeField] GameObject carryBone; // Optional: Bone to attach carried object to
+
     private void Start()
     {
         triggerCollider = GetComponent<BoxCollider>();
@@ -89,10 +91,22 @@ public class PlayerItemHandler : MonoBehaviour
     {
         carriedObject = item;
 
-        Vector3 offset = transform.TransformDirection(new Vector3(0, 0.5f, -1f));
-        carriedObject.transform.position = transform.position + offset;
+        // Optional: Attach to bone if script exists
+        item.GetComponent<AttachToBone>()?.SetTargetBone(carryBone); 
+
+        if (item.GetComponent<AttachToBone>() != null && item.GetComponent<AttachToBone>().GetOffset() == Vector3.zero)
+        {
+            item.GetComponent<AttachToBone>().SetOffset(new Vector3(0, 0.5f, -1f)); // Set default offset if no AttachToBone script
+        }
+        // if no AttachToBone script, just set position and rotation
+        else
+        {
+            Vector3 offset = transform.TransformDirection(new Vector3(0, 0.5f, -1f));
+            carriedObject.transform.position = transform.position + offset;
+            carriedObject.transform.SetParent(transform);
+        }
+
         carriedObject.transform.rotation = transform.rotation;
-        carriedObject.transform.SetParent(transform);
 
         Collider col = carriedObject.GetComponent<Collider>();
         if (col) col.enabled = false;
@@ -101,9 +115,17 @@ public class PlayerItemHandler : MonoBehaviour
         if (rb) rb.isKinematic = true;
     }
 
-    private void DropItem()
+    public void DropItem()
     {
         if (carriedObject == null) return;
+
+        // if attach to bone script exists, detach it safely
+        if (carriedObject.GetComponent<AttachToBone>() != null)
+        {
+            carriedObject.GetComponent<AttachToBone>()?.SetTargetBone(null); // Optional: Attach to bone if script exists
+            Vector3 offset = transform.TransformDirection(new Vector3(0, 0.5f, -1f));
+            carriedObject.transform.position = transform.position + offset;
+        }
 
         carriedObject.transform.SetParent(null);
 

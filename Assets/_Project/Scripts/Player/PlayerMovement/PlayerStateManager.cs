@@ -30,8 +30,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public Vector3 moveDir;               // Richtung im 3D-Raum
     [HideInInspector] public Rigidbody rb;                  //rigid body reference
     public float rotateSpeed = 10f;
-    public float jumpForce = 2f;
-    public float jumpHeight = 1.5f;                         // gewünschte konstante Sprunghöhe
+    
+    public float RunJumpHeight = 1.5f;                         // gewünschte konstante Sprunghöhe
+    public float WalkJumpHeight = 1.2f;
+    public float IdleJumpHeight = 1f;
 
     public float airControlMultiplier = 0.3f;              //um mitten im Jump noch Richtung steuern zu können
 
@@ -51,6 +53,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public bool is2DMode = false;         // 2.5D MOVEMENT
 
 
+    [HideInInspector] public StaminaSystem staminaSystem;       //STAMINA!!!!!!!!!!!
+
+
+
     //for the RayCasts
     public LayerMask bigObjectLayer;
     //public LayerMask smallObjectLayer;
@@ -60,13 +66,6 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public float walkSpeed = 2.5f;
     public float maxSpeed = 5f;
     public float crouchSpeed = 1f;
-
-    //PULL UP
-    [Header("Pull Up Settings")]
-    //[SerializeField] public float ledgeOffset = 0f;
-    //[SerializeField] public float pullUpApproachDistance = 0.5f; // zum Probieren
-
-
 
 
     //________________ANIMATION_________________
@@ -111,6 +110,9 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         currentState.onEnter(this);                 //this = alle Variablen/ Methoden aus dieser Klasse hier
 
         animator = GetComponentInChildren<Animator>();
+
+        staminaSystem = GetComponent<StaminaSystem>();       //STAMINA!!!!!!!!!!!
+
 
     }
 
@@ -168,7 +170,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         jumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0);     // jetzt A
         //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button10);          //Rennen mit reindrücken von L
         //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button8);         //reindrücken von L
-        isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button5);         //R1
+        isRunning = Input.GetKey(KeyCode.LeftShift) && staminaSystem.CanRun()|| Input.GetKey(KeyCode.Joystick1Button5) && staminaSystem.CanRun();         //R1
 
         isCrouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Joystick1Button4);      //L1        //gilt für PS5 & X-Box
         //interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button0);        //Viereck
@@ -189,7 +191,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     void FixedUpdate()
     {
-        isRunning = Input.GetKey(KeyCode.LeftShift ) || Input.GetKey(KeyCode.Joystick1Button8);        //Für JUMP & Fall --> damit man direkt weiterrennen kann
+        isRunning = Input.GetKey(KeyCode.LeftShift ) || Input.GetKey(KeyCode.Joystick1Button8) && staminaSystem.CanRun();        //Für JUMP & Fall --> damit man direkt weiterrennen kann
         currentState.onFixedUpdate(this);           //beim aktuellen State FixedUpdate() aufrufen
 
     }
@@ -343,13 +345,6 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     public bool CanPullUp()
     {
-        //schaue ich richtig auf die Ledge (max. 50 Grad Abweichung)
-        //ist es im BoxCollider
-
-        //wenn true dann PullUpstate.SetLedgePosition(Hit.Collider.transform.position)
-
-        Debug.Log("I AM F***** TRYING");
-
         if (!jumpPressed) return false;
 
         BoxCollider box = GetComponent<BoxCollider>();
@@ -371,19 +366,18 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         {
             if (col.CompareTag("mediumLedge"))
             {
-
                 Debug.Log("FOUND A MEDIUM LEDGE");
 
-                // Richtung prüfen
-                Vector3 toLedge = col.transform.position - transform.position;
-                float angle = Vector3.Angle(transform.forward, toLedge);
-                /*if (angle > 50f)
-                {
-                    Debug.Log("ANGLE IS SHIT");
-                    return false;
-                }*/
+                // Winkel zwischen Spieler-Vorwärtsrichtung und Ledge-Trigger vergleichen
+                float angle = Vector3.Angle(transform.forward, col.transform.forward); // gegeneinander
 
-                pullUpState.SetLedgePos(col.transform.position);
+                if (angle > 50f)
+                {
+                    Debug.Log($"Too far off. Angle: {angle:F1}°");
+                    return false;
+                }
+
+                pullUpState.SetLedgeFromTransform(col.transform, transform.position);
                 SwitchState(pullUpState);
                 return true;
             }
@@ -391,6 +385,50 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         return false;
     }
+
+    public bool TryAutoPullUp()
+    {
+        if (moveDir == Vector3.zero || rb.linearVelocity.y <= 0f)
+            return false;
+
+        BoxCollider box = GetComponent<BoxCollider>();
+        if (box == null) return false;
+
+        box.enabled = true;
+
+        Collider[] hits = Physics.OverlapBox(
+            box.bounds.center,
+            box.bounds.extents,
+            transform.rotation,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        box.enabled = false;
+
+        foreach (Collider col in hits)
+        {
+            if (col.CompareTag("mediumLedge"))
+            {
+                // Blickwinkel prüfen
+                float angle = Vector3.Angle(transform.forward, col.transform.forward);
+                if (angle > 50f) return false;
+
+                // Bewegung zur Ledge muss nach vorne gehen
+                float dot = Vector3.Dot(moveDir.normalized, transform.forward);
+                if (dot < 0.5f) return false;
+
+                // Springen + Blickrichtung + Bewegung = passt!
+                pullUpState.SetLedgeFromTransform(col.transform, transform.position);
+                SwitchState(pullUpState);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    
 
 
 
@@ -416,9 +454,9 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         return GetHorizontalVelocity().magnitude;
     }
 
-    public void ApplyAirControl(PlayerStateManager player)                                         //Damit man mit WASD noch leicht umlenken kann in der Luft. ohne den  Fall nach unten zu beeinflussen
+    public void ApplyAirControl(PlayerStateManager player)
     {
-        Vector3 airMove = player.moveDir * player.maxSpeed * player.airControlMultiplier;
+        Vector3 airMove = player.moveDir * 0.5f * player.maxSpeed * player.airControlMultiplier;
         Vector3 currentVel = player.rb.linearVelocity;
 
         currentVel.x = Mathf.Lerp(currentVel.x, airMove.x, Time.fixedDeltaTime * 2f);
@@ -426,6 +464,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         player.rb.linearVelocity = currentVel;
     }
+
 
     //_____________________________ANIMATION___________________
     public void ResetAllAnimationBools()

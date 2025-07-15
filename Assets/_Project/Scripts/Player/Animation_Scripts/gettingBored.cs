@@ -22,11 +22,11 @@ public class idleVariations : StateMachineBehaviour
         {
             idleTimer += Time.deltaTime;
 
-            if (idleTimer >= timeUntilBored)
+            if (idleTimer >= timeUntilBored && animator.GetBool("isBored") == false)
             {
                 animator.SetBool("isBored", true);
 
-                // Zufällige boredVariation wählen (float)
+                // boredVariation nur einmal zufällig wählen
                 float variation = Random.Range(0, numberOfBoredVariations); // z. B. 0, 1, 2
                 animator.SetFloat("boredVariation", variation);
             }
@@ -36,4 +36,5 @@ public class idleVariations : StateMachineBehaviour
             idleTimer = 0f;
         }
     }
+
 }

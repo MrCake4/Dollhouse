@@ -120,7 +120,7 @@ public class Generator : HitableObject
 
         if (SoundEffectsManager.instance != null && generatorSound != null && !playingSound && charged)
             {
-                generatorAudioSource = SoundEffectsManager.instance.PlayLoopedSoundEffect(generatorSound, transform, 0.5f);
+                generatorAudioSource = SoundEffectsManager.instance.PlayLoopedSoundEffect(generatorSound, transform, 1f);
                 playingSound = true; // prevent multiple sound instances
             }
 

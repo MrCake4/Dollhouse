@@ -1,38 +1,21 @@
+using System;
 using UnityEngine;
 
 public class JumpState : BasePlayerState
 {
+    public float jumpHeight;
     public override void onEnter(PlayerStateManager player)
     {
-        //player.animator.SetBool("IsJumping", true);
         player.animator.SetTrigger("DoJump");
 
-        /*
-        // Spieler kann aus Idle mit WASD schräg springen
-        Vector3 direction = player.moveDir != Vector3.zero
-            ? player.moveDir.normalized
-            : Vector3.zero; // Falls keine Eingabe
+        // === STAMINA-Verbrauch beim Springen ===
+        player.GetComponent<StaminaSystem>()?.ConsumeJumpCost();
 
-        float horizontalSpeed = player.isRunning ? player.maxSpeed : player.walkSpeed;
-
-        Vector3 horizontalVelocity = player.GetHorizontalVelocity();
-
-        // Sprungkraft
-        float baseY = Mathf.Sqrt(2f * Physics.gravity.magnitude * player.jumpHeight);   // 2f wegen physikalischer Formel v = sqrt(2∗g∗h)
-        if (player.isRunning)
-            baseY *= 1.1f; // Bonushöhe beim Rennen
-
-        // Zusammensetzen
-        Vector3 jumpImpulse = horizontalVelocity + Vector3.up * baseY;
-
-        player.rb.AddForce(jumpImpulse, ForceMode.VelocityChange); 
-
-        Debug.Log($"Jumping | Direction: {direction} | Speed: {horizontalSpeed:F2} | Vertical: {baseY:F2}"); */
 
         // Vertikale Sprungkraft berechnen
-        float baseY = Mathf.Sqrt(2f * Physics.gravity.magnitude * player.jumpHeight);
-        if (player.isRunning)  Debug.Log("run-JUMP");       
-            //baseY *= 1.1f;
+        float baseY = Mathf.Sqrt(2f * Physics.gravity.magnitude * jumpHeight);
+        if (player.isRunning) Debug.Log("run-JUMP");
+        //baseY *= 1.1f;
 
         // Aktuelle horizontale Geschwindigkeit beibehalten
         Vector3 currentHorizontal = player.GetHorizontalVelocity();
@@ -53,12 +36,14 @@ public class JumpState : BasePlayerState
         Debug.Log($"Jumping | Horizontal: {currentHorizontal.magnitude:F2} | Vertical: {baseY:F2}");
 
 
-
-
     }
     public override void onUpdate(PlayerStateManager player)               //pro Frame
     {
-        if ( player.GetVerticalVelocity() <= 0.1 && player.groundCheck.isGrounded)                                            // Wenn der Jump physisch nicht gezündet hat (z. B. wegen Blockade)
+        if (player.TryAutoPullUp())
+        return;
+
+
+        if (player.GetVerticalVelocity() <= 0.1 && player.groundCheck.isGrounded)                                            // Wenn der Jump physisch nicht gezündet hat (z. B. wegen Blockade)
         {
             Debug.Log("somehow I think I am grounded - lol");
             float speed = player.GetHorizontalSpeed();
@@ -72,7 +57,7 @@ public class JumpState : BasePlayerState
                 player.SwitchState(player.idleState);                           // oder Run/Walk je nach Input, wenn gewünscht
                 //return;
             }
-                
+
         }
         else if (player.IsFalling())                                        // Wenn man wirklich abspringt --> falling
         {
@@ -80,11 +65,6 @@ public class JumpState : BasePlayerState
             //return;
         }
 
-        /*if (player.holdPressed)                                             //SWITCH PULLUP or HANG
-        {
-            player.TryGrab();
-            return;
-        }*/
         if (player.holdPressed)
         {
             player.TryGrab();
