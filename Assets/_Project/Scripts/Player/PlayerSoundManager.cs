@@ -38,7 +38,7 @@ public class PlayerSoundManager : MonoBehaviour
             if (!isDown && timer >= stepCooldown)
             {
                 // Foot just made contact — play footstep
-                SoundEffectsManager.instance.PlayRandomSoundEffect(footstepSounds, foot, 0.5f);
+                SoundEffectsManager.instance.PlayRandomSoundEffect(footstepSounds, foot, 0.3f);
                 isDown = true;
                 timer = 0f;
             }
