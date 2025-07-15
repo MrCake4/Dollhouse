@@ -892,7 +892,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: -----------------------------------------
+  m_text: --------------------------
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2405,10 +2405,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scenes:
-  - m_SceneAsset: {fileID: 102900000, guid: 938ae4453c2a16d4fa2facb8519d952c, type: 3}
+  - m_SceneAsset: {fileID: 102900000, guid: 9946a3c30f5e5b54f9b04da2888a2a9f, type: 3}
     m_SceneName: Tutorial
-  - m_SceneAsset: {fileID: 102900000, guid: b06502f40b20ba0429f0321f5c77676b, type: 3}
+  - m_SceneAsset: {fileID: 102900000, guid: 3d408ac0ff150604994ac05bf917629d, type: 3}
     m_SceneName: Level 1
+  - m_SceneAsset: {fileID: 102900000, guid: 666fa04e338b78b44bb8de099dfb6b4d, type: 3}
+    m_SceneName: TheaterScene
   persistentScene:
     m_SceneAsset: {fileID: 102900000, guid: 8a67f5195a688b3458d385318e37020e, type: 3}
     m_SceneName: PersistentScene
@@ -3100,13 +3102,16 @@ MonoBehaviour:
   m_MultiSelect: 0
   m_Options:
     m_Options:
-    - m_Text: -----------------------------------------
+    - m_Text: --------------------------
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: Tutorial
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: Level 1
+      m_Image: {fileID: 0}
+      m_Color: {r: 1, g: 1, b: 1, a: 1}
+    - m_Text: Theater
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
