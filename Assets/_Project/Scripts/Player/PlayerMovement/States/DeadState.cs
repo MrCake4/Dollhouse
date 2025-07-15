@@ -19,8 +19,20 @@ public class DeadState : BasePlayerState
         // === Animationsentscheidung ===
         if (player.groundCheck.isGrounded)
         {
-            player.animator.SetTrigger("Die");
+            if (Random.Range(0, 1) < 0.5)
+            {
+                player.animator.SetTrigger("Die");
+            }
+            else
+            {
+                player.animator.SetTrigger("Die2");
+            }
+            
+            //player.animator.SetTrigger("Die2");
+
             hasLandedAfterDeath = true; // sofort „tot“ am Boden
+            if (playerRigidbody != null) playerRigidbody.isKinematic = true;
+            if (mainCollider != null) mainCollider.enabled = false;
         }
         else
         {
