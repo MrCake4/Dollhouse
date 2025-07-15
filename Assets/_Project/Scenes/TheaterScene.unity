@@ -7631,7 +7631,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5966762287537125540, guid: 7e8aa346fe7b963459ff2c42562d010c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 656308617}
   m_SourcePrefab: {fileID: 100100000, guid: 7e8aa346fe7b963459ff2c42562d010c, type: 3}
 --- !u!4 &608261017 stripped
 Transform:
@@ -7954,6 +7957,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   head: {fileID: 975612185}
+--- !u!1 &656308615 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5966762287537125540, guid: 7e8aa346fe7b963459ff2c42562d010c, type: 3}
+  m_PrefabInstance: {fileID: 598469926}
+  m_PrefabAsset: {fileID: 0}
+--- !u!164 &656308617
+AudioReverbFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656308615}
+  m_Enabled: 1
+  m_DryLevel: 0
+  m_Room: 0
+  m_RoomHF: 0
+  m_DecayTime: 1
+  m_DecayHFRatio: 0.5
+  m_ReflectionsLevel: -10000
+  m_ReverbLevel: 0
+  m_ReverbDelay: 0.04
+  m_Diffusion: 100
+  m_Density: 100
+  m_HFReference: 5000
+  m_RoomLF: 0
+  m_LFReference: 250
+  m_ReflectionsDelay: 0
+  m_ReverbPreset: 27
 --- !u!1001 &659195939
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11623,7 +11654,7 @@ Transform:
   m_GameObject: {fileID: 889952246}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.12, y: 0, z: 1.69}
+  m_LocalPosition: {x: -15.12, y: 0.038, z: 1.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11653,8 +11684,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.7641153, y: 1.2872742, z: 1.4694722}
-  m_Center: {x: 0.008927822, y: 0.8914135, z: -0.09080911}
+  m_Size: {x: 1.7641153, y: 0.61213565, z: 1.4694722}
+  m_Center: {x: 0.008927822, y: 0.5538444, z: -0.09080911}
 --- !u!114 &889952249
 MonoBehaviour:
   m_ObjectHideFlags: 0
