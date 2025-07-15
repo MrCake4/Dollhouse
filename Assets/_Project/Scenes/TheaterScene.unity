@@ -7723,6 +7723,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TrapDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 1285524288431641648, guid: c387b6e1c259fed4990f93bc431d2166, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3275141750451317437, guid: c387b6e1c259fed4990f93bc431d2166, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -15066,6 +15070,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TheaterFloor
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 05bdd3af0f2122f4980ce77896a2a81b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17605,7 +17613,7 @@ GameObject:
   - component: {fileID: 1499756674}
   - component: {fileID: 1499756673}
   - component: {fileID: 1499756672}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Floor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18897,9 +18905,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 486411762864112247, guid: 5fb2893e05e64e54593e362c70b1e6c9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5fb2893e05e64e54593e362c70b1e6c9, type: 3}
       propertyPath: m_Name
       value: MakeUpRoomFloor
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5fb2893e05e64e54593e362c70b1e6c9, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8867552578755772976, guid: 5fb2893e05e64e54593e362c70b1e6c9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -22956,7 +22972,7 @@ GameObject:
   - component: {fileID: 2000091480}
   - component: {fileID: 2000091479}
   - component: {fileID: 2000091478}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Floor (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
