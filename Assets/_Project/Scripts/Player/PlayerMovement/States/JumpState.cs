@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 public class JumpState : BasePlayerState
 {
+    public float jumpHeight;
     public override void onEnter(PlayerStateManager player)
     {
         player.animator.SetTrigger("DoJump");
@@ -11,9 +13,9 @@ public class JumpState : BasePlayerState
 
 
         // Vertikale Sprungkraft berechnen
-        float baseY = Mathf.Sqrt(2f * Physics.gravity.magnitude * player.jumpHeight);
-        if (player.isRunning)  Debug.Log("run-JUMP");       
-            //baseY *= 1.1f;
+        float baseY = Mathf.Sqrt(2f * Physics.gravity.magnitude * jumpHeight);
+        if (player.isRunning) Debug.Log("run-JUMP");
+        //baseY *= 1.1f;
 
         // Aktuelle horizontale Geschwindigkeit beibehalten
         Vector3 currentHorizontal = player.GetHorizontalVelocity();
