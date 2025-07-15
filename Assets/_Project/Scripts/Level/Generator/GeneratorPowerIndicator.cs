@@ -9,6 +9,7 @@ public class GeneratorPowerIndicator : MonoBehaviour
     [Header("Materials")]
     [SerializeField] private Material glowingMaterial;
     [SerializeField] private Material offMaterial;
+    [SerializeField] Light roomLight; // Optional: Reference to a room light to control its color
 
     void Awake()
     {
@@ -16,7 +17,7 @@ public class GeneratorPowerIndicator : MonoBehaviour
             generator = GetComponent<Generator>();
     }
 
-        private void Update()
+    private void Update()
     {
         if (generator == null || bulbMeshes == null || bulbMeshes.Length != 4)
             return;
@@ -38,6 +39,19 @@ public class GeneratorPowerIndicator : MonoBehaviour
 
             if (bulbMeshes[i] != null)
                 bulbMeshes[i].material = shouldGlow ? glowingMaterial : offMaterial;
+        }
+
+        if (roomLight != null)
+        {
+            // Change the room light color based on the generator's power level
+            if (powerPercent > 0f)
+            {
+                roomLight.color = Color.Lerp(Color.red, Color.white, 3f); // Smooth transition from red to white
+            }
+            else
+            {
+                roomLight.color = Color.red;
+            }
         }
     }
 }
