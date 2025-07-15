@@ -2,11 +2,50 @@ using UnityEngine;
 
 public class PlayerSoundManager : MonoBehaviour
 {
-    [SerializeField] private AudioClip[] footstepSounds;
+    [Header("Foot Transforms")]
+    [SerializeField] private Transform leftFoot;
+    [SerializeField] private Transform rightFoot;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void footStep()
+    [Header("Footstep Settings")]
+    [SerializeField] private AudioClip[] footstepSounds;
+    [SerializeField] private float raycastLength = 0.2f;
+    [SerializeField] private LayerMask groundLayers;
+    [SerializeField] private float stepCooldown = 0.5f;
+
+    private bool leftFootDown = false;
+    private bool rightFootDown = false;
+    private float leftTimer = 0f;
+    private float rightTimer = 0f;
+
+    void Update()
     {
-        SoundEffectsManager.instance.PlayRandomSoundEffect(footstepSounds, transform, 0.5f);
+        leftTimer += Time.deltaTime;
+        rightTimer += Time.deltaTime;
+
+        CheckFootstep(leftFoot, ref leftFootDown, ref leftTimer);
+        CheckFootstep(rightFoot, ref rightFootDown, ref rightTimer);
+    }
+
+    void CheckFootstep(Transform foot, ref bool isDown, ref float timer)
+    {
+        if (foot == null || footstepSounds.Length == 0) return;
+
+        Vector3 rayOrigin = foot.position + Vector3.up * 0.05f; // Slightly above foot
+        Ray ray = new Ray(rayOrigin, Vector3.down);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, raycastLength, groundLayers))
+        {
+            if (!isDown && timer >= stepCooldown)
+            {
+                // Foot just made contact — play footstep
+                SoundEffectsManager.instance.PlayRandomSoundEffect(footstepSounds, foot, 0.5f);
+                isDown = true;
+                timer = 0f;
+            }
         }
+        else
+        {
+            isDown = false;
+        }
+    }
 }
