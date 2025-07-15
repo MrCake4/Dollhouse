@@ -380,6 +380,7 @@ GameObject:
   - component: {fileID: 8935416202205732734}
   - component: {fileID: 8040578505883140115}
   - component: {fileID: 3228502251770933310}
+  - component: {fileID: 5945646269335613693}
   m_Layer: 3
   m_Name: Marvin
   m_TagString: Player
@@ -612,6 +613,30 @@ MonoBehaviour:
   jumpStaminaCost: 0.7
   currentStamina: 0
   isPenalty: 0
+--- !u!114 &5945646269335613693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5959111915692159886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a64434d2fa524b74c877b37746962de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftFoot: {fileID: 2218986849629440433}
+  rightFoot: {fileID: 3900904657325781500}
+  footstepSounds:
+  - {fileID: 8300000, guid: 5139787ebf147de419b2fdfa37901bbf, type: 3}
+  - {fileID: 8300000, guid: 394b9b90a4c8592458e344c5ed1cbf3c, type: 3}
+  - {fileID: 8300000, guid: 1ca36f036f4ca5247bb6123613314943, type: 3}
+  - {fileID: 8300000, guid: d1dd10cafbc4d864f97b664368388c37, type: 3}
+  raycastLength: 0.2
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  stepCooldown: 0.5
 --- !u!1 &6708260851637492098
 GameObject:
   m_ObjectHideFlags: 0
