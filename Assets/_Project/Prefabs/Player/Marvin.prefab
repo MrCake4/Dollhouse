@@ -381,6 +381,7 @@ GameObject:
   - component: {fileID: 8040578505883140115}
   - component: {fileID: 3228502251770933310}
   - component: {fileID: 5945646269335613693}
+  - component: {fileID: 814180300870570846}
   m_Layer: 3
   m_Name: Marvin
   m_TagString: Player
@@ -637,6 +638,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   stepCooldown: 0.5
+--- !u!114 &814180300870570846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5959111915692159886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba9a8101ccd89b24492ae53e4099b48e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6708260851637492098
 GameObject:
   m_ObjectHideFlags: 0
