@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class TrapDoor : MonoBehaviour
 {
-    bool isOpen = false;
+    [SerializeField] private bool isOpen = false;
     public Transform doorPivot;
     public float openSpeed = 2f; // Speed of the door opening
     private Quaternion closedRotation;
     private Quaternion openRotation;
     private float openProgress = 0f;
+    [SerializeField] private AudioClip[] trapdoorSounds;
+    private bool soundplayed = false;
 
     void Start()
     {
@@ -28,6 +30,7 @@ public class TrapDoor : MonoBehaviour
     {
         if (isOpen && openProgress < 1f)
         {
+            if (!soundplayed) { SoundEffectsManager.instance.PlayRandomSoundEffect(trapdoorSounds, transform, 0.5f); soundplayed = true; }
             openProgress += Time.deltaTime * openSpeed;
             doorPivot.localRotation = Quaternion.Lerp(closedRotation, openRotation, openProgress);
         }
