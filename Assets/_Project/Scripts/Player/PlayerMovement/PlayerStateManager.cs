@@ -30,8 +30,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public Vector3 moveDir;               // Richtung im 3D-Raum
     [HideInInspector] public Rigidbody rb;                  //rigid body reference
     public float rotateSpeed = 10f;
-    public float jumpForce = 2f;
-    public float jumpHeight = 1.5f;                         // gewünschte konstante Sprunghöhe
+    
+    public float RunJumpHeight = 1.5f;                         // gewünschte konstante Sprunghöhe
+    public float WalkJumpHeight = 1.2f;
+    public float IdleJumpHeight = 1f;
 
     public float airControlMultiplier = 0.3f;              //um mitten im Jump noch Richtung steuern zu können
 
@@ -452,9 +454,9 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         return GetHorizontalVelocity().magnitude;
     }
 
-    public void ApplyAirControl(PlayerStateManager player)                                         //Damit man mit WASD noch leicht umlenken kann in der Luft. ohne den  Fall nach unten zu beeinflussen
+    public void ApplyAirControl(PlayerStateManager player)
     {
-        Vector3 airMove = player.moveDir * player.maxSpeed * player.airControlMultiplier;
+        Vector3 airMove = player.moveDir * 0.5f * player.maxSpeed * player.airControlMultiplier;
         Vector3 currentVel = player.rb.linearVelocity;
 
         currentVel.x = Mathf.Lerp(currentVel.x, airMove.x, Time.fixedDeltaTime * 2f);
@@ -462,6 +464,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         player.rb.linearVelocity = currentVel;
     }
+
 
     //_____________________________ANIMATION___________________
     public void ResetAllAnimationBools()

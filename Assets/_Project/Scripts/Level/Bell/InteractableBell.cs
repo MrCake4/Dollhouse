@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InteractableBell : Interactable
 {
-    [SerializeField] AudioClip bellSound;
+    [SerializeField] AudioClip[] bellSound;
 
     // Trigger options
     [SerializeField] RoomContainer roomToTrigger;
@@ -20,7 +20,7 @@ public class InteractableBell : Interactable
     {
         if (SoundEffectsManager.instance != null)
         {
-            SoundEffectsManager.instance.PlaySoundEffect(bellSound, transform, 1f);
+            SoundEffectsManager.instance.PlayRandomSoundEffect(bellSound, transform, 1f);
         }
         TriggerAI();
     }
@@ -28,7 +28,7 @@ public class InteractableBell : Interactable
     void TriggerAI()
     {
         if (!ai.enabled) ai.enabled = true;
-        if (roomToTrigger != null && !roomToTrigger.triggered)
+        if (roomToTrigger != null && !roomToTrigger.triggered && ai.getCurrentState == ai.idleState)
         {
             triggered = true;
             roomToTrigger.triggered = true;
