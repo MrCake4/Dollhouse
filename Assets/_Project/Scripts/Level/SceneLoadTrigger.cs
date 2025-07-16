@@ -8,10 +8,12 @@ public class SceneLoadTrigger : MonoBehaviour
     [SerializeField] private SceneField[] _scenesToUnload;
 
     private GameObject _player;
+    private PlayerStateManager playerState;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
+        playerState = _player.GetComponent<PlayerStateManager>();
     }
 
     // Update is called once per frame
@@ -23,11 +25,21 @@ public class SceneLoadTrigger : MonoBehaviour
     //Activates when an entity enters the collider
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject == _player && _player.GetComponent<PlayerStateManager>().getCurrentState != _player.GetComponent<PlayerStateManager>().deadState)
+        bool turnOffInvincible = true;
+        if (collision.gameObject == _player && playerState.getCurrentState != playerState.deadState)
         {
+            if (playerState.isInvincible == true)
+            {
+                turnOffInvincible = false;
+            }
+            else
+            {
+                playerState.isInvincible = true;
+            }
+            
             DestroyAllInLayer(LayerMask.NameToLayer("smallObject"));
-
             StartCoroutine(HandleSceneTransition());
+            if(turnOffInvincible) playerState.isInvincible = false;
         }
     }
 
