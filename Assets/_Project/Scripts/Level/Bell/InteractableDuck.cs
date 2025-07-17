@@ -23,7 +23,7 @@ public class InteractableDuck : Interactable
             SoundEffectsManager.instance.PlayRandomSoundEffect(duckSounds, transform, 0.2f);
         }
         GetComponent<SquishEffect>()?.SquishOnce();
-        TriggerAI();
+        if (ai != null)TriggerAI();
     }
 
     void TriggerAI()
