@@ -16,6 +16,8 @@ public class DeadState : BasePlayerState
         AudioClip[] deathSounds = player.GetComponent<PlayerSoundManager>().deathSounds;
         if (deathSounds.Length > 0) SoundEffectsManager.instance.PlayRandomSoundEffect(deathSounds, player.transform, 1f);
 
+        player.GetComponent<GameOverManager>()?.SetLightStates(false); // Turn on other lights, spotlight off
+
         //if (playerRigidbody != null) playerRigidbody.isKinematic = true;
         //if (mainCollider != null) mainCollider.enabled = false;
 
@@ -66,6 +68,7 @@ public class DeadState : BasePlayerState
         if (playerRigidbody != null) playerRigidbody.isKinematic = false;
         if (mainCollider != null) mainCollider.enabled = true;
 
+        player.GetComponent<GameOverManager>()?.SetLightStates(true); // Turn on other lights, spotlight off
         player.animator.ResetTrigger("Die");
     }
 }
