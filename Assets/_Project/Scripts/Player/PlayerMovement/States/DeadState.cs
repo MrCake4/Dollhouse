@@ -13,6 +13,9 @@ public class DeadState : BasePlayerState
         playerRigidbody = player.GetComponent<Rigidbody>();
         mainCollider = player.GetComponent<CapsuleCollider>();
 
+        AudioClip[] deathSounds = player.GetComponent<PlayerSoundManager>().deathSounds;
+        if (deathSounds.Length > 0) SoundEffectsManager.instance.PlayRandomSoundEffect(deathSounds, player.transform, 1f);
+
         //if (playerRigidbody != null) playerRigidbody.isKinematic = true;
         //if (mainCollider != null) mainCollider.enabled = false;
 
@@ -27,7 +30,7 @@ public class DeadState : BasePlayerState
             {
                 player.animator.SetTrigger("Die2");
             }
-            
+
             //player.animator.SetTrigger("Die2");
 
             hasLandedAfterDeath = true; // sofort „tot“ am Boden
