@@ -123,4 +123,19 @@ public class DebuggingManager : MonoBehaviour
             }
         }
     }
+
+    public void ToggleStammina(bool on)
+    {
+        if (!on)
+        {
+            player.staminaSystem.staminaDrainRate = player.staminaSystem.defaultStaminaDrainRate;
+            player.staminaSystem.jumpStaminaCost = player.staminaSystem.defaultJumpStaminaCost;
+        }
+        else
+        {
+            player.staminaSystem.staminaDrainRate = 0f;
+            player.staminaSystem.jumpStaminaCost = 0f;
+        }
+        
+    }
 }

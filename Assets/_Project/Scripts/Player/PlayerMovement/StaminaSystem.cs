@@ -14,6 +14,9 @@ public class StaminaSystem : MonoBehaviour
     [HideInInspector] public float currentStamina;
     [HideInInspector] public bool isPenalty;
 
+    [HideInInspector] public float defaultStaminaDrainRate;
+    [HideInInspector] public float defaultJumpStaminaCost;
+
     private float penaltyTimer;
     private PlayerStateManager player;
 
@@ -21,6 +24,8 @@ public class StaminaSystem : MonoBehaviour
     {
         currentStamina = maxStamina;
         player = GetComponent<PlayerStateManager>();
+        defaultJumpStaminaCost = jumpStaminaCost;
+        defaultStaminaDrainRate = staminaDrainRate;
     }
 
     private void FixedUpdate()
