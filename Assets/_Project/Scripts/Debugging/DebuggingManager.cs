@@ -62,6 +62,7 @@ public class DebuggingManager : MonoBehaviour
         if (player.getCurrentState == player.deadState) player.SwitchState(player.idleState);
         StartCoroutine(LoadSceneRoutine(dropdownIndex - 1));
         DestroyAllInLayer(LayerMask.NameToLayer("smallObject"));
+        DestroyAllInLayer(LayerMask.NameToLayer("destroyOnLoad"));
         toggleMenu(false);
         isMenuActive = false;
     }

@@ -38,6 +38,7 @@ public class SceneLoadTrigger : MonoBehaviour
             }
             
             DestroyAllInLayer(LayerMask.NameToLayer("smallObject"));
+            DestroyAllInLayer(LayerMask.NameToLayer("destroyOnLoad"));
             StartCoroutine(HandleSceneTransition());
             if(turnOffInvincible) playerState.isInvincible = false;
         }
