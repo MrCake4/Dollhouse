@@ -59,6 +59,7 @@ public class DebuggingManager : MonoBehaviour
     public void LevelSelector(int dropdownIndex)
     {
         if (dropdownIndex <= 0) return;
+        if (player.getCurrentState == player.deadState) player.SwitchState(player.idleState);
         StartCoroutine(LoadSceneRoutine(dropdownIndex - 1));
         DestroyAllInLayer(LayerMask.NameToLayer("smallObject"));
         toggleMenu(false);
