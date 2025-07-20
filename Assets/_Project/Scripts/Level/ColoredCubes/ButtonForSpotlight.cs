@@ -63,7 +63,7 @@ public class ButtonForSpotlight : Interactable
     {
         if (leverTransform == null) return;
 
-        if (leverSounds.Length > 0) SoundEffectsManager.instance.PlayRandomSoundEffect(leverSounds, transform, 0.5f);
+        if (leverSounds.Length > 0) SoundEffectsManager.instance.PlayRandomSoundEffect(leverSounds, transform, 0.3f);
 
         switch (position)
         {

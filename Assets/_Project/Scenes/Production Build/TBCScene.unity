@@ -197,7 +197,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cabcea5fa7b28544ab9023a7decce784, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1690351496}
+      addedObject: {fileID: 1690351502}
   m_SourcePrefab: {fileID: 100100000, guid: cabcea5fa7b28544ab9023a7decce784, type: 3}
 --- !u!1001 &40002434
 PrefabInstance:
@@ -2346,7 +2346,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 527e0d5702ad5474eb0ba73edc912f45, type: 3}
   m_Resource: {fileID: 8300000, guid: 527e0d5702ad5474eb0ba73edc912f45, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -3148,8 +3148,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cabcea5fa7b28544ab9023a7decce784, type: 3}
   m_PrefabInstance: {fileID: 17411475}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1690351496
-BoxCollider:
+--- !u!4 &1690351499 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cabcea5fa7b28544ab9023a7decce784, type: 3}
+  m_PrefabInstance: {fileID: 17411475}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1690351502
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3166,14 +3171,10 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 100.19479, y: 100.00049, z: 100.194824}
-  m_Center: {x: 0.000003814697, y: 0, z: -4.440892e-16}
---- !u!4 &1690351499 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cabcea5fa7b28544ab9023a7decce784, type: 3}
-  m_PrefabInstance: {fileID: 17411475}
-  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4054751550848238824, guid: cabcea5fa7b28544ab9023a7decce784, type: 3}
 --- !u!1001 &1704462698
 PrefabInstance:
   m_ObjectHideFlags: 0
