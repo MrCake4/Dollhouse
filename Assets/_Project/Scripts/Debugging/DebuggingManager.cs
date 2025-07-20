@@ -59,8 +59,10 @@ public class DebuggingManager : MonoBehaviour
     public void LevelSelector(int dropdownIndex)
     {
         if (dropdownIndex <= 0) return;
+        if (player.getCurrentState == player.deadState) player.SwitchState(player.idleState);
         StartCoroutine(LoadSceneRoutine(dropdownIndex - 1));
         DestroyAllInLayer(LayerMask.NameToLayer("smallObject"));
+        DestroyAllInLayer(LayerMask.NameToLayer("destroyOnLoad"));
         toggleMenu(false);
         isMenuActive = false;
     }
@@ -120,5 +122,20 @@ public class DebuggingManager : MonoBehaviour
                 Destroy(obj);
             }
         }
+    }
+
+    public void ToggleStammina(bool on)
+    {
+        if (!on)
+        {
+            player.staminaSystem.staminaDrainRate = player.staminaSystem.defaultStaminaDrainRate;
+            player.staminaSystem.jumpStaminaCost = player.staminaSystem.defaultJumpStaminaCost;
+        }
+        else
+        {
+            player.staminaSystem.staminaDrainRate = 0f;
+            player.staminaSystem.jumpStaminaCost = 0f;
+        }
+        
     }
 }

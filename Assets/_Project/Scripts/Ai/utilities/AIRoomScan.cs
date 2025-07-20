@@ -276,27 +276,12 @@ public class AIRoomScan : MonoBehaviour
         {
             laserCharging = true;
             Debug.Log("Starting implosion sequence");
-            rumbleController();
+            GamepadManager.instance.rumbleController(0.75f, 1f, 1.5f);
             shaker?.Shake(shakePreset);
 
             setImplosionLight(true);
             implosionParticles.Play(true);
         }
-    }
-
-    private void rumbleController()
-    {
-        if (Gamepad.current != null)
-        {
-            Gamepad.current.SetMotorSpeeds(0.75f, 1.0f);
-            StartCoroutine(StopRumbleAfterSeconds(1.5f));
-        }
-    }
-
-    private IEnumerator StopRumbleAfterSeconds(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        Gamepad.current?.SetMotorSpeeds(0f, 0f);
     }
 
     private void UpdateSpotlight()

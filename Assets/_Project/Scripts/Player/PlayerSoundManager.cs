@@ -17,6 +17,9 @@ public class PlayerSoundManager : MonoBehaviour
     private float leftTimer = 0f;
     private float rightTimer = 0f;
 
+    [Header("Death Sounds")]
+    public AudioClip[] deathSounds;
+
     void Update()
     {
         leftTimer += Time.deltaTime;
