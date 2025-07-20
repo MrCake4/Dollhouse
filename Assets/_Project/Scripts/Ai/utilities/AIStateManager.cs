@@ -56,6 +56,7 @@ public class AIStateManager : MonoBehaviour
     [Header("Game Objects")]
     [Tooltip("Index 0 is equal to most left room on the map, index 1 is the room next to it and so on.")]
     public RoomContainer[] rooms;   // contains information about position of the window
+    [SerializeField] RoomContainer[] excludeRooms; // rooms that the AI should not go to, f.e. if two ais are in the scene and one is patrolling, the other should not go to the same room
 
     void Start()
     {
@@ -115,7 +116,14 @@ public class AIStateManager : MonoBehaviour
     // returns an array of all the rooms that are currently loaded in the scene
     public RoomContainer[] getActiveRooms()
     {
-        return FindObjectsByType<RoomContainer>(FindObjectsSortMode.None);
+        RoomContainer[] allRooms = FindObjectsByType<RoomContainer>(FindObjectsSortMode.None);
+        if (excludeRooms.Length == 0) return allRooms;
+        // filter out excluded rooms
+        foreach (RoomContainer room in excludeRooms)
+        {
+            allRooms = Array.FindAll(allRooms, r => r != room);
+        }
+        return allRooms;
     }
 
     /*      GETTERS AND SETTERS     */
