@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4436762979192145849}
   - component: {fileID: 8219074392646045831}
   - component: {fileID: 4464562028634038346}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shard2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 5998836556315302853}
   - component: {fileID: 2445510738583036418}
   - component: {fileID: 110336820732550662}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shard5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 2478742573860148948}
   - component: {fileID: 8670787010675310670}
   - component: {fileID: 4481162008479829246}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shard4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,7 +427,7 @@ GameObject:
   - component: {fileID: 8634105191529578794}
   - component: {fileID: 1601802997658332418}
   - component: {fileID: 1162648288564854282}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shard1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -565,7 +565,7 @@ GameObject:
   - component: {fileID: 9000011034531432242}
   - component: {fileID: 2086482643720647949}
   - component: {fileID: 2875366865695848247}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shard3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -699,7 +699,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 883760654249418899}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DestructedVase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -735,7 +735,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8309191400601032396}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DestructedVase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -766,6 +766,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8309191400601032396}
     m_Modifications:
+    - target: {fileID: 1946579244907214790, guid: 2bef60c4ce5ccff4191ac29ab5b42793, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 3090066406714738801, guid: 2bef60c4ce5ccff4191ac29ab5b42793, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -809,6 +813,26 @@ PrefabInstance:
     - target: {fileID: 3991550038531357198, guid: 2bef60c4ce5ccff4191ac29ab5b42793, type: 3}
       propertyPath: m_Name
       value: DestructedVase
+      objectReference: {fileID: 0}
+    - target: {fileID: 3991550038531357198, guid: 2bef60c4ce5ccff4191ac29ab5b42793, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5779059153160544217, guid: 2bef60c4ce5ccff4191ac29ab5b42793, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413218959034544813, guid: 2bef60c4ce5ccff4191ac29ab5b42793, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6996357102863945855, guid: 2bef60c4ce5ccff4191ac29ab5b42793, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8773144889567454775, guid: 2bef60c4ce5ccff4191ac29ab5b42793, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
