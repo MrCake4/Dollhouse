@@ -5,10 +5,13 @@ public class DeadState : BasePlayerState
     private Rigidbody playerRigidbody;
     private CapsuleCollider mainCollider;
     private bool hasLandedAfterDeath = false;
+    GameOverManager gameOverManager;
 
     public override void onEnter(PlayerStateManager player)
     {
         Debug.Log("Player is dead!");
+
+        gameOverManager = player.GetGameOverManager(); 
 
         playerRigidbody = player.GetComponent<Rigidbody>();
         mainCollider = player.GetComponent<CapsuleCollider>();
@@ -18,6 +21,9 @@ public class DeadState : BasePlayerState
 
         //if (playerRigidbody != null) playerRigidbody.isKinematic = true;
         //if (mainCollider != null) mainCollider.enabled = false;
+
+        gameOverManager.SaveImportantLightStates(); // Save BEFORE turning off
+        gameOverManager.SetLightStates(false);      // Then turn off lights
 
         // === Animationsentscheidung ===
         if (player.groundCheck.isGrounded)
@@ -65,6 +71,9 @@ public class DeadState : BasePlayerState
         // Optional, falls du jemals aus dem DeadState raus willst
         if (playerRigidbody != null) playerRigidbody.isKinematic = false;
         if (mainCollider != null) mainCollider.enabled = true;
+
+        gameOverManager?.SetLightStates(true); // Spotlight on, other lights off
+        gameOverManager?.RestoreImportantLightStates(); // Restore important lights
 
         player.animator.ResetTrigger("Die");
     }
