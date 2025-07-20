@@ -307,6 +307,7 @@ Transform:
   - {fileID: 1041325779}
   - {fileID: 1073174566}
   - {fileID: 1344705419}
+  - {fileID: 619609130}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &59727865
@@ -3264,6 +3265,52 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 597695753}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &619609129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 619609130}
+  - component: {fileID: 619609131}
+  m_Layer: 0
+  m_Name: LightManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &619609130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619609129}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.62073904, y: -2.0896897, z: 0.8159636}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 43354015}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &619609131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619609129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7ad0916a4432694d87dd7af8354e354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spotlightAbovePlayer: {fileID: 1090617493}
+  importantLights: []
 --- !u!1 &635333467 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7907533964422409099, guid: e33c14c218941e64086945d91d77f258, type: 3}
@@ -10546,6 +10593,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 011dab05884397b47ab51a8e94460a34, type: 3}
+--- !u!108 &1090617493 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 5530524830422919561, guid: 011dab05884397b47ab51a8e94460a34, type: 3}
+  m_PrefabInstance: {fileID: 1090617492}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1091157663 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ab0b6cc48900af34d955cb896663ee8f, type: 3}

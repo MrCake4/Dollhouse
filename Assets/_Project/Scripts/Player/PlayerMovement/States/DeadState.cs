@@ -5,10 +5,13 @@ public class DeadState : BasePlayerState
     private Rigidbody playerRigidbody;
     private CapsuleCollider mainCollider;
     private bool hasLandedAfterDeath = false;
+    GameOverManager gameOverManager;
 
     public override void onEnter(PlayerStateManager player)
     {
         Debug.Log("Player is dead!");
+
+        gameOverManager = player.GetGameOverManager(); 
 
         playerRigidbody = player.GetComponent<Rigidbody>();
         mainCollider = player.GetComponent<CapsuleCollider>();
@@ -16,10 +19,11 @@ public class DeadState : BasePlayerState
         AudioClip[] deathSounds = player.GetComponent<PlayerSoundManager>().deathSounds;
         if (deathSounds.Length > 0) SoundEffectsManager.instance.PlayRandomSoundEffect(deathSounds, player.transform, 1f);
 
-        player.GetComponent<GameOverManager>()?.SetLightStates(false); // Turn on other lights, spotlight off
-
         //if (playerRigidbody != null) playerRigidbody.isKinematic = true;
         //if (mainCollider != null) mainCollider.enabled = false;
+
+        gameOverManager.SaveImportantLightStates(); // Save BEFORE turning off
+        gameOverManager.SetLightStates(false);      // Then turn off lights
 
         // === Animationsentscheidung ===
         if (player.groundCheck.isGrounded)
@@ -68,7 +72,9 @@ public class DeadState : BasePlayerState
         if (playerRigidbody != null) playerRigidbody.isKinematic = false;
         if (mainCollider != null) mainCollider.enabled = true;
 
-        player.GetComponent<GameOverManager>()?.SetLightStates(true); // Turn on other lights, spotlight off
+        gameOverManager?.SetLightStates(true); // Spotlight on, other lights off
+        gameOverManager?.RestoreImportantLightStates(); // Restore important lights
+
         player.animator.ResetTrigger("Die");
     }
 }
