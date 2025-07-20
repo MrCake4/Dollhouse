@@ -22,33 +22,37 @@ public class DeadState : BasePlayerState
         //if (playerRigidbody != null) playerRigidbody.isKinematic = true;
         //if (mainCollider != null) mainCollider.enabled = false;
 
-        gameOverManager.SaveImportantLightStates(); // Save BEFORE turning off
-        gameOverManager.SetLightStates(false);      // Then turn off lights
-
-        // === Animationsentscheidung ===
-        if (player.groundCheck.isGrounded)
+        // turn off all lights except the important ones
+        if (gameOverManager != null)
         {
-            if (Random.Range(0, 1) < 0.5)
+            gameOverManager.SaveImportantLightStates(); // Save BEFORE turning off
+            gameOverManager.SetLightStates(false);      // Then turn off lights
+        }
+
+            // === Animationsentscheidung ===
+            if (player.groundCheck.isGrounded)
             {
-                player.animator.SetTrigger("Die");
+                if (Random.Range(0, 1) < 0.5)
+                {
+                    player.animator.SetTrigger("Die");
+                }
+                else
+                {
+                    player.animator.SetTrigger("Die2");
+                }
+
+                //player.animator.SetTrigger("Die2");
+
+                hasLandedAfterDeath = true; // sofort „tot“ am Boden
+                if (playerRigidbody != null) playerRigidbody.isKinematic = true;
+                if (mainCollider != null) mainCollider.enabled = false;
             }
             else
             {
-                player.animator.SetTrigger("Die2");
+                player.animator.SetBool("IsFalling", true);
+                player.animator.SetBool("ReachedJumpPeak", true);
+                hasLandedAfterDeath = false; // noch in der Luft → beobachten
             }
-
-            //player.animator.SetTrigger("Die2");
-
-            hasLandedAfterDeath = true; // sofort „tot“ am Boden
-            if (playerRigidbody != null) playerRigidbody.isKinematic = true;
-            if (mainCollider != null) mainCollider.enabled = false;
-        }
-        else
-        {
-            player.animator.SetBool("IsFalling", true);
-            player.animator.SetBool("ReachedJumpPeak", true);
-            hasLandedAfterDeath = false; // noch in der Luft → beobachten
-        }
     }
 
     public override void onUpdate(PlayerStateManager player) { }
