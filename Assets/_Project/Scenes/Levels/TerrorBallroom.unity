@@ -9402,6 +9402,14 @@ PrefabInstance:
       propertyPath: checkWindowsPerPatrol
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8889679970781055578, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: excludeRooms.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8889679970781055578, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: 'excludeRooms.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1215533049}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16520,6 +16528,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4e5d2f7f155681449aca26cbdb2b635, type: 3}
+--- !u!114 &1215533049 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3743855088955382744, guid: e33c14c218941e64086945d91d77f258, type: 3}
+  m_PrefabInstance: {fileID: 2062128790}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67647dc073e94ba4b8726b94cea0a75e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1216843911
 PrefabInstance:
   m_ObjectHideFlags: 0
