@@ -29,6 +29,7 @@ public class InteractableMirrorJoint : Interactable
             if (playerItemHandler.GetCarriedObject() != null && playerItemHandler.GetCarriedObject().tag == "Reflector")
             {
                 GameObject mirror = playerItemHandler.GetCarriedObject();
+                Mirror mirrorComponent = mirror.GetComponent<Mirror>();
                 AttachToBone mirrorBoneHandler = playerItemHandler.GetCarriedObject().GetComponent<AttachToBone>();
                 if (mirrorBoneHandler != null)
                 {
@@ -38,11 +39,11 @@ public class InteractableMirrorJoint : Interactable
                     mirrorBoneHandler.SetTargetBone(gameObject);
                     mirrorBoneHandler.SetOffset(Vector3.zero);
                     mirror.GetComponent<Rigidbody>().isKinematic = true; // Set the mirror's Rigidbody to kinematic to prevent physics interactions
-                    occupied = true; // Mark the joint as occupied
+                    occupied = true; // Mark the joint as occupied 
 
-                    if(reflectionPoint == null)
+                    if (reflectionPoint != null)
                     {
-                        mirror.GetComponent<Mirror>()?.setReflectionPoint(transform);
+                        mirrorComponent?.setReflectionPoint(reflectionPoint);
                     }
 
                     // change mirrors layer to obstacle
