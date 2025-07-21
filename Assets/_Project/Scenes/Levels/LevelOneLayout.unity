@@ -37385,6 +37385,7 @@ GameObject:
   - component: {fileID: 1290204882}
   - component: {fileID: 1290204881}
   - component: {fileID: 1290204880}
+  - component: {fileID: 1290204883}
   m_Layer: 0
   m_Name: SparkleEffect (3)
   m_TagString: Untagged
@@ -42220,6 +42221,27 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!135 &1290204883
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290204878}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.2100002
+  m_Center: {x: -1.32, y: -0.4, z: -0.71}
 --- !u!1 &1292778291
 GameObject:
   m_ObjectHideFlags: 0
