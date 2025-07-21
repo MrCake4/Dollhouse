@@ -83,8 +83,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     }
     public float GetCrouchBlend() => crouchBlend;
 
-
-
+    // ______________Sound _________________________
+    public PlayerSoundManager soundManager;
 
     // Debugging
     [Header("Debugging")]
@@ -111,6 +111,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         staminaSystem = GetComponent<StaminaSystem>();       //STAMINA!!!!!!!!!!!
 
+        soundManager = GetComponent<PlayerSoundManager>();
 
     }
 

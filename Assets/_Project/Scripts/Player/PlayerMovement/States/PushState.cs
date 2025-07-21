@@ -92,7 +92,10 @@ public class PushState : BasePlayerState
 
     }
 
-    public override void onUpdate(PlayerStateManager player) { }
+    public override void onUpdate(PlayerStateManager player)
+    { 
+        player.soundManager.PlaySingleRandomSoundEffect(player.soundManager.pullSounds, player.transform, 0.2f);
+    }
 
     public override void onExit(PlayerStateManager player)
     {
