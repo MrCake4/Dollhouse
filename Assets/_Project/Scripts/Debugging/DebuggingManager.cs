@@ -136,6 +136,20 @@ public class DebuggingManager : MonoBehaviour
             player.staminaSystem.staminaDrainRate = 0f;
             player.staminaSystem.jumpStaminaCost = 0f;
         }
-        
+
+    }
+
+        public void GoToMainMenu()
+    {
+        StartCoroutine(LoadMainMenuRoutine());
+    }
+
+    private IEnumerator LoadMainMenuRoutine()
+    {
+        SceneFadeManager.instance.StartFadeOut();
+        yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingOut);
+        AsyncOperation op = SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
+        yield return op;
+        SceneFadeManager.instance.StartFadeIn();
     }
 }

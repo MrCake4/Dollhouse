@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerSoundManager : MonoBehaviour
@@ -19,6 +20,9 @@ public class PlayerSoundManager : MonoBehaviour
 
     [Header("Death Sounds")]
     public AudioClip[] deathSounds;
+
+    [Header("Pull Sounds")]
+    public AudioClip[] pullSounds;
 
     void Update()
     {
@@ -51,4 +55,23 @@ public class PlayerSoundManager : MonoBehaviour
             isDown = false;
         }
     }
+private bool isSoundPlaying = false;
+
+public void PlaySingleRandomSoundEffect(AudioClip[] clips, Transform spawnTransform, float volume)
+{
+    if (clips == null || clips.Length == 0 || isSoundPlaying) return;
+
+    AudioClip selectedClip = clips[Random.Range(0, clips.Length)];
+    isSoundPlaying = true;
+
+    // Use SoundEffectsManager and measure clip duration to wait
+    SoundEffectsManager.instance.PlaySoundEffect(selectedClip, spawnTransform, volume);
+    StartCoroutine(ResetSoundPlayingAfterDelay(selectedClip.length));
+}
+
+private IEnumerator ResetSoundPlayingAfterDelay(float delay)
+{
+    yield return new WaitForSeconds(delay);
+    isSoundPlaying = false;
+}
 }
