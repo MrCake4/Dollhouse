@@ -3397,6 +3397,7 @@ MonoBehaviour:
   - {fileID: 2072325470}
   - {fileID: 10000848}
   - {fileID: 196969505}
+  - {fileID: 905080050}
 --- !u!1 &635333467 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7907533964422409099, guid: e33c14c218941e64086945d91d77f258, type: 3}
@@ -9871,6 +9872,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901214259}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!108 &905080050 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 1708206097652019908, guid: c387b6e1c259fed4990f93bc431d2166, type: 3}
+  m_PrefabInstance: {fileID: 1560320055}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &911353427
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11140,6 +11146,10 @@ PrefabInstance:
       propertyPath: ai
       value: 
       objectReference: {fileID: 723030653}
+    - target: {fileID: 2534440993580092517, guid: 7fbc20adbe0e5f24c9067235bb6f0610, type: 3}
+      propertyPath: triggerSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 1d37f773a76cdd34ab3b663a05aef459, type: 3}
     - target: {fileID: 2534440993580092517, guid: 7fbc20adbe0e5f24c9067235bb6f0610, type: 3}
       propertyPath: objectToCarry
       value: 
@@ -15814,6 +15824,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d1b76857edc844a4b95e92113ab8d394, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2035261603}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d1b76857edc844a4b95e92113ab8d394, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2035261604}
   m_SourcePrefab: {fileID: 100100000, guid: d1b76857edc844a4b95e92113ab8d394, type: 3}
 --- !u!4 &2035261602 stripped
 Transform:
@@ -15917,6 +15930,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!164 &2035261604
+AudioReverbFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724311614}
+  m_Enabled: 1
+  m_DryLevel: 0
+  m_Room: -1000
+  m_RoomHF: -454
+  m_DecayTime: 0.4
+  m_DecayHFRatio: 0.83
+  m_ReflectionsLevel: -1646
+  m_ReverbLevel: 53
+  m_ReverbDelay: 0.003
+  m_Diffusion: 100
+  m_Density: 100
+  m_HFReference: 5000
+  m_RoomLF: 0
+  m_LFReference: 250
+  m_ReflectionsDelay: 0
+  m_ReverbPreset: 3
 --- !u!1 &2042903851
 GameObject:
   m_ObjectHideFlags: 0
