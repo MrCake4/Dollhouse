@@ -4,6 +4,8 @@ public class PowerableTV : Interactable
 {
     [SerializeField] bool isOn = false;
     [SerializeField] GameObject tvScreen;
+    [SerializeField] AudioClip loopedTvAudioSound;
+    AudioSource loopedTvSound;
     PlayerStateManager player;
 
     void Awake()
@@ -16,11 +18,13 @@ public class PowerableTV : Interactable
     public override void onPowerOff()
     {
         isOn = false;
+        SoundEffectsManager.instance.StopSoundEffect(loopedTvSound);
     }
 
     public override void onPowerOn()
     {
         isOn = true;
+        loopedTvSound = SoundEffectsManager.instance.PlayLoopedSoundEffect(loopedTvAudioSound, transform, 0.3f);
     }
 
     // Update is called once per frame
