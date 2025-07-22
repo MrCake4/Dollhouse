@@ -4749,7 +4749,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spotlightAbovePlayer: {fileID: 1283643682}
   importantLights:
-  - {fileID: 177113453}
   - {fileID: 1781085615}
   - {fileID: 66724051}
   - {fileID: 1905572053}
@@ -4764,7 +4763,9 @@ MonoBehaviour:
   - {fileID: 391383116}
   - {fileID: 302563443}
   - {fileID: 1071569959}
-  excludedLights: []
+  excludedLights:
+  - {fileID: 1675116872}
+  - {fileID: 177113453}
 --- !u!1 &226257781
 GameObject:
   m_ObjectHideFlags: 0
@@ -50627,6 +50628,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2774220344278030320, guid: 5663090b85d868f438c9b3442e9c4ac6, type: 3}
   m_PrefabInstance: {fileID: 1670267722}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &1675116872 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 1708206097652019908, guid: c387b6e1c259fed4990f93bc431d2166, type: 3}
+  m_PrefabInstance: {fileID: 481380639}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1679321427 stripped
 Transform:
