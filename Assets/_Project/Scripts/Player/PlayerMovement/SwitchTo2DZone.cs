@@ -7,6 +7,7 @@ public class SwitchTo2DZone : MonoBehaviour
 {
 
     float zLerpSpeed = 1f;
+    private Coroutine playerLerpCoroutine;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,7 +16,7 @@ public class SwitchTo2DZone : MonoBehaviour
             other.GetComponent<PlayerStateManager>().is2DMode = true;
 
             // lerp player z to zone z position
-            StartCoroutine(SmoothLockToZ(other.transform, transform.position.z));
+            playerLerpCoroutine = StartCoroutine(SmoothLockToZ(other.transform, transform.position.z));         //STart 
             Debug.Log("2.5D now!");
         }
 
@@ -57,8 +58,21 @@ public class SwitchTo2DZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.GetComponent<PlayerStateManager>().is2DMode = false;
+
+            // Stoppe die Coroutine, falls sie läuft
+            if (playerLerpCoroutine != null)
+            {
+                StopCoroutine(playerLerpCoroutine);
+                playerLerpCoroutine = null;
+            }
+
             Debug.Log("back to 3D now!");
         }
+        /*if (other.CompareTag("Player"))
+        {
+            other.GetComponent<PlayerStateManager>().is2DMode = false;
+            Debug.Log("back to 3D now!");
+        }*/
 
         // If other Object is tag "bigObject", find all game objects in children with tag "disableIn2D" and enable them
         if (other.gameObject.layer == LayerMask.NameToLayer("bigObject"))
