@@ -76,4 +76,10 @@ public class CameraEffects : MonoBehaviour
         colorAdjustments.saturation.value = targetSaturation;
         currentRoutine = null;
     }
+
+    public void Reset()
+    {
+        vignette.intensity.value = 0.2f;
+        colorAdjustments.saturation.value = 0f;
+    }
 }
