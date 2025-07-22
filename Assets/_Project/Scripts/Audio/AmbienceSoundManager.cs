@@ -30,6 +30,16 @@ public class AmbienceSoundManager : MonoBehaviour
         {
             Transform playerOffset = getRandomPositionAroundPlayer();
             SoundEffectsManager.instance.PlayRandomSoundEffect(houseCreaks, playerOffset, 1f);
+
+            // maybe play wind sound too
+            if (windSounds.Length > 0)
+            {
+                if (Random.value < 0.2f)
+                {
+                    SoundEffectsManager.instance.PlayRandomSoundEffect(windSounds, playerOffset, 0.5f);
+                }
+            }
+
             currentTimeBetweenSounds = Random.Range(minTimeBetweenSounds, maxTimeBetweenSounds);
         }
     }
