@@ -10,6 +10,7 @@ using UnityEngine;
 public class StartGameWithGamepad : MonoBehaviour
 {
     LevelManager mainMenuManager;
+    [SerializeField] AudioSource startGameSound;
 
     void Awake()
     {
@@ -20,7 +21,9 @@ public class StartGameWithGamepad : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.JoystickButton0))
         {
+            startGameSound.Play();
             mainMenuManager.StartGame();
+            
         }
     }
 }
