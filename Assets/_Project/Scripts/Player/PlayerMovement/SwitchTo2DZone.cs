@@ -1,4 +1,67 @@
-using System;
+using UnityEngine;
+
+public class SwitchTo2DZone : MonoBehaviour
+{
+    public float zLerpSpeed = 5f;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            other.GetComponent<PlayerStateManager>().is2DMode = true;
+            Debug.Log("2.5D now!");
+        }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("bigObject"))
+        {
+            foreach (Transform child in other.transform)
+            {
+                if (child.CompareTag("disableIn2D"))
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Transform t = other.transform;
+            Vector3 pos = t.position;
+            float targetZ = transform.position.z;
+            pos.z = Mathf.Lerp(pos.z, targetZ, Time.deltaTime * zLerpSpeed);
+            t.position = pos;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            other.GetComponent<PlayerStateManager>().is2DMode = false;
+            Debug.Log("back to 3D now!");
+        }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("bigObject"))
+        {
+            foreach (Transform child in other.transform)
+            {
+                if (child.CompareTag("disableIn2D"))
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
+        }
+    }
+}
+
+
+
+//IF NOT WO>RKING RESTORE THE OLD VERSION PLEASE
+
+/*using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -72,4 +135,4 @@ public class SwitchTo2DZone : MonoBehaviour
             }
         }
     }
-}
+}*/

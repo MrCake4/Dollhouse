@@ -12,6 +12,8 @@ public class PlatformColorCheck : MonoBehaviour
 
     private bool lastMatch = false; // zum Vergleichen alter Zustand
 
+    [SerializeField] GameObject targetObject; // Zielobjekt, um die Farbe zu setzen
+
     private Renderer rend;
 
     bool solved = false;
@@ -39,7 +41,7 @@ public class PlatformColorCheck : MonoBehaviour
             // Nur loggen, wenn sich der Match-Status ändert
             if (currentMatch != lastMatch)
             {
-                if (currentMatch)
+                if (currentMatch && other.gameObject == targetObject)
                 {
                     Debug.Log("🎉 Juhuu, richtige Farbe!");
                     solved = true;

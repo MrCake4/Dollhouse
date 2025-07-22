@@ -83,8 +83,8 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     }
     public float GetCrouchBlend() => crouchBlend;
 
-
-
+    // ______________Sound _________________________
+    public PlayerSoundManager soundManager;
 
     // Debugging
     [Header("Debugging")]
@@ -111,6 +111,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         staminaSystem = GetComponent<StaminaSystem>();       //STAMINA!!!!!!!!!!!
 
+        soundManager = GetComponent<PlayerSoundManager>();
 
     }
 
@@ -360,7 +361,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         box.enabled = false;
 
-        foreach (Collider col in hits)
+        // Merke die beste gültige Ledge
+        Collider validLedge = null;
+
+        /*foreach (Collider col in hits)
         {
             if (col.CompareTag("mediumLedge"))
             {
@@ -379,6 +383,31 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
                 SwitchState(pullUpState);
                 return true;
             }
+        return false;
+        }*/
+        foreach (Collider col in hits)
+        {
+            if (!col.CompareTag("mediumLedge")) continue;
+
+            float angle = Vector3.Angle(transform.forward, col.transform.forward);
+
+            if (angle <= 50f)
+            {
+                validLedge = col;
+                break; // ✅ erste passende gefunden – abbrechen!
+            }
+            else
+            {
+                Debug.Log($"❌ Ignored Ledge – falscher Winkel: {angle:F1}°");
+            }
+        }
+
+        if (validLedge != null)
+        {
+            Debug.Log("✅ Medium Ledge gefunden und akzeptiert.");
+            pullUpState.SetLedgeFromTransform(validLedge.transform, transform.position);
+            SwitchState(pullUpState);
+            return true;
         }
 
         return false;
@@ -434,6 +463,14 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     // ============================ FOR ANIMATION ONLY ============================ 
 
     // Platzhalter für spätere Animationen
+    public void OnPullUpStart()                     //Frame-genau hochziehen mit 1. Frame von Animation
+    {
+        if (currentState is PullUpState pullUp)
+        {
+            pullUp.OnPullUpStart(this);
+        }
+    }
+
 
 
 

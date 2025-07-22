@@ -8,6 +8,9 @@ public class AIHuntTrigger : MonoBehaviour
     [SerializeField] bool triggered = false;
     [SerializeField] bool triggerWhenPlayerCarriesObject = false;
     [SerializeField] GameObject objectToCarry;
+
+    [Header("Audio")]
+    [SerializeField] AudioClip triggerSound;
     PlayerItemHandler playerItemHandler;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,22 +31,18 @@ public class AIHuntTrigger : MonoBehaviour
                         ai.enabled = true;
                     triggered = true;
                     roomToTrigger.triggered = true;
+                    if (triggerSound != null)SoundEffectsManager.instance.PlaySoundEffect(triggerSound, transform, 0.3f);
                 }
             }
             // Trigger the hunt state in the AI
             else
             {
                 if (!ai.enabled)
-                        ai.enabled = true;
+                    ai.enabled = true;
                 triggered = true;
                 roomToTrigger.triggered = true;
+                if (triggerSound != null)SoundEffectsManager.instance.PlaySoundEffect(triggerSound, transform, 0.3f);
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

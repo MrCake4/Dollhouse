@@ -500,6 +500,7 @@ MonoBehaviour:
   crouchSpeed: 2
   animator: {fileID: 7860713031711705011}
   lowCrouchPoint: {fileID: 0}
+  soundManager: {fileID: 0}
   isInvincible: 0
 --- !u!65 &3534552629127739091
 BoxCollider:
@@ -616,6 +617,8 @@ MonoBehaviour:
   jumpStaminaCost: 0.7
   currentStamina: 0
   isPenalty: 0
+  defaultStaminaDrainRate: 0
+  defaultJumpStaminaCost: 0
 --- !u!114 &5945646269335613693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -642,6 +645,10 @@ MonoBehaviour:
   stepCooldown: 0.5
   deathSounds:
   - {fileID: 8300000, guid: 2451522cc4408d54fafa272cae8fbea0, type: 3}
+  pullSounds:
+  - {fileID: 8300000, guid: f78d22260919df34b90012dc831a551d, type: 3}
+  - {fileID: 8300000, guid: ce71698c78d72354b98bfc2a77b3c203, type: 3}
+  - {fileID: 8300000, guid: fcb3c8dd626c4734590c5830b68b70f4, type: 3}
 --- !u!114 &814180300870570846
 MonoBehaviour:
   m_ObjectHideFlags: 0

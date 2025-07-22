@@ -5,6 +5,7 @@ public class PullState : BasePlayerState
     private Rigidbody targetRb;
     private Transform grabPoint;
     private float pullSpeed = 1.5f;
+    AudioSource pullAudioSource;
 
     public void SetTarget(Rigidbody rb, Transform point)
     {
@@ -85,7 +86,10 @@ public class PullState : BasePlayerState
         //player.SetPushPullAnimationSpeed(new Vector3(newVelocity.x, 0f, newVelocity.z).magnitude);
     }
 
-    public override void onUpdate(PlayerStateManager player) { }
+    public override void onUpdate(PlayerStateManager player)
+    {
+        player.soundManager.PlaySingleRandomSoundEffect(player.soundManager.pullSounds, player.transform, 0.2f);
+    }
 
     public override void onExit(PlayerStateManager player)
     {
@@ -104,6 +108,8 @@ public class PullState : BasePlayerState
                 pushable.ResetPhysics(); // <- HIER EINBAUEN!
             }
         }
+
+        SoundEffectsManager.instance.StopSoundEffect(pullAudioSource);
 
         targetRb = null;
         grabPoint = null;

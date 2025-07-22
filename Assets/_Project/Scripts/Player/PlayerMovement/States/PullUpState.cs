@@ -43,7 +43,7 @@ public class PullUpState : BasePlayerState
         player.animator.applyRootMotion = true;
 
         // Setze sofort die Zielposition
-        player.transform.position = finalStandPos;
+            //player.transform.position = finalStandPos;
 
         // Animation triggern
         player.animator.SetTrigger("DoPullUp");
@@ -51,7 +51,7 @@ public class PullUpState : BasePlayerState
         // Hier kommt der Trick:
         // Forciere ein sofortiges Update der Animator-Pose,
         // damit die neue Pose im selben Frame aktiv ist.
-        player.animator.Update(0f);
+            //player.animator.Update(0f);
     }
 
 
@@ -84,6 +84,18 @@ public class PullUpState : BasePlayerState
     {
 
     }
+
+    public void OnPullUpStart(PlayerStateManager player)
+    {
+        // Spieler exakt bei Animationsbeginn auf die Kante setzen
+        player.transform.position = finalStandPos;
+
+        // Falls du RootMotion nutzt und willst, dass er sofort korrekt startet:
+        player.animator.Update(0f);
+
+        //Debug.Log("PullUp Synchronization worked!");
+    }
+
 
 
 }

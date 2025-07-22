@@ -30,7 +30,7 @@ public class TrapDoor : MonoBehaviour
     {
         if (isOpen && openProgress < 1f)
         {
-            if (!soundplayed) { SoundEffectsManager.instance.PlayRandomSoundEffect(trapdoorSounds, transform, 0.5f); soundplayed = true; }
+            if (!soundplayed) { SoundEffectsManager.instance.PlayRandomSoundEffect(trapdoorSounds, transform, 0.8f); soundplayed = true; }
             openProgress += Time.deltaTime * openSpeed;
             doorPivot.localRotation = Quaternion.Lerp(closedRotation, openRotation, openProgress);
         }

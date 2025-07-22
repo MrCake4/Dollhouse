@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using MilkShake;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -41,7 +40,6 @@ public class AIRoomScan : MonoBehaviour
     private LineRenderer laserLine;
     private Collider playerCollider;
     private PlayerStateManager player;
-
     private Quaternion centerRotation;
     private float initialYRotation;
 
@@ -50,7 +48,6 @@ public class AIRoomScan : MonoBehaviour
     private float laserTimer;
     private float laserDrawTimer;
     private bool hitPlayer;
-
     public bool IsDoneSweeping { get; private set; }
 
     /// Audio
@@ -68,9 +65,6 @@ public class AIRoomScan : MonoBehaviour
     private float defaultXRotation;
 
     private Vector3 orientation = Vector3.zero;
-
-
-
     private void Awake()
     {
         laserLine = GetComponent<LineRenderer>();
@@ -138,9 +132,6 @@ public class AIRoomScan : MonoBehaviour
     public void ScanForPlayer()
     {
         Collider[] targets = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
-
-
-
         foreach (var target in targets)
         {
             Vector3 dirToTarget = (target.bounds.center - transform.position).normalized;
@@ -175,7 +166,6 @@ public class AIRoomScan : MonoBehaviour
     public void FollowAndShoot()
     {
         if (currentTarget == null) return;
-
         Vector3 direction = (playerCollider.bounds.center - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
