@@ -82,4 +82,16 @@ public class CameraEffects : MonoBehaviour
         vignette.intensity.value = 0.2f;
         colorAdjustments.saturation.value = 0f;
     }
+
+    public void ToggleEffect(bool on)
+    {
+        if (!on)
+        {
+            globalVolume.enabled = false;
+        }
+        else
+        {
+            globalVolume.enabled = true;
+        }
+    }
 }
