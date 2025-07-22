@@ -10,23 +10,22 @@ public class ButtonForSpotlight : Interactable
         down
     }
 
-    [SerializeField] AudioClip[] leverSounds;
-
+    [Header("Lever Settings")]
     [SerializeField] Light spotlight;
     private PlayerItemHandler player;
     [SerializeField] bool isOn = false;
+    [SerializeField] Transform leverTransform;
+    leverPosition lpos = leverPosition.down; // stores current lever position
+
+    [Header("Lever Sound")]
+    [SerializeField] AudioClip[] leverSounds;
 
     [Header("Glowing Light Object")]
     [SerializeField] GameObject lightObject;
     [SerializeField] private Material offMaterial;
     [SerializeField] private Material onMaterial;
 
-    [SerializeField] Transform leverTransform;
-    //[SerializeField] float distanceToButton = 3f;
 
-    void Awake()
-    {
-    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,24 +40,33 @@ public class ButtonForSpotlight : Interactable
         switchLightMaterial(false);
     }
 
-    public void LightSwitch()
+    // Method to switch the lever position and toggle the spotlight
+    public void leverSwitch()
     {
-        switch (spotlight.enabled)
+        switch (lpos)
         {
-            case true:
-                spotlight.enabled = false;
-                pullLever(leverPosition.down);
-                switchLightMaterial(false);
+            case leverPosition.up:
+                lpos = leverPosition.down;
+                pullLever(lpos);
+                if (isOn)
+                {
+                    spotlight.enabled = false; // Ensure the spotlight is turned off
+                    switchLightMaterial(false);
+                }
                 break;
-            case false:
-                spotlight.enabled = true;
-                pullLever(leverPosition.up);
-                switchLightMaterial(true);
+            case leverPosition.down:
+                lpos = leverPosition.up;
+                pullLever(lpos);
+                if (isOn)
+                {
+                    spotlight.enabled = true; // Ensure the spotlight is turned on
+                    switchLightMaterial(true);
+                }
                 break;
         }
-        
     }
 
+    // Method to pull the lever and change its rotation
     private void pullLever(leverPosition position)
     {
         if (leverTransform == null) return;
@@ -75,16 +83,8 @@ public class ButtonForSpotlight : Interactable
                 break;
         }
     }
-    public override void interact()
-    {
-        if (isOn) LightSwitch();
-    }
 
-    public override void onPowerOn()
-    {
-        isOn = true;
-    }
-
+    // Method to switch the light material based on the lever position
     void switchLightMaterial(bool mode)
     {
         if (lightObject != null)
@@ -101,8 +101,25 @@ public class ButtonForSpotlight : Interactable
         }
     }
 
+    // Override Methods from Interactable class
+    public override void interact()
+    {
+        leverSwitch();
+    }
+
+    public override void onPowerOn()
+    {
+        isOn = true;
+        if(lpos == leverPosition.up)
+        {
+            spotlight.enabled = true; // Ensure the spotlight is turned on when power is on
+            switchLightMaterial(true);
+        }
+    }
+
     public override void onPowerOff()
     {
+        lpos = leverPosition.down; // Reset lever position when power is off
         isOn = false;
         spotlight.enabled = false; // Ensure the spotlight is turned off when power is off
         pullLever(leverPosition.down);
