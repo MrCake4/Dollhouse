@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7819728335282837814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6547407853554916605}
+  - component: {fileID: 609783645570368623}
+  - component: {fileID: 178413069219407035}
+  m_Layer: 0
+  m_Name: SFXManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6547407853554916605
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7819728335282837814}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &609783645570368623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7819728335282837814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14678ba4710b969479f3dc272ef38c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundFXObject: {fileID: 682545198704857888, guid: 0dfcdbb08fd4fba418b660a44dbc0791, type: 3}
+--- !u!114 &178413069219407035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7819728335282837814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 596ca32a07d631e41b062331ab22ae21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  houseCreaks:
+  - {fileID: 8300000, guid: 6bf2f1c98b9cece4ba0c2d5ea84d7812, type: 3}
+  - {fileID: 8300000, guid: 2d8d2faecb01fce41a70d76e6b6d0e58, type: 3}
+  - {fileID: 8300000, guid: b01c5bc95871c1146985827ad3255b9c, type: 3}
+  - {fileID: 8300000, guid: 26343591d8f0fb14292ca77c3f37436d, type: 3}
+  - {fileID: 8300000, guid: 363c243ed2a3c3245bd79f51f9947bab, type: 3}
+  - {fileID: 8300000, guid: 066253a7c7a9d3d4ba7bfd779111b243, type: 3}
+  - {fileID: 8300000, guid: ef20d9ccd347e3745ba1d9c239f6de40, type: 3}
+  - {fileID: 8300000, guid: 0a72a7190f7e0b14795920c5c0214400, type: 3}
+  windSounds: []
+  minTimeBetweenSounds: 20
+  maxTimeBetweenSounds: 60
