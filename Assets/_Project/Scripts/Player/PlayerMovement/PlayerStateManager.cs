@@ -435,6 +435,14 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     // ============================ FOR ANIMATION ONLY ============================ 
 
     // Platzhalter für spätere Animationen
+    public void OnPullUpStart()                     //Frame-genau hochziehen mit 1. Frame von Animation
+    {
+        if (currentState is PullUpState pullUp)
+        {
+            pullUp.OnPullUpStart(this);
+        }
+    }
+
 
 
 
