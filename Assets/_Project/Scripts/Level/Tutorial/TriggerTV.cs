@@ -31,7 +31,7 @@ public class TriggerTV : MonoBehaviour
             if (TVScreen != null && TVLight != null)
             {
                 
-                audioSource = SoundEffectsManager.instance.PlayLoopedSoundEffect(TVSound, TVScreen.transform, 1f);
+                if (TVSound != null) audioSource = SoundEffectsManager.instance.PlayLoopedSoundEffect(TVSound, TVScreen.transform, 1f);
                 TVLight.enabled = true;
                 triggered = true;
                 videoPlayer.Play();
@@ -60,7 +60,7 @@ public class TriggerTV : MonoBehaviour
                 videoPlayer.Stop();
                 screen.enabled = false;
                 triggered = false;
-                SoundEffectsManager.instance.StopSoundEffect(audioSource);
+                if (TVSound != null) SoundEffectsManager.instance.StopSoundEffect(audioSource);
                 Destroy(this.gameObject);
             }
         }
