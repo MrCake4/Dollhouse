@@ -58,6 +58,7 @@ public class CheckpointHandler : MonoBehaviour
 
         if (checkpoints.Length <= 0)
         {
+            player.PlayerItemHandler.DropItem();
             playerObject.position = FindAnyObjectByType<SceneEntry>().transform.position;
         }
         else
@@ -67,6 +68,7 @@ public class CheckpointHandler : MonoBehaviour
             {
                 if (checkpoints[i].getIsActive)
                 {
+                    player.PlayerItemHandler.DropItem();
                     playerObject.position = checkpoints[i].transform.position;
                     break;
                 }
