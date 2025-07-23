@@ -8,7 +8,7 @@ OcclusionCullingSettings:
     smallestOccluder: 5
     smallestHole: 0.25
     backfaceThreshold: 100
-  m_SceneGUID: b5f8da121d1c1cf4da9ba985ef2e335f
+  m_SceneGUID: 128278a97174a604ca00c525d758c4c8
   m_OcclusionCullingData: {fileID: 36300000, guid: 779c69b73faff9b4aadad557fbde432d, type: 2}
 --- !u!104 &2
 RenderSettings:
@@ -3280,7 +3280,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 2800000, guid: 9aa4348290784b2468144a97eb15d8d7, type: 3}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &145267257
 Transform:
@@ -19156,11 +19156,11 @@ Transform:
   - {fileID: 2138832356}
   - {fileID: 189397861}
   - {fileID: 978777473}
+  - {fileID: 729051855}
   - {fileID: 1928702618}
   - {fileID: 1314383911}
   - {fileID: 594545685}
   - {fileID: 10811106}
-  - {fileID: 729051855}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &487932534
@@ -23503,7 +23503,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &729051855
 Transform:
@@ -59629,7 +59629,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 2800000, guid: 9aa4348290784b2468144a97eb15d8d7, type: 3}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2092559063
 Transform:
@@ -61529,6 +61529,10 @@ PrefabInstance:
     - target: {fileID: 4431998330385605002, guid: 7eb5de24652450e40b6eaab03e31ea9a, type: 3}
       propertyPath: m_Name
       value: pushableBoundary
+      objectReference: {fileID: 0}
+    - target: {fileID: 4431998330385605002, guid: 7eb5de24652450e40b6eaab03e31ea9a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
