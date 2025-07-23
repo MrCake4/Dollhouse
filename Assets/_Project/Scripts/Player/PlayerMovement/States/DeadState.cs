@@ -75,10 +75,14 @@ public class DeadState : BasePlayerState
         // Optional, falls du jemals aus dem DeadState raus willst
         if (playerRigidbody != null) playerRigidbody.isKinematic = false;
         if (mainCollider != null) mainCollider.enabled = true;
+        
+        player.animator.ResetTrigger("Die");
 
+        // Flag if there is no GameOverManager
+        if (gameOverManager == null) return;
         gameOverManager?.SetLightStates(true); // Spotlight on, other lights off
         gameOverManager?.RestoreImportantLightStates(); // Restore important lights
 
-        player.animator.ResetTrigger("Die");
+        
     }
 }
