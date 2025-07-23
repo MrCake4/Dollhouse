@@ -22,7 +22,7 @@ public class ToggleBrightness : MonoBehaviour
         if (brightnessVolume != null && brightnessVolume.profile.TryGet(out colorAdjustments))
         {
             // Found ColorAdjustments
-            colorAdjustments.postExposure.value = 1;
+            colorAdjustments.postExposure.value = 0f;
         }
         else
         {

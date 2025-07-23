@@ -14,7 +14,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     public PullState pullState = new PullState();
     public GrabObjectState grabObjectState = new GrabObjectState();
     public CrouchState crouchState = new CrouchState();
-    //private PlayerItemHandler PlayerItemHandler;                //CARRY
+    public PlayerItemHandler PlayerItemHandler;                //CARRY
     public PullUpState pullUpState = new PullUpState();
     public HangState hangState = new HangState();
     public DeadState deadState = new DeadState();               //für den Fall, dass der Spieler stirbt
@@ -112,6 +112,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         staminaSystem = GetComponent<StaminaSystem>();       //STAMINA!!!!!!!!!!!
 
         soundManager = GetComponent<PlayerSoundManager>();
+        PlayerItemHandler = GetComponent<PlayerItemHandler>();
 
     }
 

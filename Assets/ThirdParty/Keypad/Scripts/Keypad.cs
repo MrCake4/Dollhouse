@@ -39,26 +39,26 @@ namespace NavKeypad
             ClearInput();
         }
 
-
         //Gets value from pressedbutton
         public void AddInput(string input)
         {
             audioSource.PlayOneShot(buttonClickedSfx);
             if (displayingResult || accessWasGranted) return;
-            switch (input)
+            
+            if (currentInput.Length == 2)
             {
-                case "enter":
-                    CheckCombo();
-                    break;
-                default:
-                    if (currentInput != null && currentInput.Length == 9) // 9 max passcode size 
-                    {
-                        return;
-                    }
-                    currentInput += input;
-                    break;
+                currentInput += input;
+                CheckCombo();
             }
-
+            else
+            {
+                if (currentInput != null && currentInput.Length >= 3) // 9 max passcode size 
+                {
+                return;
+                }
+                currentInput += input;
+            }
+                    
         }
         public void CheckCombo()
         {
@@ -135,13 +135,5 @@ namespace NavKeypad
             keypadCombo = newCombo;
         }
 
-        void Update()
-        {
-            // When there are 3 or more lit candles check if the current input matches the keypad combo
-            if (litCandleCount >= 3 && !accessWasGranted)
-            {
-                CheckCombo();
-            }
-        }
     }
 }

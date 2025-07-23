@@ -8,6 +8,8 @@ public class TriggerTV : MonoBehaviour
     public GameObject TVScreen;
     bool triggered = false;
     [SerializeField] float countDown;
+    AudioSource audioSource;
+    [SerializeField] AudioClip TVSound;
     float initialCountDown;
     Light TVLight;
     VideoPlayer videoPlayer;
@@ -29,7 +31,7 @@ public class TriggerTV : MonoBehaviour
             if (TVScreen != null && TVLight != null)
             {
                 
-                
+                if (TVSound != null) audioSource = SoundEffectsManager.instance.PlayLoopedSoundEffect(TVSound, TVScreen.transform, 1f);
                 TVLight.enabled = true;
                 triggered = true;
                 videoPlayer.Play();
@@ -58,6 +60,7 @@ public class TriggerTV : MonoBehaviour
                 videoPlayer.Stop();
                 screen.enabled = false;
                 triggered = false;
+                if (TVSound != null) SoundEffectsManager.instance.StopSoundEffect(audioSource);
                 Destroy(this.gameObject);
             }
         }
