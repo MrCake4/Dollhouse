@@ -27,6 +27,9 @@ public class Candle : Interactable
     [Header("Sound Effects")]
     [SerializeField] AudioClip candleLightEffect; // Sound effect when the candle is lit
 
+    private static float lastGlobalInteractTime = -1f;
+    private const float globalInteractCooldown = 0.3f;
+
     void Awake()
     {
         if (isNormalCandle && numberQuad != null)
@@ -55,20 +58,24 @@ public class Candle : Interactable
 
         keypadButton = GetComponent<KeypadButton>();
     }
-
     public override void interact()
     {
-        // if the player is carrying a candle and it is not lit, light it
-        if (playerItemHandler.GetCarriedObject() != null &&
-            playerItemHandler.GetCarriedObject().CompareTag("Candle") &&
-            !isLit)
-        {
-            lightCandle();
-            if (meshRendererNumberQuad != null) meshRendererNumberQuad.enabled = true; // Enable the number quad when the candle is lit
-            // Play sound effect if it is a normal candle
-            if (isNormalCandle && candleLightEffect != null) SoundEffectsManager.instance.PlaySoundEffect(candleLightEffect, transform, 1f);
+        // Prevent interacting too fast globally
+        if (Time.time - lastGlobalInteractTime < globalInteractCooldown) return;
+        lastGlobalInteractTime = Time.time;
 
-            // if candle is not a normal candle,
+        if (isLit) return;  
+
+        if (playerItemHandler.GetCarriedObject() != null &&
+            playerItemHandler.GetCarriedObject().CompareTag("Candle"))
+        {
+            isLit = true;
+            lightCandle();
+            if (meshRendererNumberQuad != null) meshRendererNumberQuad.enabled = true;
+
+            if (isNormalCandle && candleLightEffect != null)
+                SoundEffectsManager.instance.PlaySoundEffect(candleLightEffect, transform, 1f);
+
             if (!isNormalCandle)
             {
                 keypadButton.PressButton();
@@ -76,6 +83,7 @@ public class Candle : Interactable
             }
         }
     }
+
 
     public void lightCandle()
     {
