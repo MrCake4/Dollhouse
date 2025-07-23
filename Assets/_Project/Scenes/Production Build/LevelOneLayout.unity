@@ -24454,6 +24454,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneLoadTrigger
       objectReference: {fileID: 0}
+    - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: _scenesToLoad.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: _scenesToUnload.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: _scenesToLoad.Array.data[0].m_SceneName
+      value: TheaterScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: _scenesToLoad.Array.data[0].m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: d57de5c400d12e5449e331021a3bf012, type: 3}
+    - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: _scenesToUnload.Array.data[0].m_SceneName
+      value: LevelOne
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
+      propertyPath: _scenesToUnload.Array.data[0].m_SceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 128278a97174a604ca00c525d758c4c8, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
