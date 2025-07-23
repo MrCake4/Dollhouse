@@ -11,7 +11,6 @@ public class CheckpointHandler : MonoBehaviour
 
     AIRoomScan eye;
     bool respawning = false;
-
     void Start()
     {
         // Find all checkpoints in the scene
@@ -23,19 +22,16 @@ public class CheckpointHandler : MonoBehaviour
     }
 
     // Update is called once per frame
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.R) && !respawning)
         {
             respawning = true;
             StartCoroutine(RespawnPlayer(GameObject.FindWithTag("Player").transform));
-
-            // reset AI state to idle
-            AIStateManager ai = FindFirstObjectByType<AIStateManager>();
-            respawning = false;
-            if (ai != null) ResetAI(ai); return;
         }
     }
+
 
     // checks every checkpoint and deactives the false ones
     public void ActivateCheckpoint(Checkpoint checkpoint)
@@ -57,29 +53,34 @@ public class CheckpointHandler : MonoBehaviour
     // "Respawns" aka. "teleports" the player to the last active checkpoint
     public IEnumerator RespawnPlayer(Transform playerObject)
     {
-
         SceneFadeManager.instance.StartFadeOut();
-
         yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingOut);
 
-        if (checkpoints.Length < 0)
+        if (checkpoints.Length <= 0)
         {
             playerObject.position = FindAnyObjectByType<SceneEntry>().transform.position;
-            SceneFadeManager.instance.StartFadeIn();
-            player.SwitchState(player.idleState);
         }
-        // Respawn the player at the last active checkpoint
-        for (int i = checkpoints.Length - 1; i >= 0; i--)
+        else
         {
-            if (checkpoints[i].getIsActive)
+            // Respawn at last active checkpoint
+            for (int i = checkpoints.Length - 1; i >= 0; i--)
             {
-                // reset player position and state
-                playerObject.position = checkpoints[i].transform.position;
-                SceneFadeManager.instance.StartFadeIn();
-                player.SwitchState(player.idleState);
+                if (checkpoints[i].getIsActive)
+                {
+                    playerObject.position = checkpoints[i].transform.position;
+                    break;
+                }
             }
         }
+
+        AIStateManager ai = FindFirstObjectByType<AIStateManager>();
+        if (ai != null) ResetAI(ai);
+        player.SwitchState(player.idleState);
+        SceneFadeManager.instance.StartFadeIn();
+        yield return new WaitUntil(() => !SceneFadeManager.instance.isFadingIn);
+        respawning = false;
     }
+
 
     // resets the AI to the idle state
     public void ResetAI(AIStateManager ai)
