@@ -6,25 +6,34 @@ public class AIAttackState : AIBaseState
     private float postShotTimer = 0f;
     private const float postShotDelay = 1.5f;
 
+    private CameraEffects cameraEffects;
+
     public override void enterState(AIStateManager ai)
     {
         Debug.Log("Dolly entered state ATTACK");
         ai.eye.SetHitPlayer(false);
         waitingToSwitch = false;
+
+        cameraEffects = Object.FindAnyObjectByType<CameraEffects>();
+        cameraEffects?.ApplyIntenseEffect(0.75f); // Apply once when attack starts
     }
+
 
     public override void onUpdate(AIStateManager ai)
     {
         if (!waitingToSwitch)
         {
             ai.eye.FollowAndShoot();
-
             if (ai.eye.PlayerWasHit || !ai.eye.TargetAcquired)
             {
                 ai.eye.SetSpotlight(false);
-                ai.scanDone = false; // ensures hunt doesn't skip scan
+                ai.scanDone = false;
                 postShotTimer = postShotDelay;
                 waitingToSwitch = true;
+
+                // ✅ Revert only after done
+                cameraEffects?.RevertEffect(0.75f);
+
                 Debug.Log("Post-shot delay started...");
             }
         }

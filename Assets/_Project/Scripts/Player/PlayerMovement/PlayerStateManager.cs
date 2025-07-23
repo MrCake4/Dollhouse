@@ -30,12 +30,13 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     [HideInInspector] public Vector3 moveDir;               // Richtung im 3D-Raum
     [HideInInspector] public Rigidbody rb;                  //rigid body reference
     public float rotateSpeed = 10f;
-    
+
     public float RunJumpHeight = 1.5f;                         // gewünschte konstante Sprunghöhe
     public float WalkJumpHeight = 1.2f;
     public float IdleJumpHeight = 1f;
 
     public float airControlMultiplier = 0.3f;              //um mitten im Jump noch Richtung steuern zu können
+    [HideInInspector] public GameOverManager gameOverManager; // GameOverManager reference
 
     //crouch
     [HideInInspector] public CapsuleCollider capsuleCollider;
@@ -82,17 +83,14 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
     }
     public float GetCrouchBlend() => crouchBlend;
 
-
-
+    // ______________Sound _________________________
+    public PlayerSoundManager soundManager;
 
     // Debugging
     [Header("Debugging")]
     public bool isInvincible = false; // Spieler ist unverwundbar, z.B. während des Respawns
 
     //JUST DEBUGGING!!!!
-
-
-
 
 
 
@@ -113,6 +111,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         staminaSystem = GetComponent<StaminaSystem>();       //STAMINA!!!!!!!!!!!
 
+        soundManager = GetComponent<PlayerSoundManager>();
 
     }
 
@@ -170,7 +169,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         jumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0);     // jetzt A
         //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button10);          //Rennen mit reindrücken von L
         //isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button8);         //reindrücken von L
-        isRunning = Input.GetKey(KeyCode.LeftShift) && staminaSystem.CanRun()|| Input.GetKey(KeyCode.Joystick1Button5) && staminaSystem.CanRun();         //R1
+        isRunning = Input.GetKey(KeyCode.LeftShift) && staminaSystem.CanRun() || Input.GetKey(KeyCode.Joystick1Button5) && staminaSystem.CanRun();         //R1
 
         isCrouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Joystick1Button4);      //L1        //gilt für PS5 & X-Box
         //interactPressed = Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.Joystick1Button0);        //Viereck
@@ -191,7 +190,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
     void FixedUpdate()
     {
-        isRunning = Input.GetKey(KeyCode.LeftShift ) || Input.GetKey(KeyCode.Joystick1Button8) && staminaSystem.CanRun();        //Für JUMP & Fall --> damit man direkt weiterrennen kann
+        isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Joystick1Button8) && staminaSystem.CanRun();        //Für JUMP & Fall --> damit man direkt weiterrennen kann
         currentState.onFixedUpdate(this);           //beim aktuellen State FixedUpdate() aufrufen
 
     }
@@ -234,17 +233,17 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         rb.MoveRotation(Quaternion.LookRotation(direction));        //Drehung über rigid Body anwenden
     }
 
-     //um zu schauen, wie viel Platz an der Position vom Spieler ist --> z.B. bei crouch, ob man überhaupt aufstehen kann, oder ob da kein Platz mehr ist (oder maybe sogar bei jump anwenden)
+    //um zu schauen, wie viel Platz an der Position vom Spieler ist --> z.B. bei crouch, ob man überhaupt aufstehen kann, oder ob da kein Platz mehr ist (oder maybe sogar bei jump anwenden)
     public bool HasHeadroom(float requiredHeight)
     {
         // Position der Box: etwas über dem Kopf
         Vector3 boxOrigin = transform.position + Vector3.up * (capsuleCollider.height / 2f);
-        
+
         // Box-Größe (halbiert = HalfExtents!)
         Vector3 boxHalfExtents = new Vector3(0.3f, 0.1f, 0.3f); // breit genug für Kopf + leichte Toleranz
 
         float castDistance = requiredHeight - (capsuleCollider.height / 2f);
-        
+
         bool blocked = Physics.BoxCast(
             boxOrigin,
             boxHalfExtents,
@@ -304,7 +303,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         box.enabled = false;
 
         foreach (Collider col in hits)
-        { 
+        {
             if (col.CompareTag("HangOnto"))
             {
                 Vector3 closestPoint = col.ClosestPoint(transform.position);
@@ -312,7 +311,7 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
                 SwitchState(hangState);
                 return;
             }
-        } 
+        }
 
         // Nichts gefunden
     }
@@ -362,7 +361,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
         box.enabled = false;
 
-        foreach (Collider col in hits)
+        // Merke die beste gültige Ledge
+        Collider validLedge = null;
+
+        /*foreach (Collider col in hits)
         {
             if (col.CompareTag("mediumLedge"))
             {
@@ -381,6 +383,31 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
                 SwitchState(pullUpState);
                 return true;
             }
+        return false;
+        }*/
+        foreach (Collider col in hits)
+        {
+            if (!col.CompareTag("mediumLedge")) continue;
+
+            float angle = Vector3.Angle(transform.forward, col.transform.forward);
+
+            if (angle <= 50f)
+            {
+                validLedge = col;
+                break; // ✅ erste passende gefunden – abbrechen!
+            }
+            else
+            {
+                Debug.Log($"❌ Ignored Ledge – falscher Winkel: {angle:F1}°");
+            }
+        }
+
+        if (validLedge != null)
+        {
+            Debug.Log("✅ Medium Ledge gefunden und akzeptiert.");
+            pullUpState.SetLedgeFromTransform(validLedge.transform, transform.position);
+            SwitchState(pullUpState);
+            return true;
         }
 
         return false;
@@ -428,14 +455,22 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
         return false;
     }
 
-    
+
 
 
 
 
     // ============================ FOR ANIMATION ONLY ============================ 
-    
+
     // Platzhalter für spätere Animationen
+    public void OnPullUpStart()                     //Frame-genau hochziehen mit 1. Frame von Animation
+    {
+        if (currentState is PullUpState pullUp)
+        {
+            pullUp.OnPullUpStart(this);
+        }
+    }
+
 
 
 
@@ -486,5 +521,10 @@ public class PlayerStateManager : MonoBehaviour                 //Script direkt 
 
 
     public BasePlayerState getCurrentState => currentState;          //Getter für den aktuellen State
+
+    public GameOverManager GetGameOverManager()
+    {
+        return FindFirstObjectByType<GameOverManager>();
+    }
 
 }
