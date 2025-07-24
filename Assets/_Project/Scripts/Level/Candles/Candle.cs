@@ -28,7 +28,7 @@ public class Candle : Interactable
     [SerializeField] AudioClip candleLightEffect; // Sound effect when the candle is lit
 
     private static float lastGlobalInteractTime = -1f;
-    private const float globalInteractCooldown = 0.3f;
+    private const float globalInteractCooldown = 0.5f;
 
     void Awake()
     {
