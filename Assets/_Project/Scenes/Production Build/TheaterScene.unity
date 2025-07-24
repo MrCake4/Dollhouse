@@ -8998,6 +8998,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: a19cc3a9ab2940c429acac619d81e944, type: 3}
     - target: {fileID: 3710000693911910882, guid: 7e8aa346fe7b963459ff2c42562d010c, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 24300002, guid: 1037c64eff909b241819c91a9eb7ec31, type: 2}
+    - target: {fileID: 3710000693911910882, guid: 7e8aa346fe7b963459ff2c42562d010c, type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[0].time
       value: 0.54174805
       objectReference: {fileID: 0}
@@ -9614,7 +9618,7 @@ GameObject:
   - component: {fileID: 682851776}
   - component: {fileID: 682851777}
   m_Layer: 0
-  m_Name: Audio Source
+  m_Name: Audience talk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9644,7 +9648,7 @@ AudioSource:
   m_GameObject: {fileID: 682851775}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 1037c64eff909b241819c91a9eb7ec31, type: 2}
   m_audioClip: {fileID: 8300000, guid: c8acf4b260421824da9cb738a8cbba8b, type: 3}
   m_Resource: {fileID: 8300000, guid: c8acf4b260421824da9cb738a8cbba8b, type: 3}
   m_PlayOnAwake: 1
@@ -29793,6 +29797,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 3ebdb3aa3b6deb244b1a8102dc96e181, type: 3}
     - target: {fileID: 3710000693911910882, guid: 7e8aa346fe7b963459ff2c42562d010c, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 24300002, guid: 1037c64eff909b241819c91a9eb7ec31, type: 2}
+    - target: {fileID: 3710000693911910882, guid: 7e8aa346fe7b963459ff2c42562d010c, type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[0].time
       value: 0.32795715
       objectReference: {fileID: 0}
@@ -32406,6 +32414,10 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: 60b86708964f7ab40aa4126a8031cd1d, type: 3}
+    - target: {fileID: 3710000693911910882, guid: 7e8aa346fe7b963459ff2c42562d010c, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 24300002, guid: 1037c64eff909b241819c91a9eb7ec31, type: 2}
     - target: {fileID: 3710000693911910882, guid: 7e8aa346fe7b963459ff2c42562d010c, type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[0].time
       value: 0.54174805

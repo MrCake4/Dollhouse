@@ -4110,7 +4110,7 @@ AudioSource:
   m_GameObject: {fileID: 204221365}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 1037c64eff909b241819c91a9eb7ec31, type: 2}
   m_audioClip: {fileID: 8300000, guid: 92954dc787052f24f875d8f77d0bd762, type: 3}
   m_Resource: {fileID: 8300000, guid: 92954dc787052f24f875d8f77d0bd762, type: 3}
   m_PlayOnAwake: 1
@@ -24366,7 +24366,7 @@ PrefabInstance:
       objectReference: {fileID: 102900000, guid: d57de5c400d12e5449e331021a3bf012, type: 3}
     - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
       propertyPath: _scenesToUnload.Array.data[0].m_SceneName
-      value: LevelOne
+      value: LevelOneLayout
       objectReference: {fileID: 0}
     - target: {fileID: 6220802466869532208, guid: d42e543f44c025f49b4282a2434e5e6a, type: 3}
       propertyPath: _scenesToUnload.Array.data[0].m_SceneAsset
@@ -30535,7 +30535,7 @@ AudioSource:
   m_GameObject: {fileID: 1065866669}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 1037c64eff909b241819c91a9eb7ec31, type: 2}
   m_audioClip: {fileID: 8300000, guid: f5f6bc879585a6640a4a748b2ed609b2, type: 3}
   m_Resource: {fileID: 8300000, guid: f5f6bc879585a6640a4a748b2ed609b2, type: 3}
   m_PlayOnAwake: 1
@@ -43180,7 +43180,7 @@ AudioSource:
   m_GameObject: {fileID: 1368834359}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 1037c64eff909b241819c91a9eb7ec31, type: 2}
   m_audioClip: {fileID: 8300000, guid: 3015243c010facc4ca2dc41df0b89ad7, type: 3}
   m_Resource: {fileID: 8300000, guid: 3015243c010facc4ca2dc41df0b89ad7, type: 3}
   m_PlayOnAwake: 1
@@ -44137,6 +44137,7 @@ GameObject:
   - component: {fileID: 1401971810}
   - component: {fileID: 1401971808}
   - component: {fileID: 1401971812}
+  - component: {fileID: 1401971813}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: Untagged
@@ -44362,6 +44363,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   addToGlobalShakers: 0
+--- !u!81 &1401971813
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401971807}
+  m_Enabled: 1
 --- !u!108 &1411804301 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 532207782342683386, guid: 2425f829ddd16ed43b9b9f35d5cbc1e0, type: 3}
@@ -51360,7 +51369,7 @@ GameObject:
   - component: {fileID: 1737856828}
   - component: {fileID: 1737856829}
   m_Layer: 0
-  m_Name: Audio Source
+  m_Name: WallClock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51390,7 +51399,7 @@ AudioSource:
   m_GameObject: {fileID: 1737856826}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 1037c64eff909b241819c91a9eb7ec31, type: 2}
   m_audioClip: {fileID: 8300000, guid: f82968a9451830c43a2dbc213ce852ae, type: 3}
   m_Resource: {fileID: 8300000, guid: f82968a9451830c43a2dbc213ce852ae, type: 3}
   m_PlayOnAwake: 1
@@ -53879,7 +53888,7 @@ AudioSource:
   m_GameObject: {fileID: 1849287107}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 1037c64eff909b241819c91a9eb7ec31, type: 2}
   m_audioClip: {fileID: 8300000, guid: 92954dc787052f24f875d8f77d0bd762, type: 3}
   m_Resource: {fileID: 8300000, guid: 92954dc787052f24f875d8f77d0bd762, type: 3}
   m_PlayOnAwake: 1

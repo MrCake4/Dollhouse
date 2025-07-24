@@ -3117,25 +3117,13 @@ MonoBehaviour:
   m_FillRect: {fileID: 480887415}
   m_HandleRect: {fileID: 29159378}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: 0.0001
+  m_MaxValue: 5
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 2
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1631372510}
-        m_TargetAssemblyTypeName: VolumeManager, Assembly-CSharp
-        m_MethodName: ChangeVolume
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1631372510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3277,11 +3265,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scenes:
-  - m_SceneAsset: {fileID: 102900000, guid: 8fc45a4d8967dd44f9600e7435be71df, type: 3}
+  - m_SceneAsset: {fileID: 0}
     m_SceneName: TutorialSceneTextured
-  - m_SceneAsset: {fileID: 102900000, guid: afa770f130c5cfa4a9ce20c78f904e81, type: 3}
+  - m_SceneAsset: {fileID: 0}
     m_SceneName: LevelOneLayout
-  - m_SceneAsset: {fileID: 102900000, guid: 5da23b64ee304b348b2053a9334f40d2, type: 3}
+  - m_SceneAsset: {fileID: 0}
     m_SceneName: TheaterScene
   persistentScene:
     m_SceneAsset: {fileID: 102900000, guid: 8a67f5195a688b3458d385318e37020e, type: 3}
@@ -3879,6 +3867,7 @@ GameObject:
   - component: {fileID: 1922399994}
   - component: {fileID: 1922399993}
   - component: {fileID: 1922399992}
+  - component: {fileID: 1922399995}
   m_Layer: 5
   m_Name: DebugCanvas
   m_TagString: Debugging
@@ -3970,6 +3959,20 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
+--- !u!114 &1922399995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922399990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 827a9ab65abd3be4285e5cab3602187e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 1037c64eff909b241819c91a9eb7ec31, type: 2}
+  masterVolumeSlider: {fileID: 1631372509}
 --- !u!1 &1931693176
 GameObject:
   m_ObjectHideFlags: 0
