@@ -13,6 +13,7 @@ public class InteractableMirrorJoint : Interactable
 {
     PlayerItemHandler playerItemHandler;
     bool occupied = false; // Indicates if the joint is occupied by a mirror
+    [SerializeField] Transform reflectionPoint; // The point where the laser reflects to
 
     void Awake()
     {
@@ -28,15 +29,25 @@ public class InteractableMirrorJoint : Interactable
             if (playerItemHandler.GetCarriedObject() != null && playerItemHandler.GetCarriedObject().tag == "Reflector")
             {
                 GameObject mirror = playerItemHandler.GetCarriedObject();
+                Mirror mirrorComponent = mirror.GetComponent<Mirror>();
                 AttachToBone mirrorBoneHandler = playerItemHandler.GetCarriedObject().GetComponent<AttachToBone>();
                 if (mirrorBoneHandler != null)
                 {
-                    mirrorBoneHandler.SetTargetBone(gameObject);
+                    
                     playerItemHandler.DropItem(); // Drop the carried object after attaching it to the mirror joint
                                                   // set layer to 0
+                    mirrorBoneHandler.SetTargetBone(gameObject);
+                    mirrorBoneHandler.SetOffset(Vector3.zero);
                     mirror.GetComponent<Rigidbody>().isKinematic = true; // Set the mirror's Rigidbody to kinematic to prevent physics interactions
-                    mirror.layer = 7; // Set the layer to Default (0) to ensure it is not interactable by the player
-                    occupied = true; // Mark the joint as occupied
+                    occupied = true; // Mark the joint as occupied 
+
+                    if (reflectionPoint != null)
+                    {
+                        mirrorComponent?.setReflectionPoint(reflectionPoint);
+                    }
+
+                    // change mirrors layer to obstacle
+                    mirror.layer = LayerMask.NameToLayer("Obstacle");
                 }
             }
         }
@@ -50,11 +61,5 @@ public class InteractableMirrorJoint : Interactable
     public override void onPowerOn()
     {
         throw new System.NotImplementedException();
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
     }
 }

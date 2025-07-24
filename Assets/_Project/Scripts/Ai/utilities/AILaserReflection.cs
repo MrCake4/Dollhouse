@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -17,80 +18,53 @@ using UnityEngine.Rendering;
 
 public class LaserReflection : MonoBehaviour
 {
-    LineRenderer laserLine;
-    AIRoomScan aiRoomScan;
-    int maxLines = 10;  // max amount of lines that can be reflected  from a single laser
+    [SerializeField] private int maxReflections = 10;
+    [SerializeField] private float maxDistance = 100f;
+    [SerializeField] private LayerMask reflectableLayers;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private LineRenderer lineRenderer;
+
+    void Awake()
     {
-        laserLine = GetComponent<LineRenderer>();
-        aiRoomScan = GetComponent<AIRoomScan>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // Cast a ray from the laser
-        if(aiRoomScan.IsLaserEnabled && laserLine.positionCount == 2){
-            Debug.Log("Laser enabled, starting reflection");
-            ReflectLaser(0);
-        }
-        else if(!aiRoomScan.IsLaserEnabled && laserLine.positionCount > 2){
-            ClearLaser();
-        }
-
-        Debug.DrawRay(transform.position + transform.forward, transform.forward * 10f, Color.red);
-    }
-
-    private void ReflectLaser(int i)
-    {
-        if (i + 1 >= laserLine.positionCount || i >= maxLines) return; // Prevent out of bounds
-
-        Debug.Log("Reflecting laser at index " + i);
-
-        Vector3 origin = laserLine.GetPosition(i);
-        Vector3 direction = laserLine.GetPosition(i + 1) - origin;
-
-        RaycastHit hit;
-        Debug.DrawRay(origin, direction, Color.green, 1f);
-
-        if (Physics.Raycast(origin, direction.normalized, out hit))                                                    
-        {
-            // Check if the hit object is a reflector
-            if (hit.collider.CompareTag("Reflector"))
-            {
-                
-                Debug.Log("Reflected off Collider " + i);
-                // Get the normal of the surface
-                Vector3 normal = hit.normal;
-
-                // Calculate the reflection vector
-                Vector3 reflection = Vector3.Reflect(direction.normalized, normal);                                     
-
-                // Add the hit point to the LineRenderer
-                RaycastHit hit2;
-                Vector3 origin2 = laserLine.GetPosition(i + 1);
-                if (Physics.Raycast(origin2, reflection, out hit2))
-                {
-                    if (hit2.collider.CompareTag("Reflector")){
-                        laserLine.positionCount++;
-                        laserLine.SetPosition(laserLine.positionCount - 1, hit2.point);
-                    }
-                    else
-                    {
-                        laserLine.positionCount++;
-                        laserLine.SetPosition(laserLine.positionCount - 1, reflection * 10f);
-                    }
-                    Debug.DrawRay(hit.point, reflection * 10f, Color.blue, 1f);
-                }
-                ReflectLaser(i + 1);
-            }
-        }
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     public void ClearLaser()
     {
-        laserLine.positionCount = 2;
+        lineRenderer.positionCount = 0;
     }
+
+ public void ReflectLaser(int depth, GameObject initialMirror)
+{
+    if (depth >= maxReflections) return;
+
+    Mirror mirror = initialMirror.GetComponent<Mirror>();
+    if (mirror == null || mirror.getReflectionPoint() == null) return;
+
+    Vector3 startPoint = lineRenderer.GetPosition(lineRenderer.positionCount - 1);
+    Vector3 direction = (mirror.getReflectionPoint().position - startPoint).normalized;
+
+    // Ignore triggers when raycasting
+    if (Physics.Raycast(startPoint, direction, out RaycastHit hit, maxDistance, reflectableLayers, QueryTriggerInteraction.Ignore))
+    {
+        lineRenderer.positionCount++;
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, hit.point);
+
+        if (hit.collider.CompareTag("Reflector"))
+        {
+            ReflectLaser(depth + 1, hit.collider.gameObject);
+        }
+        else if (hit.collider.CompareTag("Generator"))
+        {
+            hit.collider.GetComponent<Generator>()?.onHit();
+        }
+        // Stop reflecting on any other collider
+    }
+    else
+    {
+        lineRenderer.positionCount++;
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, startPoint + direction * maxDistance);
+    }
+}
+
 }
