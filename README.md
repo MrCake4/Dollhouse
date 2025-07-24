@@ -37,9 +37,3 @@ Assets/ <br>
 │ └── ScriptableObjects/ ← SO assets organized by type <br>
 ├── ThirdParty/ ← External packages/plugins  <br>
 └── Settings/ ← Project settings, input maps, render pipeline etc. <br>
-
-# FAQ
-
-Q: Wieso gibt mir VS-Code keine Codevorschläge.
-
-A: Du musst dir Unity und C#-Erweiterung in VS-Code installieren. Wenn es immernoch nicht funktioniert musst du außerdem die neueste ".NET SDK" Version herrunterladen von: https://dotnet.microsoft.com/en-us/download
