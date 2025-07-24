@@ -2159,7 +2159,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8705049710957182221, guid: ef9c36dc33081d44588e3d47e21c4b95, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -8486,10 +8487,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideScanSettings: 1
-  customViewRadius: 20
+  customViewRadius: 90
   customSweepDuration: 3
   customRotationAngle: 90
-  customXRotation: 20
+  customXRotation: 30
 --- !u!1 &533074783
 GameObject:
   m_ObjectHideFlags: 0
@@ -9463,7 +9464,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spotlightAbovePlayer: {fileID: 564073993}
   importantLights: []
-  excludedLights: []
+  excludedLights:
+  - {fileID: 1106498008}
+  - {fileID: 935060113}
 --- !u!1 &611256252
 GameObject:
   m_ObjectHideFlags: 0
@@ -14112,6 +14115,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c9de6cc0b0aeab84bb86035df130ad3f, type: 3}
   m_PrefabInstance: {fileID: 1652529896}
   m_PrefabAsset: {fileID: 0}
+--- !u!108 &935060113 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 6913599336309622917, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+  m_PrefabInstance: {fileID: 1549175304}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &939118027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14131,7 +14139,7 @@ PrefabInstance:
     - target: {fileID: 2534440993580092517, guid: 7fbc20adbe0e5f24c9067235bb6f0610, type: 3}
       propertyPath: roomToTrigger
       value: 
-      objectReference: {fileID: 183914659}
+      objectReference: {fileID: 1215533049}
     - target: {fileID: 5351072367622511189, guid: 7fbc20adbe0e5f24c9067235bb6f0610, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.0048723
@@ -16858,6 +16866,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: -5645937942226959685, guid: 193c17f04ee97a343b90abb1588b9f7c, type: 3}
+--- !u!108 &1106498008 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 7880971246890674236, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+  m_PrefabInstance: {fileID: 1549175304}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1110022814
 GameObject:
   m_ObjectHideFlags: 0
@@ -22780,6 +22793,14 @@ PrefabInstance:
     - target: {fileID: 7880971246890674236, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
       propertyPath: m_Range
       value: 39.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: rotationSpeed
+      value: 2.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8833623924247543631, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
+      propertyPath: laserBuildupTime
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8889679970781055578, guid: 72b74c6aa04ed9f479d09aa883bd4b11, type: 3}
       propertyPath: idleTime
@@ -30717,11 +30738,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7732016684837962909, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.2
+      value: 4.27
       objectReference: {fileID: 0}
     - target: {fileID: 7732016684837962909, guid: e33c14c218941e64086945d91d77f258, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.58
+      value: 1.64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
