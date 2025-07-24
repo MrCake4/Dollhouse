@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        SceneFadeManager.instance.StartFadeIn();
     }
 
     // Update is called once per frame
