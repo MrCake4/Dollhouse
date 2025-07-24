@@ -1242,6 +1242,52 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 28}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!1 &811337497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 811337498}
+  - component: {fileID: 811337499}
+  m_Layer: 0
+  m_Name: VolumeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &811337498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811337497}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1136029405}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &811337499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811337497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 827a9ab65abd3be4285e5cab3602187e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 1037c64eff909b241819c91a9eb7ec31, type: 2}
+  masterVolumeSlider: {fileID: 1631372509}
 --- !u!1 &866101910
 GameObject:
   m_ObjectHideFlags: 0
@@ -2215,6 +2261,7 @@ Transform:
   - {fileID: 748175498}
   - {fileID: 1540978642}
   - {fileID: 1374401740}
+  - {fileID: 811337498}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1138522440
@@ -3042,7 +3089,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1631372508}
   - component: {fileID: 1631372509}
-  - component: {fileID: 1631372510}
   m_Layer: 5
   m_Name: VolumeSlider
   m_TagString: Untagged
@@ -3124,19 +3170,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1631372510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1631372507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4dfb7d9e1259ab4e90f64dde50f0757, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeSlider: {fileID: 1631372509}
 --- !u!1 &1694910929
 GameObject:
   m_ObjectHideFlags: 0
@@ -3867,7 +3900,6 @@ GameObject:
   - component: {fileID: 1922399994}
   - component: {fileID: 1922399993}
   - component: {fileID: 1922399992}
-  - component: {fileID: 1922399995}
   m_Layer: 5
   m_Name: DebugCanvas
   m_TagString: Debugging
@@ -3959,20 +3991,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
---- !u!114 &1922399995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1922399990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 827a9ab65abd3be4285e5cab3602187e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioMixer: {fileID: 24100000, guid: 1037c64eff909b241819c91a9eb7ec31, type: 2}
-  masterVolumeSlider: {fileID: 1631372509}
 --- !u!1 &1931693176
 GameObject:
   m_ObjectHideFlags: 0
