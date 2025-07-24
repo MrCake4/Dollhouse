@@ -306,7 +306,6 @@ Transform:
   - {fileID: 1889789460}
   - {fileID: 90458135}
   - {fileID: 1041325779}
-  - {fileID: 1344705419}
   - {fileID: 619609130}
   - {fileID: 816132583}
   m_Father: {fileID: 0}
@@ -12117,54 +12116,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3099238070062227665, guid: 723218e28e62aa141b63f8e3060aa5b6, type: 3}
   m_PrefabInstance: {fileID: 914636943}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1344705418
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1344705419}
-  - component: {fileID: 1344705420}
-  m_Layer: 0
-  m_Name: DESTROY ON BUILD
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1344705419
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1344705418}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 43354015}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1344705420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1344705418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39909ee57ebcda741a463a6cf749a45e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeOutImage: {fileID: 0}
-  fadeOutSpeed: 5
-  fadeInSpeed: 5
-  fadeOutStartColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1001 &1376615779
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13600,7 +13551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8411229343137582724, guid: c387b6e1c259fed4990f93bc431d2166, type: 3}
       propertyPath: m_Name
-      value: SceneExit
+      value: SceneLoadTrigger
       objectReference: {fileID: 0}
     - target: {fileID: 8411229343137582724, guid: c387b6e1c259fed4990f93bc431d2166, type: 3}
       propertyPath: m_StaticEditorFlags
