@@ -1,5 +1,7 @@
 # Dollhouse
 
+IMI-Showtime website: https://showtime.f4.htw-berlin.de/ss25/bachelor/b2-licht_und_schatten/
+
 B2: Licht und Schatten in Spielen - Programmiertechnik oder Designelement?
 Prof. Tobias Lenz
 
